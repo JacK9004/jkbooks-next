@@ -1,11 +1,11 @@
 export enum BoardArticleCategory {
-	FREE = 'FREE',
-	RECOMMEND = 'RECOMMEND',
-	NEWS = 'NEWS',
-	HUMOR = 'HUMOR',
+    REVIEWS = 'REVIEWS',
+    INTERVIEWS = 'INTERVIEWS',
+    NEWS = 'NEWS',
+    EVENTS = 'EVENTS',
 }
 
 export enum BoardArticleStatus {
-	ACTIVE = 'ACTIVE',
-	DELETE = 'DELETE',
+    ACTIVE = 'ACTIVE',
+    DELETE = 'DELETE',
 }
