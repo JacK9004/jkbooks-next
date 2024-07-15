@@ -6,40 +6,45 @@ import { gql } from '@apollo/client';
 
 export const GET_AGENTS = gql`
 	query GetAgents($input: AgentsInquiry!) {
-		getAgents(input: $input) {
-			list {
-				_id
-				memberType
-				memberStatus
-				memberAuthType
-				memberPhone
-				memberNick
-				memberFullName
-				memberImage
-				memberAddress
-				memberDesc
-				memberWarnings
-				memberBlocks
-				memberProperties
-				memberRank
-				memberPoints
-				memberLikes
-				memberViews
-				deletedAt
-				createdAt
-				updatedAt
-				accessToken
-				meLiked {
-					memberId
-					likeRefId
-					myFavorite
-				}
-			}
-			metaCounter {
-				total
-			}
-		}
-	}
+    getAgents(input: $input) {
+        list {
+            _id
+            memberType
+            memberStatus
+            memberAuthType
+            memberPhone
+            memberNick
+            memberFullName
+            memberImage
+            memberAddress
+            memberDesc
+            memberArticles
+            memberFollowers
+            memberFollowings
+            memberPoints
+            memberLikes
+            memberViews
+            memberComments
+            memberRank
+            memberWarnings
+            memberBlocks
+            deletedAt
+            createdAt
+            updatedAt
+            accessToken
+            memberBooks
+            meLiked {
+                memberId
+                likeRefId
+                myFavorite
+            }
+        }
+        metaCounter {
+            total
+        }
+    }
+}
+
 `;
 
 export const GET_MEMBER = gql(`
@@ -55,13 +60,14 @@ export const GET_MEMBER = gql(`
         memberImage
         memberAddress
         memberDesc
-        memberProperties
+        memberBooks
         memberArticles
+        memberFollowers
+        memberFollowings
         memberPoints
         memberLikes
         memberViews
-        memberFollowings
-				memberFollowers
+        memberComments
         memberRank
         memberWarnings
         memberBlocks
@@ -69,294 +75,329 @@ export const GET_MEMBER = gql(`
         createdAt
         updatedAt
         accessToken
+        meLiked {
+            memberId
+            likeRefId
+            myFavorite
+        }
         meFollowed {
-					followingId
-					followerId
-					myFollowing
-				}
+            followingId
+            followerId
+            myFollowing
+        }
     }
 }
+
 `);
 
 /**************************
- *        PROPERTY        *
+ *        BOOK        *
  *************************/
 
-export const GET_PROPERTY = gql`
-	query GetProperty($input: String!) {
-		getProperty(propertyId: $input) {
-			_id
-			propertyType
-			propertyStatus
-			propertyLocation
-			propertyAddress
-			propertyTitle
-			propertyPrice
-			propertySquare
-			propertyBeds
-			propertyRooms
-			propertyViews
-			propertyLikes
-			propertyImages
-			propertyDesc
-			propertyBarter
-			propertyRent
-			memberId
-			soldAt
-			deletedAt
-			constructedAt
-			createdAt
-			updatedAt
-			memberData {
-				_id
-				memberType
-				memberStatus
-				memberAuthType
-				memberPhone
-				memberNick
-				memberFullName
-				memberImage
-				memberAddress
-				memberDesc
-				memberWarnings
-				memberBlocks
-				memberPoints
-				memberLikes
-				memberViews
-				deletedAt
-				createdAt
-				updatedAt
-				accessToken
-			}
-			meLiked {
-				memberId
-				likeRefId
-				myFavorite
-			}
-		}
-	}
+export const GET_BOOK = gql`
+	query GetBook($input: String!) {
+    getBook(bookId: $input) {
+        _id
+        bookType
+        bookStatus
+        bookCollection
+        ageCategory
+        bookTitle
+        bookAuthor
+        bookPrice
+        bookDate
+        bookISBN
+        bookPages
+        bookLanguages
+        bookViews
+        bookLikes
+        bookComments
+        bookRank
+        bookImages
+        bookDesc
+        bookRent
+        memberId
+        soldAt
+        deletedAt
+        discontinuedAt
+        createdAt
+        updatedAt
+        meLiked {
+            memberId
+            likeRefId
+            myFavorite
+        }
+        memberData {
+            _id
+            memberType
+            memberStatus
+            memberAuthType
+            memberPhone
+            memberNick
+            memberFullName
+            memberImage
+            memberAddress
+            memberDesc
+            memberBooks
+            memberArticles
+            memberFollowers
+            memberFollowings
+            memberPoints
+            memberLikes
+            memberViews
+            memberComments
+            memberRank
+            memberWarnings
+            memberBlocks
+            deletedAt
+            createdAt
+            updatedAt
+            accessToken
+            meLiked {
+                memberId
+                likeRefId
+                myFavorite
+            }
+        }
+    }
+}
 `;
 
-export const GET_PROPERTIES = gql`
-	query GetProperties($input: PropertiesInquiry!) {
-		getProperties(input: $input) {
-			list {
-				_id
-				propertyType
-				propertyStatus
-				propertyLocation
-				propertyAddress
-				propertyTitle
-				propertyPrice
-				propertySquare
-				propertyBeds
-				propertyRooms
-				propertyViews
-				propertyLikes
-				propertyRank
-				propertyImages
-				propertyDesc
-				propertyBarter
-				propertyRent
-				memberId
-				soldAt
-				deletedAt
-				constructedAt
-				createdAt
-				updatedAt
-				memberData {
-					_id
-					memberType
-					memberStatus
-					memberAuthType
-					memberPhone
-					memberNick
-					memberFullName
-					memberImage
-					memberAddress
-					memberDesc
-					memberWarnings
-					memberBlocks
-					memberProperties
-					memberRank
-					memberPoints
-					memberLikes
-					memberViews
-					deletedAt
-					createdAt
-					updatedAt
-				}
-				meLiked {
-					memberId
-					likeRefId
-					myFavorite
-				}
-			}
-			metaCounter {
-				total
-			}
-		}
-	}
+export const GET_BOOKS = gql`
+	query GetBooks($input: BooksInquiry!) {
+    getBooks(input: $input) {
+        list {
+            _id
+            bookType
+            bookStatus
+            bookCollection
+            ageCategory
+            bookTitle
+            bookAuthor
+            bookPrice
+            bookDate
+            bookISBN
+            bookPages
+            bookLanguages
+            bookViews
+            bookLikes
+            bookComments
+            bookRank
+            bookImages
+            bookDesc
+            bookRent
+            memberId
+            soldAt
+            deletedAt
+            discontinuedAt
+            createdAt
+            updatedAt
+            memberData {
+                _id
+                memberType
+                memberStatus
+                memberAuthType
+                memberPhone
+                memberNick
+                memberFullName
+                memberImage
+                memberAddress
+                memberDesc
+                memberBooks
+                memberArticles
+                memberFollowers
+                memberFollowings
+                memberPoints
+                memberLikes
+                memberViews
+                memberComments
+                memberRank
+                memberWarnings
+                memberBlocks
+                deletedAt
+                createdAt
+                updatedAt
+                accessToken
+            }
+            meLiked {
+                memberId
+                likeRefId
+                myFavorite
+            }
+        }
+        metaCounter {
+            total
+        }
+    }
+}
+
 `;
 
-export const GET_AGENT_PROPERTIES = gql`
-	query GetAgentProperties($input: AgentPropertiesInquiry!) {
-		getAgentProperties(input: $input) {
-			list {
-				_id
-				propertyType
-				propertyStatus
-				propertyLocation
-				propertyAddress
-				propertyTitle
-				propertyPrice
-				propertySquare
-				propertyBeds
-				propertyRooms
-				propertyViews
-				propertyLikes
-				propertyImages
-				propertyDesc
-				propertyBarter
-				propertyRent
-				memberId
-				soldAt
-				deletedAt
-				constructedAt
-				createdAt
-				updatedAt
-			}
-			metaCounter {
-				total
-			}
-		}
-	}
+export const GET_AGENT_BOOKS = gql`
+	query GetAgentBooks($input: AgentBooksInquiry!) {
+    getAgentBooks(input: $input) {
+        list {
+            _id
+            bookType
+            bookStatus
+            bookCollection
+            ageCategory
+            bookTitle
+            bookAuthor
+            bookPrice
+            bookDate
+            bookISBN
+            bookPages
+            bookLanguages
+            bookViews
+            bookLikes
+            bookComments
+            bookRank
+            bookImages
+            bookDesc
+            bookRent
+            memberId
+            soldAt
+            deletedAt
+            discontinuedAt
+            createdAt
+            updatedAt
+        }
+        metaCounter {
+            total
+        }
+    }
+}
 `;
 
 export const GET_FAVORITES = gql`
 	query GetFavorites($input: OrdinaryInquiry!) {
-		getFavorites(input: $input) {
-			list {
-				_id
-				propertyType
-				propertyStatus
-				propertyLocation
-				propertyAddress
-				propertyTitle
-				propertyPrice
-				propertySquare
-				propertyBeds
-				propertyRooms
-				propertyViews
-				propertyLikes
-				propertyComments
-				propertyRank
-				propertyImages
-				propertyDesc
-				propertyBarter
-				propertyRent
-				memberId
-				soldAt
-				deletedAt
-				constructedAt
-				createdAt
-				updatedAt
-				memberData {
-					_id
-					memberType
-					memberStatus
-					memberAuthType
-					memberPhone
-					memberNick
-					memberFullName
-					memberImage
-					memberAddress
-					memberDesc
-					memberProperties
-					memberArticles
-					memberPoints
-					memberLikes
-					memberViews
-					memberComments
-					memberFollowings
-					memberFollowers
-					memberRank
-					memberWarnings
-					memberBlocks
-					deletedAt
-					createdAt
-					updatedAt
-					accessToken
-				}
-			}
-			metaCounter {
-				total
-			}
-		}
-	}
+    getFavorites(input: $input) {
+        list {
+            _id
+            bookType
+            bookStatus
+            bookCollection
+            ageCategory
+            bookTitle
+            bookAuthor
+            bookPrice
+            bookDate
+            bookISBN
+            bookPages
+            bookLanguages
+            bookViews
+            bookLikes
+            bookComments
+            bookRank
+            bookImages
+            bookDesc
+            bookRent
+            memberId
+            soldAt
+            deletedAt
+            discontinuedAt
+            createdAt
+            updatedAt
+            memberData {
+                _id
+                memberType
+                memberStatus
+                memberAuthType
+                memberPhone
+                memberNick
+                memberFullName
+                memberImage
+                memberAddress
+                memberDesc
+                memberBooks
+                memberArticles
+                memberFollowers
+                memberFollowings
+                memberPoints
+                memberLikes
+                memberViews
+                memberComments
+                memberRank
+                memberWarnings
+                memberBlocks
+                deletedAt
+                createdAt
+                updatedAt
+                accessToken
+            }
+        }
+        metaCounter {
+            total
+        }
+    }
+}
+
 `;
 
 export const GET_VISITED = gql`
 	query GetVisited($input: OrdinaryInquiry!) {
-		getVisited(input: $input) {
-			list {
-				_id
-				propertyType
-				propertyStatus
-				propertyLocation
-				propertyAddress
-				propertyTitle
-				propertyPrice
-				propertySquare
-				propertyBeds
-				propertyRooms
-				propertyViews
-				propertyLikes
-				propertyComments
-				propertyRank
-				propertyImages
-				propertyDesc
-				propertyBarter
-				propertyRent
-				memberId
-				soldAt
-				deletedAt
-				constructedAt
-				createdAt
-				updatedAt
-				memberData {
-					_id
-					memberType
-					memberStatus
-					memberAuthType
-					memberPhone
-					memberNick
-					memberFullName
-					memberImage
-					memberAddress
-					memberDesc
-					memberProperties
-					memberArticles
-					memberPoints
-					memberLikes
-					memberViews
-					memberComments
-					memberFollowings
-					memberFollowers
-					memberRank
-					memberWarnings
-					memberBlocks
-					deletedAt
-					createdAt
-					updatedAt
-					accessToken
-				}
-			}
-			metaCounter {
-				total
-			}
-		}
-	}
+    getVisited(input: $input) {
+        list {
+            _id
+            bookType
+            bookStatus
+            bookCollection
+            ageCategory
+            bookTitle
+            bookAuthor
+            bookPrice
+            bookDate
+            bookISBN
+            bookPages
+            bookLanguages
+            bookViews
+            bookLikes
+            bookComments
+            bookRank
+            bookImages
+            bookDesc
+            bookRent
+            memberId
+            soldAt
+            deletedAt
+            discontinuedAt
+            createdAt
+            updatedAt
+            memberData {
+                _id
+                memberType
+                memberStatus
+                memberAuthType
+                memberPhone
+                memberNick
+                memberFullName
+                memberImage
+                memberAddress
+                memberDesc
+                memberBooks
+                memberArticles
+                memberFollowers
+                memberFollowings
+                memberPoints
+                memberLikes
+                memberViews
+                memberComments
+                memberRank
+                memberWarnings
+                memberBlocks
+                deletedAt
+                createdAt
+                updatedAt
+                accessToken
+            }
+        }
+        metaCounter {
+            total
+        }
+    }
+}
+
 `;
 
 /**************************
@@ -410,51 +451,51 @@ export const GET_BOARD_ARTICLE = gql`
 `;
 
 export const GET_BOARD_ARTICLES = gql`
-	query GetBoardArticles($input: BoardArticlesInquiry!) {
-		getBoardArticles(input: $input) {
-			list {
+	query GetBoardArticle($input: String!) {
+		getBoardArticle(articleId: $input) {
+			_id
+			articleCategory
+			articleStatus
+			articleTitle
+			articleContent
+			articleImage
+			articleViews
+			articleLikes
+			articleComments
+			memberId
+			createdAt
+			updatedAt
+			memberData {
 				_id
-				articleCategory
-				articleStatus
-				articleTitle
-				articleContent
-				articleImage
-				articleViews
-				articleLikes
-				articleComments
-				memberId
+				memberType
+				memberStatus
+				memberAuthType
+				memberPhone
+				memberNick
+				memberFullName
+				memberImage
+				memberAddress
+				memberDesc
+				memberBooks
+				memberArticles
+				memberFollowers
+				memberFollowings
+				memberPoints
+				memberLikes
+				memberViews
+				memberComments
+				memberRank
+				memberWarnings
+				memberBlocks
+				deletedAt
 				createdAt
 				updatedAt
-				meLiked {
-					memberId
-					likeRefId
-					myFavorite
-				}
-				memberData {
-					_id
-					memberType
-					memberStatus
-					memberAuthType
-					memberPhone
-					memberNick
-					memberFullName
-					memberImage
-					memberAddress
-					memberDesc
-					memberWarnings
-					memberBlocks
-					memberProperties
-					memberRank
-					memberPoints
-					memberLikes
-					memberViews
-					deletedAt
-					createdAt
-					updatedAt
-				}
+				accessToken
 			}
-			metaCounter {
-				total
+			meLiked {
+				memberId
+				likeRefId
+				myFavorite
 			}
 		}
 	}
@@ -487,17 +528,20 @@ export const GET_COMMENTS = gql`
 					memberImage
 					memberAddress
 					memberDesc
-					memberWarnings
-					memberBlocks
-					memberProperties
-					memberRank
+					memberBooks
+					memberArticles
+					memberFollowers
+					memberFollowings
 					memberPoints
 					memberLikes
 					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					memberBlocks
 					deletedAt
 					createdAt
 					updatedAt
-					accessToken
 				}
 			}
 			metaCounter {
@@ -519,16 +563,6 @@ export const GET_MEMBER_FOLLOWERS = gql`
 				followerId
 				createdAt
 				updatedAt
-				meLiked {
-					memberId
-					likeRefId
-					myFavorite
-				}
-				meFollowed {
-					followingId
-					followerId
-					myFollowing
-				}
 				followerData {
 					_id
 					memberType
@@ -540,20 +574,31 @@ export const GET_MEMBER_FOLLOWERS = gql`
 					memberImage
 					memberAddress
 					memberDesc
-					memberProperties
+					memberBooks
 					memberArticles
+					memberFollowers
+					memberFollowings
 					memberPoints
 					memberLikes
 					memberViews
 					memberComments
-					memberFollowings
-					memberFollowers
 					memberRank
 					memberWarnings
 					memberBlocks
 					deletedAt
 					createdAt
 					updatedAt
+					accessToken
+				}
+				meLiked {
+					memberId
+					likeRefId
+					myFavorite
+				}
+				meFollowed {
+					followingId
+					followerId
+					myFollowing
 				}
 			}
 			metaCounter {
@@ -583,14 +628,14 @@ export const GET_MEMBER_FOLLOWINGS = gql`
 					memberImage
 					memberAddress
 					memberDesc
-					memberProperties
+					memberBooks
 					memberArticles
+					memberFollowers
+					memberFollowings
 					memberPoints
 					memberLikes
 					memberViews
 					memberComments
-					memberFollowings
-					memberFollowers
 					memberRank
 					memberWarnings
 					memberBlocks

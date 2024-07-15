@@ -17,14 +17,17 @@ export const SIGN_UP = gql`
 			memberImage
 			memberAddress
 			memberDesc
-			memberWarnings
-			memberBlocks
-			memberProperties
-			memberRank
+			memberBooks
 			memberArticles
+			memberFollowers
+			memberFollowings
 			memberPoints
 			memberLikes
 			memberViews
+			memberComments
+			memberRank
+			memberWarnings
+			memberBlocks
 			deletedAt
 			createdAt
 			updatedAt
@@ -34,7 +37,7 @@ export const SIGN_UP = gql`
 `;
 
 export const LOGIN = gql`
-	mutation Login($input: LoginInput!) {
+		mutation Login($input: LoginInput!) {
 		login(input: $input) {
 			_id
 			memberType
@@ -46,13 +49,17 @@ export const LOGIN = gql`
 			memberImage
 			memberAddress
 			memberDesc
-			memberWarnings
-			memberBlocks
-			memberProperties
-			memberRank
+			memberBooks
+			memberArticles
+			memberFollowers
+			memberFollowings
 			memberPoints
 			memberLikes
 			memberViews
+			memberComments
+			memberRank
+			memberWarnings
+			memberBlocks
 			deletedAt
 			createdAt
 			updatedAt
@@ -74,12 +81,15 @@ export const UPDATE_MEMBER = gql`
 			memberImage
 			memberAddress
 			memberDesc
-			memberProperties
-			memberRank
+			memberBooks
 			memberArticles
+			memberFollowers
+			memberFollowings
 			memberPoints
 			memberLikes
 			memberViews
+			memberComments
+			memberRank
 			memberWarnings
 			memberBlocks
 			deletedAt
@@ -103,13 +113,17 @@ export const LIKE_TARGET_MEMBER = gql`
 			memberImage
 			memberAddress
 			memberDesc
-			memberWarnings
-			memberBlocks
-			memberProperties
-			memberRank
+			memberBooks
+			memberArticles
+			memberFollowers
+			memberFollowings
 			memberPoints
 			memberLikes
 			memberViews
+			memberComments
+			memberRank
+			memberWarnings
+			memberBlocks
 			deletedAt
 			createdAt
 			updatedAt
@@ -119,92 +133,106 @@ export const LIKE_TARGET_MEMBER = gql`
 `;
 
 /**************************
- *        PROPERTY        *
+ *         BOOK        *
  *************************/
 
-export const CREATE_PROPERTY = gql`
-	mutation CreateProperty($input: PropertyInput!) {
-		createProperty(input: $input) {
+export const CREATE_BOOK = gql`
+	mutation CreateBook($input: BookInput!) {
+		createBook(input: $input) {
 			_id
-			propertyType
-			propertyStatus
-			propertyLocation
-			propertyAddress
-			propertyTitle
-			propertyPrice
-			propertySquare
-			propertyBeds
-			propertyRooms
-			propertyViews
-			propertyLikes
-			propertyImages
-			propertyDesc
-			propertyBarter
-			propertyRent
+			bookType
+			bookStatus
+			bookCollection
+			ageCategory
+			bookTitle
+			bookAuthor
+			bookPrice
+			bookDate
+			bookISBN
+			bookPages
+			bookLanguages
+			bookViews
+			bookLikes
+			bookComments
+			bookRank
+			bookImages
+			bookDesc
+			bookRent
 			memberId
 			soldAt
 			deletedAt
-			constructedAt
+			discontinuedAt
 			createdAt
 			updatedAt
 		}
 	}
 `;
 
-export const UPDATE_PROPERTY = gql`
-	mutation UpdateProperty($input: PropertyUpdate!) {
-		updateProperty(input: $input) {
+export const UPDATE_BOOK = gql`
+	mutation UpdateBook($input: BookUpdate!) {
+		updateBook(input: $input) {
 			_id
-			propertyType
-			propertyStatus
-			propertyLocation
-			propertyAddress
-			propertyTitle
-			propertyPrice
-			propertySquare
-			propertyBeds
-			propertyRooms
-			propertyViews
-			propertyLikes
-			propertyImages
-			propertyDesc
-			propertyBarter
-			propertyRent
+			bookType
+			bookStatus
+			bookCollection
+			ageCategory
+			bookTitle
+			bookAuthor
+			bookPrice
+			bookDate
+			bookISBN
+			bookPages
+			bookLanguages
+			bookViews
+			bookLikes
+			bookComments
+			bookRank
+			bookImages
+			bookDesc
+			bookRent
 			memberId
 			soldAt
 			deletedAt
-			constructedAt
+			discontinuedAt
 			createdAt
 			updatedAt
 		}
 	}
 `;
 
-export const LIKE_TARGET_PROPERTY = gql`
-	mutation LikeTargetProperty($input: String!) {
-		likeTargetProperty(propertyId: $input) {
+export const LIKE_TARGET_BOOK = gql`
+	mutation LikeTargetBook($input: String!) {
+		likeTargetBook(bookId:$input) {
 			_id
-			propertyType
-			propertyStatus
-			propertyLocation
-			propertyAddress
-			propertyTitle
-			propertyPrice
-			propertySquare
-			propertyBeds
-			propertyRooms
-			propertyViews
-			propertyLikes
-			propertyImages
-			propertyDesc
-			propertyBarter
-			propertyRent
+			bookType
+			bookStatus
+			bookCollection
+			ageCategory
+			bookTitle
+			bookAuthor
+			bookPrice
+			bookDate
+			bookISBN
+			bookPages
+			bookLanguages
+			bookViews
+			bookLikes
+			bookComments
+			bookRank
+			bookImages
+			bookDesc
+			bookRent
 			memberId
 			soldAt
 			deletedAt
-			constructedAt
+			discontinuedAt
 			createdAt
 			updatedAt
+			meLiked {
+				memberId
+				likeRefId
+				myFavorite
+			}
 		}
 	}
 `;
@@ -224,6 +252,7 @@ export const CREATE_BOARD_ARTICLE = gql`
 			articleImage
 			articleViews
 			articleLikes
+			articleComments
 			memberId
 			createdAt
 			updatedAt
@@ -242,6 +271,7 @@ export const UPDATE_BOARD_ARTICLE = gql`
 			articleImage
 			articleViews
 			articleLikes
+			articleComments
 			memberId
 			createdAt
 			updatedAt
@@ -260,6 +290,7 @@ export const LIKE_TARGET_BOARD_ARTICLE = gql`
 			articleImage
 			articleViews
 			articleLikes
+			articleComments
 			memberId
 			createdAt
 			updatedAt
@@ -306,7 +337,7 @@ export const UPDATE_COMMENT = gql`
  *************************/
 
 export const SUBSCRIBE = gql`
-	mutation Subscribe($input: String!) {
+	mutation Subscribe($input:String!) {
 		subscribe(input: $input) {
 			_id
 			followingId

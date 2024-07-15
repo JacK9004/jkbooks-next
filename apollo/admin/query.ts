@@ -18,14 +18,17 @@ export const GET_ALL_MEMBERS_BY_ADMIN = gql`
 				memberImage
 				memberAddress
 				memberDesc
-				memberWarnings
-				memberBlocks
-				memberProperties
-				memberRank
+				memberBooks
 				memberArticles
+				memberFollowers
+				memberFollowings
 				memberPoints
 				memberLikes
 				memberViews
+				memberComments
+				memberRank
+				memberWarnings
+				memberBlocks
 				deletedAt
 				createdAt
 				updatedAt
@@ -39,33 +42,36 @@ export const GET_ALL_MEMBERS_BY_ADMIN = gql`
 `;
 
 /**************************
- *        PROPERTY        *
+ *        BOOK       *
  *************************/
 
-export const GET_ALL_PROPERTIES_BY_ADMIN = gql`
-	query GetAllPropertiesByAdmin($input: AllPropertiesInquiry!) {
-		getAllPropertiesByAdmin(input: $input) {
+export const GET_ALL_BOOKS_BY_ADMIN = gql`
+	query GetAllBooksByAdmin($input: AllBooksInquiry!) {
+		getAllBooksByAdmin(input: $input) {
 			list {
 				_id
-				propertyType
-				propertyStatus
-				propertyLocation
-				propertyAddress
-				propertyTitle
-				propertyPrice
-				propertySquare
-				propertyBeds
-				propertyRooms
-				propertyViews
-				propertyLikes
-				propertyImages
-				propertyDesc
-				propertyBarter
-				propertyRent
+				bookType
+				bookStatus
+				bookCollection
+				ageCategory
+				bookTitle
+				bookAuthor
+				bookPrice
+				bookDate
+				bookISBN
+				bookPages
+				bookLanguages
+				bookViews
+				bookLikes
+				bookComments
+				bookRank
+				bookImages
+				bookDesc
+				bookRent
 				memberId
 				soldAt
 				deletedAt
-				constructedAt
+				discontinuedAt
 				createdAt
 				updatedAt
 				memberData {
@@ -79,13 +85,17 @@ export const GET_ALL_PROPERTIES_BY_ADMIN = gql`
 					memberImage
 					memberAddress
 					memberDesc
-					memberWarnings
-					memberBlocks
-					memberProperties
-					memberRank
+					memberBooks
+					memberArticles
+					memberFollowers
+					memberFollowings
 					memberPoints
 					memberLikes
 					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					memberBlocks
 					deletedAt
 					createdAt
 					updatedAt
@@ -115,6 +125,7 @@ export const GET_ALL_BOARD_ARTICLES_BY_ADMIN = gql`
 				articleImage
 				articleViews
 				articleLikes
+				articleComments
 				memberId
 				createdAt
 				updatedAt
@@ -129,13 +140,17 @@ export const GET_ALL_BOARD_ARTICLES_BY_ADMIN = gql`
 					memberImage
 					memberAddress
 					memberDesc
-					memberWarnings
-					memberBlocks
-					memberProperties
-					memberRank
+					memberBooks
+					memberArticles
+					memberFollowers
+					memberFollowings
 					memberPoints
 					memberLikes
 					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					memberBlocks
 					deletedAt
 					createdAt
 					updatedAt
@@ -176,17 +191,20 @@ export const GET_COMMENTS = gql`
 					memberImage
 					memberAddress
 					memberDesc
-					memberWarnings
-					memberBlocks
-					memberProperties
-					memberRank
+					memberBooks
+					memberArticles
+					memberFollowers
+					memberFollowings
 					memberPoints
 					memberLikes
 					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					memberBlocks
 					deletedAt
 					createdAt
 					updatedAt
-					accessToken
 				}
 			}
 			metaCounter {

@@ -17,12 +17,15 @@ export const UPDATE_MEMBER_BY_ADMIN = gql`
 			memberImage
 			memberAddress
 			memberDesc
-			memberProperties
-			memberRank
+			memberBooks
 			memberArticles
+			memberFollowers
+			memberFollowings
 			memberPoints
 			memberLikes
 			memberViews
+			memberComments
+			memberRank
 			memberWarnings
 			memberBlocks
 			deletedAt
@@ -34,61 +37,67 @@ export const UPDATE_MEMBER_BY_ADMIN = gql`
 `;
 
 /**************************
- *        PROPERTY        *
+ *        BOOK       *
  *************************/
 
-export const UPDATE_PROPERTY_BY_ADMIN = gql`
-	mutation UpdatePropertyByAdmin($input: PropertyUpdate!) {
-		updatePropertyByAdmin(input: $input) {
+export const UPDATE_BOOK_BY_ADMIN = gql`
+	mutation UpdateBookByAdmin($input: BookUpdate!) {
+		updateBookByAdmin(input: $input) {
 			_id
-			propertyType
-			propertyStatus
-			propertyLocation
-			propertyAddress
-			propertyTitle
-			propertyPrice
-			propertySquare
-			propertyBeds
-			propertyRooms
-			propertyViews
-			propertyLikes
-			propertyImages
-			propertyDesc
-			propertyBarter
-			propertyRent
+			bookType
+			bookStatus
+			bookCollection
+			ageCategory
+			bookTitle
+			bookAuthor
+			bookPrice
+			bookDate
+			bookISBN
+			bookPages
+			bookLanguages
+			bookViews
+			bookLikes
+			bookComments
+			bookRank
+			bookImages
+			bookDesc
+			bookRent
 			memberId
 			soldAt
 			deletedAt
-			constructedAt
+			discontinuedAt
 			createdAt
 			updatedAt
 		}
 	}
 `;
 
-export const REMOVE_PROPERTY_BY_ADMIN = gql`
-	mutation RemovePropertyByAdmin($input: String!) {
-		removePropertyByAdmin(propertyId: $input) {
+export const REMOVE_BOOK_BY_ADMIN = gql`
+	mutation RemoveBookByAdmin($input: String!) {
+		removeBookByAdmin(bookId: $input) {
 			_id
-			propertyType
-			propertyStatus
-			propertyLocation
-			propertyAddress
-			propertyTitle
-			propertyPrice
-			propertySquare
-			propertyBeds
-			propertyRooms
-			propertyViews
-			propertyLikes
-			propertyImages
-			propertyDesc
-			propertyBarter
-			propertyRent
+			bookType
+			bookStatus
+			bookCollection
+			ageCategory
+			bookTitle
+			bookAuthor
+			bookPrice
+			bookDate
+			bookISBN
+			bookPages
+			bookLanguages
+			bookViews
+			bookLikes
+			bookComments
+			bookRank
+			bookImages
+			bookDesc
+			bookRent
 			memberId
 			soldAt
 			deletedAt
-			constructedAt
+			discontinuedAt
 			createdAt
 			updatedAt
 		}
@@ -110,6 +119,7 @@ export const UPDATE_BOARD_ARTICLE_BY_ADMIN = gql`
 			articleImage
 			articleViews
 			articleLikes
+			articleComments
 			memberId
 			createdAt
 			updatedAt
@@ -128,6 +138,7 @@ export const REMOVE_BOARD_ARTICLE_BY_ADMIN = gql`
 			articleImage
 			articleViews
 			articleLikes
+			articleComments
 			memberId
 			createdAt
 			updatedAt
