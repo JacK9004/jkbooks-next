@@ -451,54 +451,59 @@ export const GET_BOARD_ARTICLE = gql`
 `;
 
 export const GET_BOARD_ARTICLES = gql`
-	query GetBoardArticle($input: String!) {
-		getBoardArticle(articleId: $input) {
-			_id
-			articleCategory
-			articleStatus
-			articleTitle
-			articleContent
-			articleImage
-			articleViews
-			articleLikes
-			articleComments
-			memberId
-			createdAt
-			updatedAt
-			memberData {
-				_id
-				memberType
-				memberStatus
-				memberAuthType
-				memberPhone
-				memberNick
-				memberFullName
-				memberImage
-				memberAddress
-				memberDesc
-				memberBooks
-				memberArticles
-				memberFollowers
-				memberFollowings
-				memberPoints
-				memberLikes
-				memberViews
-				memberComments
-				memberRank
-				memberWarnings
-				memberBlocks
-				deletedAt
-				createdAt
-				updatedAt
-				accessToken
-			}
-			meLiked {
-				memberId
-				likeRefId
-				myFavorite
-			}
-		}
-	}
+        query GetBoardArticles($input: BoardArticlesInquiry!) {
+        getBoardArticles(input: $input) {
+            list {
+                _id
+                articleCategory
+                articleStatus
+                articleTitle
+                articleContent
+                articleImage
+                articleViews
+                articleLikes
+                articleComments
+                memberId
+                createdAt
+                updatedAt
+                memberData {
+                    _id
+                    memberType
+                    memberStatus
+                    memberAuthType
+                    memberPhone
+                    memberNick
+                    memberFullName
+                    memberImage
+                    memberAddress
+                    memberDesc
+                    memberBooks
+                    memberArticles
+                    memberFollowers
+                    memberFollowings
+                    memberPoints
+                    memberLikes
+                    memberViews
+                    memberComments
+                    memberRank
+                    memberWarnings
+                    memberBlocks
+                    deletedAt
+                    createdAt
+                    updatedAt
+                    accessToken
+                }
+                meLiked {
+                    memberId
+                    likeRefId
+                    myFavorite
+                }
+            }
+            metaCounter {
+                total
+            }
+        }
+    }
 `;
 
 /**************************

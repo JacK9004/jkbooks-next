@@ -5,41 +5,42 @@ import WestIcon from '@mui/icons-material/West';
 import EastIcon from '@mui/icons-material/East';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper';
-import { Property } from '../../types/book/property';
-import { PropertiesInquiry as BooksInquiry } from '../../types/book/property.input';
-import TrendPropertyCard from './TrendPropertyCard';
-import { useQuery } from '@apollo/client';
-import { GET_PROPERTIES } from '../../../apollo/user/query';
 import { T } from '../../types/common';
+import { BooksInquiry } from '../../types/book/book.input';
+import { GET_BOOKS } from '../../../apollo/user/query';
+import { Book } from '../../types/book/book';
+import { useQuery } from '@apollo/client';
+import TrendBookCard from './TrendBookCard';
+
 
 interface TrendBooksProps {
 	initialInput: BooksInquiry;
 }
 
-const TrendProperties = (props: TrendBooksProps) => {
+const TrendBooks = (props: TrendBooksProps) => {
 	const { initialInput } = props;
 	const device = useDeviceDetect();
-	const [trendProperties, setTrendProperties] = useState<Property[]>([]);
+	const [trendBooks, setTrendBooks] = useState<Book[]>([]);
 
 	/** APOLLO REQUESTS **/
 const {
-	loading: getPropertiesLoading,
-	data: getPropertiesData,
-	error: getPropertiesError,
-    refetch: getPropertiesRefetch,
-} = useQuery(GET_PROPERTIES, {
+	loading: getBooksLoading,
+	data: getBooksData,
+	error: getBooksError,
+    refetch: getBooksRefetch,
+} = useQuery(GET_BOOKS, {
 	fetchPolicy: 'cache-and-network',
 	variables: { input: initialInput },
 	notifyOnNetworkStatusChange: true,
 	onCompleted: (data: T) => {
-		setTrendProperties(data?.getProperties?.list);
+		setTrendBooks(data?.getBooks?.list);
 	},
 });
 
 	/** HANDLERS **/
 
-	if (trendProperties) console.log('trendProperties:', trendProperties);
-	if (!trendProperties) return null;
+	if (trendBooks) console.log('trendBooks:', trendBooks);
+	if (!trendBooks) return null;
 
 	if (device === 'mobile') {
 		return (
@@ -49,7 +50,7 @@ const {
 						<span>Trend Properties</span>
 					</Stack>
 					<Stack className={'card-box'}>
-						{trendProperties.length === 0 ? (
+						{trendBooks.length === 0 ? (
 							<Box component={'div'} className={'empty-list'}>
 								Trends Empty
 							</Box>
@@ -61,10 +62,10 @@ const {
 								spaceBetween={15}
 								modules={[Autoplay]}
 							>
-								{trendProperties.map((property: Property) => {
+								{trendBooks.map((book: Book) => {
 									return (
-										<SwiperSlide key={property._id} className={'trend-property-slide'}>
-											<TrendPropertyCard property={property} />
+										<SwiperSlide key={book._id} className={'trend-property-slide'}>
+											<TrendBookCard book={book} />
 										</SwiperSlide>
 									);
 								})}
@@ -80,7 +81,7 @@ const {
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
 						<Box component={'div'} className={'left'}>
-							<span>Trend Properties</span>
+							<span>Trend Books</span>
 							<p>Trend is based on likes</p>
 						</Box>
 						<Box component={'div'} className={'right'}>
@@ -92,7 +93,7 @@ const {
 						</Box>
 					</Stack>
 					<Stack className={'card-box'}>
-						{trendProperties.length === 0 ? (
+						{trendBooks.length === 0 ? (
 							<Box component={'div'} className={'empty-list'}>
 								Trends Empty
 							</Box>
@@ -110,10 +111,10 @@ const {
 									el: '.swiper-trend-pagination',
 								}}
 							>
-								{trendProperties.map((property: Property) => {
+								{trendBooks.map((book: Book) => {
 									return (
-										<SwiperSlide key={property._id} className={'trend-property-slide'}>
-											<TrendPropertyCard property={property} />
+										<SwiperSlide key={book._id} className={'trend-property-slide'}>
+											<TrendBookCard book={book} />
 										</SwiperSlide>
 									);
 								})}
@@ -126,14 +127,14 @@ const {
 	}
 };
 
-TrendProperties.defaultProps = {
+TrendBooks.defaultProps = {
 	initialInput: {
 		page: 1,
 		limit: 8,
-		sort: 'propertyLikes',
+		sort: 'bookLikes',
 		direction: 'DESC',
 		search: {},
 	},
 };
 
-export default TrendProperties;
+export default TrendBooks;

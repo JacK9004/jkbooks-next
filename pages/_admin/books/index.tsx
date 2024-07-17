@@ -8,38 +8,39 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { TabContext } from '@mui/lab';
 import TablePagination from '@mui/material/TablePagination';
-import { PropertyPanelList } from '../../../libs/components/admin/properties/PropertyList';
-import { AllPropertiesInquiry } from '../../../libs/types/book/property.input';
-import { Property } from '../../../libs/types/book/property';
-import { PropertyLocation, PropertyStatus } from '../../../libs/enums/property.enum';
 import { sweetConfirmAlert, sweetErrorHandling } from '../../../libs/sweetAlert';
-import { PropertyUpdate } from '../../../libs/types/book/property.update';
+import { AllBooksInquiry } from '../../../libs/types/book/book.input';
+import { Book } from '../../../libs/types/book/book';
+import { BookCollection, BookStatus } from '../../../libs/enums/book.enum';
+import { BookUpdate } from '../../../libs/types/book/book.update';
+import { BookPanelList } from '../../../libs/components/admin/books/BookList';
 
-const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
+
+const AdminBooks: NextPage = ({ initialInquiry, ...props }: any) => {
 	const [anchorEl, setAnchorEl] = useState<[] | HTMLElement[]>([]);
-	const [propertiesInquiry, setPropertiesInquiry] = useState<AllPropertiesInquiry>(initialInquiry);
-	const [properties, setProperties] = useState<Property[]>([]);
-	const [propertiesTotal, setPropertiesTotal] = useState<number>(0);
+	const [booksInquiry, setBooksInquiry] = useState<AllBooksInquiry>(initialInquiry);
+	const [books, setBooks] = useState<Book[]>([]);
+	const [booksTotal, setBooksTotal] = useState<number>(0);
 	const [value, setValue] = useState(
-		propertiesInquiry?.search?.propertyStatus ? propertiesInquiry?.search?.propertyStatus : 'ALL',
+		booksInquiry?.search?.bookStatus ? booksInquiry?.search?.bookStatus : 'ALL',
 	);
 	const [searchType, setSearchType] = useState('ALL');
 
 	/** APOLLO REQUESTS **/
 
 	/** LIFECYCLES **/
-	useEffect(() => {}, [propertiesInquiry]);
+	useEffect(() => {}, [booksInquiry]);
 
 	/** HANDLERS **/
 	const changePageHandler = async (event: unknown, newPage: number) => {
-		propertiesInquiry.page = newPage + 1;
-		setPropertiesInquiry({ ...propertiesInquiry });
+		booksInquiry.page = newPage + 1;
+		setBooksInquiry({ ...booksInquiry });
 	};
 
 	const changeRowsPerPageHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
-		propertiesInquiry.limit = parseInt(event.target.value, 10);
-		propertiesInquiry.page = 1;
-		setPropertiesInquiry({ ...propertiesInquiry });
+		booksInquiry.limit = parseInt(event.target.value, 10);
+		booksInquiry.page = 1;
+		setBooksInquiry({ ...booksInquiry });
 	};
 
 	const menuIconClickHandler = (e: any, index: number) => {
@@ -55,26 +56,26 @@ const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
 	const tabChangeHandler = async (event: any, newValue: string) => {
 		setValue(newValue);
 
-		setPropertiesInquiry({ ...propertiesInquiry, page: 1, sort: 'createdAt' });
+		setBooksInquiry({ ...booksInquiry, page: 1, sort: 'createdAt' });
 
 		switch (newValue) {
 			case 'ACTIVE':
-				setPropertiesInquiry({ ...propertiesInquiry, search: { propertyStatus: PropertyStatus.ACTIVE } });
+				setBooksInquiry({ ...booksInquiry, search: { bookStatus: BookStatus.AVAILABLE } });
 				break;
 			case 'SOLD':
-				setPropertiesInquiry({ ...propertiesInquiry, search: { propertyStatus: PropertyStatus.SOLD } });
+				setBooksInquiry({ ...booksInquiry, search: { bookStatus: BookStatus.SOLD_OUT } });
 				break;
 			case 'DELETE':
-				setPropertiesInquiry({ ...propertiesInquiry, search: { propertyStatus: PropertyStatus.DELETE } });
+				setBooksInquiry({ ...booksInquiry, search: { bookStatus: BookStatus.DISCONTINUED } });
 				break;
 			default:
-				delete propertiesInquiry?.search?.propertyStatus;
-				setPropertiesInquiry({ ...propertiesInquiry });
+				delete booksInquiry?.search?.bookStatus;
+				setBooksInquiry({ ...booksInquiry });
 				break;
 		}
 	};
 
-	const removePropertyHandler = async (id: string) => {
+	const removeBookHandler = async (id: string) => {
 		try {
 			if (await sweetConfirmAlert('Are you sure to remove?')) {
 			}
@@ -89,25 +90,25 @@ const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
 			setSearchType(newValue);
 
 			if (newValue !== 'ALL') {
-				setPropertiesInquiry({
-					...propertiesInquiry,
+				setBooksInquiry({
+					...booksInquiry,
 					page: 1,
 					sort: 'createdAt',
 					search: {
-						...propertiesInquiry.search,
-						propertyLocationList: [newValue as PropertyLocation],
+						...booksInquiry.search,
+						bookCollectionList: [newValue as BookCollection],
 					},
 				});
 			} else {
-				delete propertiesInquiry?.search?.propertyLocationList;
-				setPropertiesInquiry({ ...propertiesInquiry });
+				delete booksInquiry?.search?.bookCollectionList;
+				setBooksInquiry({ ...booksInquiry });
 			}
 		} catch (err: any) {
 			console.log('searchTypeHandler: ', err.message);
 		}
 	};
 
-	const updatePropertyHandler = async (updateData: PropertyUpdate) => {
+	const updateBookHandler = async (updateData: BookUpdate) => {
 		try {
 			console.log('+updateData: ', updateData);
 			menuIconCloseHandler();
@@ -120,7 +121,7 @@ const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
 	return (
 		<Box component={'div'} className={'content'}>
 			<Typography variant={'h2'} className={'tit'} sx={{ mb: '24px' }}>
-				Property List
+				Book List
 			</Typography>
 			<Box component={'div'} className={'table-wrap'}>
 				<Box component={'div'} sx={{ width: '100%', typography: 'body1' }}>
@@ -162,30 +163,30 @@ const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
 									<MenuItem value={'ALL'} onClick={() => searchTypeHandler('ALL')}>
 										ALL
 									</MenuItem>
-									{Object.values(PropertyLocation).map((location: string) => (
-										<MenuItem value={location} onClick={() => searchTypeHandler(location)} key={location}>
-											{location}
+									{Object.values(BookCollection).map((collection: string) => (
+										<MenuItem value={collection} onClick={() => searchTypeHandler(collection)} key={collection}>
+											{collection}
 										</MenuItem>
 									))}
 								</Select>
 							</Stack>
 							<Divider />
 						</Box>
-						<PropertyPanelList
-							properties={properties}
+						<BookPanelList
+							books={books}
 							anchorEl={anchorEl}
 							menuIconClickHandler={menuIconClickHandler}
 							menuIconCloseHandler={menuIconCloseHandler}
-							updatePropertyHandler={updatePropertyHandler}
-							removePropertyHandler={removePropertyHandler}
+							updateBookHandler={updateBookHandler}
+							removeBookHandler={removeBookHandler}
 						/>
 
 						<TablePagination
 							rowsPerPageOptions={[10, 20, 40, 60]}
 							component="div"
-							count={propertiesTotal}
-							rowsPerPage={propertiesInquiry?.limit}
-							page={propertiesInquiry?.page - 1}
+							count={booksTotal}
+							rowsPerPage={booksInquiry?.limit}
+							page={booksInquiry?.page - 1}
 							onPageChange={changePageHandler}
 							onRowsPerPageChange={changeRowsPerPageHandler}
 						/>
@@ -196,7 +197,7 @@ const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
 	);
 };
 
-AdminProperties.defaultProps = {
+AdminBooks.defaultProps = {
 	initialInquiry: {
 		page: 1,
 		limit: 10,
@@ -206,4 +207,4 @@ AdminProperties.defaultProps = {
 	},
 };
 
-export default withAdminLayout(AdminProperties);
+export default withAdminLayout(AdminBooks);

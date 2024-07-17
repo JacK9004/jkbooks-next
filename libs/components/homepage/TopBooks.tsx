@@ -5,20 +5,37 @@ import WestIcon from '@mui/icons-material/West';
 import EastIcon from '@mui/icons-material/East';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper';
-import TopPropertyCard from './TopPropertyCard';
-import { PropertiesInquiry } from '../../types/book/property.input';
-import { Property } from '../../types/book/property';
+import { BooksInquiry } from '../../types/book/book.input';
+import { Book } from '../../types/book/book';
+import TopBookCard from './TopBookCard';
+import { GET_BOOKS } from '../../../apollo/user/query';
+import { useQuery } from '@apollo/client';
+import { T } from '../../types/common';
 
-interface TopPropertiesProps {
-	initialInput: PropertiesInquiry;
+
+interface TopBooksProps {
+	initialInput: BooksInquiry;
 }
 
-const TopProperties = (props: TopPropertiesProps) => {
+const TopBooks = (props: TopBooksProps) => {
 	const { initialInput } = props;
 	const device = useDeviceDetect();
-	const [topProperties, setTopProperties] = useState<Property[]>([]);
+	const [topBooks, setTopBooks] = useState<Book[]>([]);
 
 	/** APOLLO REQUESTS **/
+	const {
+		loading: getBooksLoading,
+		data: getBooksData,
+		error: getBooksError,
+		refetch: getBooksRefetch,
+	} = useQuery(GET_BOOKS, {
+		fetchPolicy: 'cache-and-network',
+		variables: { input: initialInput },
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setTopBooks(data?.getBooks?.list);
+		},
+	});
 	/** HANDLERS **/
 
 	if (device === 'mobile') {
@@ -26,7 +43,7 @@ const TopProperties = (props: TopPropertiesProps) => {
 			<Stack className={'top-properties'}>
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
-						<span>Top properties</span>
+						<span>BESTSELLER</span>
 					</Stack>
 					<Stack className={'card-box'}>
 						<Swiper
@@ -36,10 +53,10 @@ const TopProperties = (props: TopPropertiesProps) => {
 							spaceBetween={15}
 							modules={[Autoplay]}
 						>
-							{topProperties.map((property: Property) => {
+							{topBooks.map((book: Book) => {
 								return (
-									<SwiperSlide className={'top-property-slide'} key={property?._id}>
-										<TopPropertyCard property={property} />
+									<SwiperSlide className={'top-property-slide'} key={book?._id}>
+										<TopBookCard book={book} />
 									</SwiperSlide>
 								);
 							})}
@@ -54,8 +71,8 @@ const TopProperties = (props: TopPropertiesProps) => {
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
 						<Box component={'div'} className={'left'}>
-							<span>Top properties</span>
-							<p>Check out our Top Properties</p>
+							<span>BESTSELLER</span>
+							<p>Check out our Top Books</p>
 						</Box>
 						<Box component={'div'} className={'right'}>
 							<div className={'pagination-box'}>
@@ -79,10 +96,10 @@ const TopProperties = (props: TopPropertiesProps) => {
 								el: '.swiper-top-pagination',
 							}}
 						>
-							{topProperties.map((property: Property) => {
+							{topBooks.map((book: Book) => {
 								return (
-									<SwiperSlide className={'top-property-slide'} key={property?._id}>
-										<TopPropertyCard property={property} />
+									<SwiperSlide className={'top-property-slide'} key={book?._id}>
+										<TopBookCard book={book} />
 									</SwiperSlide>
 								);
 							})}
@@ -94,14 +111,14 @@ const TopProperties = (props: TopPropertiesProps) => {
 	}
 };
 
-TopProperties.defaultProps = {
+TopBooks.defaultProps = {
 	initialInput: {
 		page: 1,
 		limit: 8,
-		sort: 'propertyRank',
+		sort: 'bookRank',
 		direction: 'DESC',
 		search: {},
 	},
 };
 
-export default TopProperties;
+export default TopBooks;

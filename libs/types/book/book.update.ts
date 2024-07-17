@@ -1,6 +1,6 @@
 import { AgeCategory, BookCollection, BookLanguage, BookStatus, BookType } from '../../enums/book.enum';
 
-export interface PropertyUpdate {
+export interface BookUpdate {
 	_id: string;
     bookType?: BookType;
 	bookStatus?: BookStatus;

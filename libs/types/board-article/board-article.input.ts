@@ -17,7 +17,7 @@ interface BAISearch {
 export interface BoardArticlesInquiry {
 	page: number;
 	limit: number;
-	sort?: string;
+	// sort?: string;
 	direction?: Direction;
 	search: BAISearch;
 }

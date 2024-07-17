@@ -5,31 +5,48 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper';
 import WestIcon from '@mui/icons-material/West';
 import EastIcon from '@mui/icons-material/East';
-import PopularPropertyCard from './PopularPropertyCard';
-import { Property } from '../../types/book/property';
 import Link from 'next/link';
-import { PropertiesInquiry } from '../../types/book/property.input';
+import { BooksInquiry } from '../../types/book/book.input';
+import { Book } from '../../types/book/book';
+import PopularBookCard from './PopularBookCard';
+import { T } from '../../types/common';
+import { GET_BOOKS } from '../../../apollo/user/query';
+import { useQuery } from '@apollo/client';
 
-interface PopularPropertiesProps {
-	initialInput: PropertiesInquiry;
+
+interface PopularBooksProps {
+	initialInput: BooksInquiry;
 }
 
-const PopularProperties = (props: PopularPropertiesProps) => {
+const PopularBooks = (props: PopularBooksProps) => {
 	const { initialInput } = props;
 	const device = useDeviceDetect();
-	const [popularProperties, setPopularProperties] = useState<Property[]>([]);
+	const [popularBooks, setPopularBooks] = useState<Book[]>([]);
 
 	/** APOLLO REQUESTS **/
+	const {
+		loading: getBooksLoading,
+		data: getBooksData,
+		error: getBooksError,
+		refetch: getBooksRefetch,
+	} = useQuery(GET_BOOKS, {
+		fetchPolicy: 'cache-and-network',
+		variables: { input: initialInput },
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setPopularBooks(data?.getBooks?.list);
+		},
+	});
 	/** HANDLERS **/
 
-	if (!popularProperties) return null;
+	if (!popularBooks) return null;
 
 	if (device === 'mobile') {
 		return (
 			<Stack className={'popular-properties'}>
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
-						<span>Popular properties</span>
+						<span>Popular books</span>
 					</Stack>
 					<Stack className={'card-box'}>
 						<Swiper
@@ -39,10 +56,10 @@ const PopularProperties = (props: PopularPropertiesProps) => {
 							spaceBetween={25}
 							modules={[Autoplay]}
 						>
-							{popularProperties.map((property: Property) => {
+							{popularBooks.map((book: Book) => {
 								return (
-									<SwiperSlide key={property._id} className={'popular-property-slide'}>
-										<PopularPropertyCard property={property} />
+									<SwiperSlide key={book._id} className={'popular-property-slide'}>
+										<PopularBookCard book={book} />
 									</SwiperSlide>
 								);
 							})}
@@ -57,7 +74,7 @@ const PopularProperties = (props: PopularPropertiesProps) => {
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
 						<Box component={'div'} className={'left'}>
-							<span>Popular properties</span>
+							<span>Popular Books</span>
 							<p>Popularity is based on views</p>
 						</Box>
 						<Box component={'div'} className={'right'}>
@@ -83,10 +100,10 @@ const PopularProperties = (props: PopularPropertiesProps) => {
 								el: '.swiper-popular-pagination',
 							}}
 						>
-							{popularProperties.map((property: Property) => {
+							{popularBooks.map((book: Book) => {
 								return (
-									<SwiperSlide key={property._id} className={'popular-property-slide'}>
-										<PopularPropertyCard property={property} />
+									<SwiperSlide key={book._id} className={'popular-property-slide'}>
+										<PopularBookCard book={book} />
 									</SwiperSlide>
 								);
 							})}
@@ -103,14 +120,14 @@ const PopularProperties = (props: PopularPropertiesProps) => {
 	}
 };
 
-PopularProperties.defaultProps = {
+PopularBooks.defaultProps = {
 	initialInput: {
 		page: 1,
 		limit: 7,
-		sort: 'propertyViews',
+		sort: 'bookViews',
 		direction: 'DESC',
 		search: {},
 	},
 };
 
-export default PopularProperties;
+export default PopularBooks;

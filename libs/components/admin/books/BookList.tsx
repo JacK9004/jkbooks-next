@@ -14,18 +14,20 @@ import {
 } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import { Stack } from '@mui/material';
-import { Property } from '../../../types/book/property';
+
 import { REACT_APP_API_URL } from '../../../config';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Typography from '@mui/material/Typography';
-import { PropertyStatus } from '../../../enums/property.enum';
+import { Book } from '../../../types/book/book';
+import { BookStatus } from '../../../enums/book.enum';
+
 
 interface Data {
 	id: string;
 	title: string;
 	price: string;
 	agent: string;
-	location: string;
+	collection: string;
 	type: string;
 	status: string;
 }
@@ -65,10 +67,10 @@ const headCells: readonly HeadCell[] = [
 		label: 'AGENT',
 	},
 	{
-		id: 'location',
+		id: 'collection',
 		numeric: false,
 		disablePadding: false,
-		label: 'LOCATION',
+		label: 'COLLECTION',
 	},
 	{
 		id: 'type',
@@ -86,7 +88,7 @@ const headCells: readonly HeadCell[] = [
 
 interface EnhancedTableProps {
 	numSelected: number;
-	onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
+	onRequestSort: (event: React.MouseEvent<unknown>, book: keyof Data) => void;
 	onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	order: Order;
 	orderBy: string;
@@ -113,23 +115,23 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 	);
 }
 
-interface PropertyPanelListType {
-	properties: Property[];
+interface BookPanelListType {
+	books: Book[];
 	anchorEl: any;
 	menuIconClickHandler: any;
 	menuIconCloseHandler: any;
-	updatePropertyHandler: any;
-	removePropertyHandler: any;
+	updateBookHandler: any;
+	removeBookHandler: any;
 }
 
-export const PropertyPanelList = (props: PropertyPanelListType) => {
+export const BookPanelList = (props: BookPanelListType) => {
 	const {
-		properties,
+		books,
 		anchorEl,
 		menuIconClickHandler,
 		menuIconCloseHandler,
-		updatePropertyHandler,
-		removePropertyHandler,
+		updateBookHandler,
+		removeBookHandler,
 	} = props;
 
 	return (
@@ -139,7 +141,7 @@ export const PropertyPanelList = (props: PropertyPanelListType) => {
 					{/*@ts-ignore*/}
 					<EnhancedTableHead />
 					<TableBody>
-						{properties.length === 0 && (
+						{books.length === 0 && (
 							<TableRow>
 								<TableCell align="center" colSpan={8}>
 									<span className={'no-data'}>data not found!</span>
@@ -147,48 +149,48 @@ export const PropertyPanelList = (props: PropertyPanelListType) => {
 							</TableRow>
 						)}
 
-						{properties.length !== 0 &&
-							properties.map((property: Property, index: number) => {
-								const propertyImage = `${REACT_APP_API_URL}/${property?.propertyImages[0]}`;
+						{books.length !== 0 &&
+							books.map((book: Book, index: number) => {
+								const bookImage = `${REACT_APP_API_URL}/${book?.bookImages[0]}`;
 
 								return (
-									<TableRow hover key={property?._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-										<TableCell align="left">{property._id}</TableCell>
+									<TableRow hover key={book?._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+										<TableCell align="left">{book._id}</TableCell>
 										<TableCell align="left" className={'name'}>
 											<Stack direction={'row'}>
-												<Link href={`/property/detail?id=${property?._id}`}>
+												<Link href={`/book/detail?id=${book?._id}`}>
 													<div>
-														<Avatar alt="Remy Sharp" src={propertyImage} sx={{ ml: '2px', mr: '10px' }} />
+														<Avatar alt="Remy Sharp" src={bookImage} sx={{ ml: '2px', mr: '10px' }} />
 													</div>
 												</Link>
-												<Link href={`/property/detail?id=${property?._id}`}>
-													<div>{property.propertyTitle}</div>
+												<Link href={`/book/detail?id=${book?._id}`}>
+													<div>{book.bookTitle}</div>
 												</Link>
 											</Stack>
 										</TableCell>
-										<TableCell align="center">{property.propertyPrice}</TableCell>
-										<TableCell align="center">{property.memberData?.memberNick}</TableCell>
-										<TableCell align="center">{property.propertyLocation}</TableCell>
-										<TableCell align="center">{property.propertyType}</TableCell>
+										<TableCell align="center">{book.bookPrice}</TableCell>
+										<TableCell align="center">{book.memberData?.memberNick}</TableCell>
+										<TableCell align="center">{book.bookCollection}</TableCell>
+										<TableCell align="center">{book.bookType}</TableCell>
 										<TableCell align="center">
-											{property.propertyStatus === PropertyStatus.DELETE && (
+											{book.bookStatus === BookStatus.DISCONTINUED && (
 												<Button
 													variant="outlined"
 													sx={{ p: '3px', border: 'none', ':hover': { border: '1px solid #000000' } }}
-													onClick={() => removePropertyHandler(property._id)}
+													onClick={() => removeBookHandler(book._id)}
 												>
 													<DeleteIcon fontSize="small" />
 												</Button>
 											)}
 
-											{property.propertyStatus === PropertyStatus.SOLD && (
-												<Button className={'badge warning'}>{property.propertyStatus}</Button>
+											{book.bookStatus === BookStatus.SOLD_OUT && (
+												<Button className={'badge warning'}>{book.bookStatus}</Button>
 											)}
 
-											{property.propertyStatus === PropertyStatus.ACTIVE && (
+											{book.bookStatus === BookStatus.AVAILABLE && (
 												<>
 													<Button onClick={(e: any) => menuIconClickHandler(e, index)} className={'badge success'}>
-														{property.propertyStatus}
+														{book.bookStatus}
 													</Button>
 
 													<Menu
@@ -202,11 +204,11 @@ export const PropertyPanelList = (props: PropertyPanelListType) => {
 														TransitionComponent={Fade}
 														sx={{ p: 1 }}
 													>
-														{Object.values(PropertyStatus)
-															.filter((ele) => ele !== property.propertyStatus)
+														{Object.values(BookStatus)
+															.filter((ele) => ele !== book.bookStatus)
 															.map((status: string) => (
 																<MenuItem
-																	onClick={() => updatePropertyHandler({ _id: property._id, propertyStatus: status })}
+																	onClick={() => updateBookHandler({ _id: book._id, bookStatus: status })}
 																	key={status}
 																>
 																	<Typography variant={'subtitle1'} component={'span'}>
