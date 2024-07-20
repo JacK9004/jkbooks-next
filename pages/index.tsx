@@ -23,23 +23,26 @@ const Home: NextPage = () => {
 	if (device === 'mobile') {
 		return (
 			<Stack className={'home-page'}>
-				<TrendBooks />
 				<PopularBooks />
-				<Advertisement />
+				<TrendBooks />
 				<TopBooks />
 				<TopAgents />
+				<Advertisement />
 			</Stack>
 		);
 	} else {
 		return (
 			<Stack className={'home-page'}>
-				<TrendBooks />
-				<PopularBooks />
-				<Advertisement />
 				<TopBooks />
-				<TopAgents />
 				<Events />
+				<PopularBooks />
 				<CommunityBoards />
+				<TrendBooks />
+
+				<TopAgents />
+
+
+				<Advertisement />
 			</Stack>
 		);
 	}

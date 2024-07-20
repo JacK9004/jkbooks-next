@@ -12,6 +12,7 @@ import Chat from '../Chat';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import StaticHeaderSwiper from '../homepage/HeaderSwiperProps';
 
 const withLayoutMain = (Component: any) => {
 	return (props: any) => {
@@ -30,8 +31,8 @@ const withLayoutMain = (Component: any) => {
 			return (
 				<>
 					<Head>
-						<title>Nestar</title>
-						<meta name={'title'} content={`Nestar`} />
+						<title>JK&Books</title>
+						<meta name={'title'} content={`JK&Books`} />
 					</Head>
 					<Stack id="mobile-wrap">
 						<Stack id={'top'}>
@@ -52,8 +53,8 @@ const withLayoutMain = (Component: any) => {
 			return (
 				<>
 					<Head>
-						<title>Nestar</title>
-						<meta name={'title'} content={`Nestar`} />
+						<title>JK&Books</title>
+						<meta name={'title'} content={`JK&Books`} />
 					</Head>
 					<Stack id="pc-wrap">
 						<Stack id={'top'}>
@@ -61,9 +62,9 @@ const withLayoutMain = (Component: any) => {
 						</Stack>
 
 						<Stack className={'header-main'}>
-							<FiberContainer />
+						<StaticHeaderSwiper />
 							<Stack className={'container'}>
-								{/* <HeaderFilter /> */}
+
 							</Stack>
 						</Stack>
 

@@ -19,15 +19,15 @@ const Footer = () => {
 						</Box>
 						<Box component={'div'} className={'footer-box'}>
 							<span>total free customer care</span>
-							<p>+82 10 4867 2909</p>
+							<p>+82 10 5794 2909</p>
 						</Box>
 						<Box component={'div'} className={'footer-box'}>
-							<span>nee live</span>
-							<p>+82 10 4867 2909</p>
+							<span>Customer Service</span>
+							<p>+82 10 5794 2909</p>
 							<span>Support?</span>
 						</Box>
 						<Box component={'div'} className={'footer-box'}>
-							<p>follow us on social media</p>
+							<p>follow us</p>
 							<div className={'media-box'}>
 								<FacebookOutlinedIcon />
 								<TelegramIcon />
@@ -40,7 +40,7 @@ const Footer = () => {
 						<Box component={'div'} className={'bottom'}>
 							<div>
 								<strong>Popular Search</strong>
-								<span>Bookfor Rent</span>
+								<span>Bestseller</span>
 								<span>Book Low to hide</span>
 							</div>
 							<div>
@@ -53,11 +53,13 @@ const Footer = () => {
 								<span>FAQs</span>
 							</div>
 							<div>
-								<strong>Discover</strong>
-								<span>Seoul</span>
-								<span>Gyeongido</span>
-								<span>Busan</span>
-								<span>Jejudo</span>
+								<strong>Book Categories</strong>
+								<span>BIOGRAPHIES & MEMOIRS</span>
+								<span>MYSTERY, THRILLER & SUSPENSE</span>
+								<span>CHILDREN'S BOOKS</span>
+								<span>HISTORY</span>
+								<span>LITERATURE & FICTION</span>
+								<span>SCIENCE FICTION & FANTASY</span>
 							</div>
 						</Box>
 					</Stack>
@@ -73,19 +75,19 @@ const Footer = () => {
 				<Stack className={'main'}>
 					<Stack className={'left'}>
 						<Box component={'div'} className={'footer-box'}>
-							<img src="/img/logo/logoWhite.svg" alt="" className={'logo'} />
+							<img src="/img/logo/logo.png" alt="" className={'logo'} />
 						</Box>
 						<Box component={'div'} className={'footer-box'}>
 							<span>total free customer care</span>
-							<p>+82 10 4867 2909</p>
+							<p>+82 10 5794 2909</p>
 						</Box>
 						<Box component={'div'} className={'footer-box'}>
-							<span>nee live</span>
-							<p>+82 10 4867 2909</p>
-							<span>Support?</span>
+							<span>Customer Service</span>
+							<p>+82 10 5794 2909</p>
+			
 						</Box>
 						<Box component={'div'} className={'footer-box'}>
-							<p>follow us on social media</p>
+							<p>follow us </p>	
 							<div className={'media-box'}>
 								<FacebookOutlinedIcon />
 								<TelegramIcon />
@@ -103,12 +105,7 @@ const Footer = () => {
 							</div>
 						</Box>
 						<Box component={'div'} className={'bottom'}>
-							<div>
-								<strong>Popular Search</strong>
-								<span>Book for Rent</span>
-								<span>Book Low to hide</span>
-							</div>
-							<div>
+						<div>
 								<strong>Quick Links</strong>
 								<span>Terms of Use</span>
 								<span>Privacy Policy</span>
@@ -117,18 +114,28 @@ const Footer = () => {
 								<span>Contact Support</span>
 								<span>FAQs</span>
 							</div>
+						<div>
+								<strong>Popular Search</strong>
+								<span>Bestseller</span>
+								<span>Authors</span>
+								<span>Publishers</span>
+								<span>ISBN search</span>
+							</div>
+
 							<div>
-								<strong>Discover</strong>
-								<span>Seoul</span>
-								<span>Gyeongido</span>
-								<span>Busan</span>
-								<span>Jejudo</span>
+								<strong>Book Categories</strong>
+								<span>BIOGRAPHIES & MEMOIRS</span>
+								<span>MYSTERY, THRILLER</span>
+								<span>CHILDREN'S BOOKS</span>
+								<span>HISTORY</span>
+								<span>LITERATURE & FICTION</span>
+								<span>SCIENCE FICTION & FANTASY</span>
 							</div>
 						</Box>
 					</Stack>
 				</Stack>
 				<Stack className={'second'}>
-					<span>© Nestar - All rights reserved. Nestar {moment().year()}</span>
+					<span>© Jk&Books - All rights reserved. JK&Books {moment().year()}</span>
 					<span>Privacy · Terms · Sitemap</span>
 				</Stack>
 			</Stack>

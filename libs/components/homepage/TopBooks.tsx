@@ -71,8 +71,8 @@ const TopBooks = (props: TopBooksProps) => {
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
 						<Box component={'div'} className={'left'}>
-							<span>BESTSELLER</span>
-							<p>Check out our Top Books</p>
+							<span>BESTSELLERS</span>
+							<p>This year's top sellers</p>
 						</Box>
 						<Box component={'div'} className={'right'}>
 							<div className={'pagination-box'}>
@@ -114,7 +114,7 @@ const TopBooks = (props: TopBooksProps) => {
 TopBooks.defaultProps = {
 	initialInput: {
 		page: 1,
-		limit: 8,
+		limit: 7,
 		sort: 'bookRank',
 		direction: 'DESC',
 		search: {},

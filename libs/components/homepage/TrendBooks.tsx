@@ -81,8 +81,8 @@ const {
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
 						<Box component={'div'} className={'left'}>
-							<span>Trend Books</span>
-							<p>Trend is based on likes</p>
+							<span className={'trend-title'}>TREND BOOKS</span>
+							<p>Trend books are based on likes</p>
 						</Box>
 						<Box component={'div'} className={'right'}>
 							<div className={'pagination-box'}>
@@ -120,7 +120,7 @@ const {
 								})}
 							</Swiper>
 						)}
-					</Stack>
+						</Stack>
 				</Stack>
 			</Stack>
 		);
