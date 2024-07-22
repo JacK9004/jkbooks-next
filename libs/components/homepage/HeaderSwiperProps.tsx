@@ -8,8 +8,11 @@ import { Autoplay } from 'swiper';
 // Static image URLs
 const staticImages = [
   '/img/banner/banner.jpeg',
+  '/img/banner/banner5.jpg',
+  '/img/banner/banner6.jpg',
   '/img/banner/banner2.webp',
-  '/img/banner/banner3.jpeg',
+  // '/img/banner/banner3.jpeg',
+  '/img/banner/banner4.jpg', 
  
 ];
 

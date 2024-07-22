@@ -17,6 +17,7 @@ import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../apollo/store';
 import { Logout } from '@mui/icons-material';
 import { REACT_APP_API_URL } from '../config';
+import HeaderFilter from './homepage/HeaderFilter';
 
 const Top = () => {
 	const device = useDeviceDetect();
@@ -149,7 +150,7 @@ const Top = () => {
 					<div>{t('Books')}</div>
 				</Link>
 				<Link href={'/agent'}>
-					<div> {t('Agents')} </div>
+					<div> {t('Publishers')} </div>
 				</Link>
 				<Link href={'/community?articleCategory=FREE'}>
 					<div> {t('Community')} </div>
@@ -165,31 +166,11 @@ const Top = () => {
 				<Stack className={`navbar-main ${colorChange ? 'transparent' : ''} ${bgColor ? 'transparent' : ''}`}>
 					<Stack className={'container'}>
 						<Box component={'div'} className={'logo-box'}>
+
 							<Link href={'/'}>
 								<img src="/img/logo/logoWhite.svg" alt="" />
 							</Link>
-						</Box>
-						<Box component={'div'} className={'router-box'}>
-							<Link href={'/'}>
-								<div>{t('Home')}</div>
-							</Link>
-							<Link href={'/book'}>
-								<div>{t('Books')}</div>
-							</Link>
-							<Link href={'/agent'}>
-								<div> {t('Agents')} </div>
-							</Link>
-							<Link href={'/community?articleCategory=FREE'}>
-								<div> {t('Community')} </div>
-							</Link>
-							{user?._id && (
-								<Link href={'/mypage'}>
-									<div> {t('My Page')} </div>
-								</Link>
-							)}
-							<Link href={'/cs'}>
-								<div> {t('CS')} </div>
-							</Link>
+							<HeaderFilter />
 						</Box>
 						<Box component={'div'} className={'user-box'}>
 							{user?._id ? (
@@ -279,6 +260,30 @@ const Top = () => {
 									</MenuItem>
 								</StyledMenu>
 							</div>
+						</Box>
+					</Stack>
+					<Stack>
+					<Box component={'div'} className={'router-box'}>
+							<Link href={'/'}>
+								<div>{t('Home')}</div>
+							</Link>
+							<Link href={'/book'}>
+								<div>{t('All Books')}</div>
+							</Link>
+							<Link href={'/agent'}>
+								<div> {t('Publishers')} </div>
+							</Link>
+							<Link href={'/community?articleCategory=FREE'}>
+								<div> {t('Blog')} </div>
+							</Link>
+							{user?._id && (
+								<Link href={'/mypage'}>
+									<div> {t('My Profile')} </div>
+								</Link>
+							)}
+							<Link href={'/cs'}>
+								<div> {t('Contact Us')} </div>
+							</Link>
 						</Box>
 					</Stack>
 				</Stack>
