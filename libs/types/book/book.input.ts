@@ -25,6 +25,7 @@ interface BISearch {
 	authorList?: String[];
 	typeList?: BookType[];
 	languageList?: BookLanguage[];
+	ageList?: AgeCategory[];
 	pricesRange?: PricesRange;
 	periodsRange?: PeriodsRange;
 	options?: string[];

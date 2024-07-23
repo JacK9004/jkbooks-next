@@ -13,12 +13,11 @@ import {
 	IconButton,
 } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { PropertyLocation, PropertyType } from '../../enums/property.enum';
-import { PropertiesInquiry } from '../../types/book/property.input';
 import { useRouter } from 'next/router';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
-import { propertySquare } from '../../config';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import { BooksInquiry } from '../../types/book/book.input';
+import { AgeCategory, BookCollection, BookLanguage, BookType } from '../../enums/book.enum';
 
 const MenuProps = {
 	PaperProps: {
@@ -29,90 +28,164 @@ const MenuProps = {
 };
 
 interface FilterType {
-	searchFilter: PropertiesInquiry;
+	searchFilter: BooksInquiry;
 	setSearchFilter: any;
-	initialInput: PropertiesInquiry;
+	initialInput: BooksInquiry;
 }
 
 const Filter = (props: FilterType) => {
 	const { searchFilter, setSearchFilter, initialInput } = props;
 	const device = useDeviceDetect();
 	const router = useRouter();
-	const [propertyLocation, setPropertyLocation] = useState<PropertyLocation[]>(Object.values(PropertyLocation));
-	const [propertyType, setPropertyType] = useState<PropertyType[]>(Object.values(PropertyType));
+	const [bookCollection, setBookCollection] = useState<BookCollection[]>(Object.values(BookCollection));
+	const [bookType, setBookType] = useState<BookType[]>(Object.values(BookType));
 	const [searchText, setSearchText] = useState<string>('');
 	const [showMore, setShowMore] = useState<boolean>(false);
+	
 
-	/** LIFECYCLES **/
-	useEffect(() => {
-		const queryParams = JSON.stringify({
-			...searchFilter,
-			search: {
-				...searchFilter.search,
-			},
-		});
-
-		if (searchFilter?.search?.locationList?.length == 0) {
-			delete searchFilter.search.locationList;
-			setShowMore(false);
-			router.push(`/property?input=${queryParams}`, `/property?input=${queryParams}`, { scroll: false }).then();
-		}
-
-		if (searchFilter?.search?.typeList?.length == 0) {
-			delete searchFilter.search.typeList;
-			router.push(`/property?input=${queryParams}`, `/property?input=${queryParams}`, { scroll: false }).then();
-		}
-
-		if (searchFilter?.search?.roomsList?.length == 0) {
-			delete searchFilter.search.roomsList;
-			router.push(`/property?input=${queryParams}`, `/property?input=${queryParams}`, { scroll: false }).then();
-		}
-
-		if (searchFilter?.search?.options?.length == 0) {
-			delete searchFilter.search.options;
-			router.push(`/property?input=${queryParams}`, `/property?input=${queryParams}`, { scroll: false }).then();
-		}
-
-		if (searchFilter?.search?.bedsList?.length == 0) {
-			delete searchFilter.search.bedsList;
-			router.push(`/property?input=${queryParams}`, `/property?input=${queryParams}`, { scroll: false }).then();
-		}
-
-		if (searchFilter?.search?.locationList) setShowMore(true);
-	}, [searchFilter]);
+		/** LIFECYCLES **/
+		useEffect(() => {
+			if (searchFilter?.search?.collectionList?.length == 0) {
+				delete searchFilter.search.collectionList;
+				setShowMore(false);
+				router
+					.push(
+						`/book?input=${JSON.stringify({
+							...searchFilter,
+							search: {
+								...searchFilter.search,
+							},
+						})}`,
+						`/book?input=${JSON.stringify({
+							...searchFilter,
+							search: {
+								...searchFilter.search,
+							},
+						})}`,
+						{ scroll: false },
+					)
+					.then();
+			}
+	
+			if (searchFilter?.search?.typeList?.length == 0) {
+				delete searchFilter.search.typeList;
+				router
+					.push(
+						`/book?input=${JSON.stringify({
+							...searchFilter,
+							search: {
+								...searchFilter.search,
+							},
+						})}`,
+						`/book?input=${JSON.stringify({
+							...searchFilter,
+							search: {
+								...searchFilter.search,
+							},
+						})}`,
+						{ scroll: false },
+					)
+					.then();
+			}
+	
+			if (searchFilter?.search?.ageList?.length == 0) {
+				delete searchFilter.search.ageList;
+				router
+					.push(
+						`/book?input=${JSON.stringify({
+							...searchFilter,
+							search: {
+								...searchFilter.search,
+							},
+						})}`,
+						`/book?input=${JSON.stringify({
+							...searchFilter,
+							search: {
+								...searchFilter.search,
+							},
+						})}`,
+						{ scroll: false },
+					)
+					.then();
+			}
+	
+			if (searchFilter?.search?.options?.length == 0) {
+				delete searchFilter.search.options;
+				router
+					.push(
+						`/book?input=${JSON.stringify({
+							...searchFilter,
+							search: {
+								...searchFilter.search,
+							},
+						})}`,
+						`/book?input=${JSON.stringify({
+							...searchFilter,
+							search: {
+								...searchFilter.search,
+							},
+						})}`,
+						{ scroll: false },
+					)
+					.then();
+			}
+	
+			if (searchFilter?.search?.languageList?.length == 0) {
+				delete searchFilter.search.languageList;
+				router
+					.push(
+						`/book?input=${JSON.stringify({
+							...searchFilter,
+							search: {
+								...searchFilter.search,
+							},
+						})}`,
+						`/book?input=${JSON.stringify({
+							...searchFilter,
+							search: {
+								...searchFilter.search,
+							},
+						})}`,
+						{ scroll: false },
+					)
+					.then();
+			}
+	
+			if (searchFilter?.search?.collectionList) setShowMore(true);
+		}, [searchFilter]);
 
 	/** HANDLERS **/
-	const propertyLocationSelectHandler = useCallback(
+	const bookCollectionSelectHandler = useCallback(
 		async (e: any) => {
 			try {
 				const isChecked = e.target.checked;
 				const value = e.target.value;
 				if (isChecked) {
 					await router.push(
-						`/property?input=${JSON.stringify({
+						`/book?input=${JSON.stringify({
 							...searchFilter,
-							search: { ...searchFilter.search, locationList: [...(searchFilter?.search?.locationList || []), value] },
+							search: { ...searchFilter.search, collectionList: [...(searchFilter?.search?.collectionList || []), value] },
 						})}`,
-						`/property?input=${JSON.stringify({
+						`/book?input=${JSON.stringify({
 							...searchFilter,
-							search: { ...searchFilter.search, locationList: [...(searchFilter?.search?.locationList || []), value] },
+							search: { ...searchFilter.search, collectionList: [...(searchFilter?.search?.collectionList || []), value] },
 						})}`,
 						{ scroll: false },
 					);
-				} else if (searchFilter?.search?.locationList?.includes(value)) {
+				} else if (searchFilter?.search?.collectionList?.includes(value)) {
 					await router.push(
-						`/property?input=${JSON.stringify({
+						`/book?input=${JSON.stringify({
 							...searchFilter,
 							search: {
 								...searchFilter.search,
-								locationList: searchFilter?.search?.locationList?.filter((item: string) => item !== value),
+								collectionList: searchFilter?.search?.collectionList?.filter((item: string) => item !== value),
 							},
 						})}`,
-						`/property?input=${JSON.stringify({
+						`/book?input=${JSON.stringify({
 							...searchFilter,
 							search: {
 								...searchFilter.search,
-								locationList: searchFilter?.search?.locationList?.filter((item: string) => item !== value),
+								collectionList: searchFilter?.search?.collectionList?.filter((item: string) => item !== value),
 							},
 						})}`,
 						{ scroll: false },
@@ -123,26 +196,26 @@ const Filter = (props: FilterType) => {
 					alert('error');
 				}
 
-				console.log('propertyLocationSelectHandler:', e.target.value);
+				console.log('bookCollectionSelectHandler:', e.target.value);
 			} catch (err: any) {
-				console.log('ERROR, propertyLocationSelectHandler:', err);
+				console.log('ERROR, bookCollectionSelectHandler:', err);
 			}
 		},
 		[searchFilter],
 	);
-
-	const propertyTypeSelectHandler = useCallback(
+	
+	const bookTypeSelectHandler = useCallback(
 		async (e: any) => {
 			try {
 				const isChecked = e.target.checked;
 				const value = e.target.value;
 				if (isChecked) {
 					await router.push(
-						`/property?input=${JSON.stringify({
+						`/book?input=${JSON.stringify({
 							...searchFilter,
 							search: { ...searchFilter.search, typeList: [...(searchFilter?.search?.typeList || []), value] },
 						})}`,
-						`/property?input=${JSON.stringify({
+						`/book?input=${JSON.stringify({
 							...searchFilter,
 							search: { ...searchFilter.search, typeList: [...(searchFilter?.search?.typeList || []), value] },
 						})}`,
@@ -150,14 +223,14 @@ const Filter = (props: FilterType) => {
 					);
 				} else if (searchFilter?.search?.typeList?.includes(value)) {
 					await router.push(
-						`/property?input=${JSON.stringify({
+						`/book?input=${JSON.stringify({
 							...searchFilter,
 							search: {
 								...searchFilter.search,
 								typeList: searchFilter?.search?.typeList?.filter((item: string) => item !== value),
 							},
 						})}`,
-						`/property?input=${JSON.stringify({
+						`/book?input=${JSON.stringify({
 							...searchFilter,
 							search: {
 								...searchFilter.search,
@@ -172,89 +245,105 @@ const Filter = (props: FilterType) => {
 					alert('error');
 				}
 
-				console.log('propertyTypeSelectHandler:', e.target.value);
+				console.log('bookTypeSelectHandler:', e.target.value);
 			} catch (err: any) {
-				console.log('ERROR, propertyTypeSelectHandler:', err);
+				console.log('ERROR, bookTypeSelectHandler:', err);
 			}
 		},
 		[searchFilter],
 	);
 
-	const propertyRoomSelectHandler = useCallback(
-		async (number: Number) => {
-			try {
-				if (number != 0) {
-					if (searchFilter?.search?.roomsList?.includes(number)) {
-						await router.push(
-							`/property?input=${JSON.stringify({
-								...searchFilter,
-								search: {
-									...searchFilter.search,
-									roomsList: searchFilter?.search?.roomsList?.filter((item: Number) => item !== number),
-								},
-							})}`,
-							`/property?input=${JSON.stringify({
-								...searchFilter,
-								search: {
-									...searchFilter.search,
-									roomsList: searchFilter?.search?.roomsList?.filter((item: Number) => item !== number),
-								},
-							})}`,
-							{ scroll: false },
-						);
-					} else {
-						await router.push(
-							`/property?input=${JSON.stringify({
-								...searchFilter,
-								search: { ...searchFilter.search, roomsList: [...(searchFilter?.search?.roomsList || []), number] },
-							})}`,
-							`/property?input=${JSON.stringify({
-								...searchFilter,
-								search: { ...searchFilter.search, roomsList: [...(searchFilter?.search?.roomsList || []), number] },
-							})}`,
-							{ scroll: false },
-						);
-					}
-				} else {
-					delete searchFilter?.search.roomsList;
-					setSearchFilter({ ...searchFilter });
-					await router.push(
-						`/property?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-							},
-						})}`,
-						`/property?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-							},
-						})}`,
-						{ scroll: false },
-					);
-				}
-
-				console.log('propertyRoomSelectHandler:', number);
-			} catch (err: any) {
-				console.log('ERROR, propertyRoomSelectHandler:', err);
-			}
+	const languageSelectHandler = useCallback(
+		async (languageType: BookLanguage| null) => {
+		 try {
+		  let newSearchFilter = { ...searchFilter };
+	  
+		  if (languageType !== null) {
+		   if (searchFilter?.search?.languageList?.includes(languageType)) {
+			newSearchFilter = {
+			 ...searchFilter,
+			 search: {
+			  ...searchFilter.search,
+			  languageList: searchFilter?.search?.languageList?.filter((item: BookLanguage) => item !== languageType),
+			 },
+			};
+		   } else {
+			newSearchFilter = {
+			 ...searchFilter,
+			 search: {
+			  ...searchFilter.search,
+			  languageList: [...(searchFilter?.search?.languageList || []), languageType],
+			 },
+			};
+		   }
+		  } else {
+		   delete newSearchFilter.search.languageList;
+		  }
+	  
+		  setSearchFilter(newSearchFilter);
+	  
+		  await router.push(`/book?input=${JSON.stringify(newSearchFilter)}`, undefined, { scroll: false });
+	  
+		  console.log('booklanguageSelectHandler:', languageType);
+		 } catch (err: any) {
+		  console.log('ERROR, languageSelectHandler:', err);
+		 }
 		},
 		[searchFilter],
-	);
+	   );
 
-	const propertyOptionSelectHandler = useCallback(
+	   const ageSelectHandler = useCallback(
+		async (ageType: AgeCategory| null) => {
+		 try {
+		  let newSearchFilter = { ...searchFilter };
+	  
+		  if (ageType !== null) {
+		   if (searchFilter?.search?.ageList?.includes(ageType)) {
+			newSearchFilter = {
+			 ...searchFilter,
+			 search: {
+			  ...searchFilter.search,
+			  ageList: searchFilter?.search?.ageList?.filter((item: AgeCategory) => item !== ageType),
+			 },
+			};
+		   } else {
+			newSearchFilter = {
+			 ...searchFilter,
+			 search: {
+			  ...searchFilter.search,
+			  ageList: [...(searchFilter?.search?.ageList || []), ageType],
+			 },
+			};
+		   }
+		  } else {
+		   delete newSearchFilter.search.ageList;
+		  }
+	  
+		  setSearchFilter(newSearchFilter);
+	  
+		  await router.push(`/book?input=${JSON.stringify(newSearchFilter)}`, undefined, { scroll: false });
+	  
+		  console.log('ageSelectHandler:', ageType);
+		 } catch (err: any) {
+		  console.log('ERROR, ageSelectHandler:', err);
+		 }
+		},
+		[searchFilter],
+	   );
+	  
+
+	const bookOptionSelectHandler = useCallback(
 		async (e: any) => {
 			try {
 				const isChecked = e.target.checked;
 				const value = e.target.value;
 				if (isChecked) {
 					await router.push(
-						`/property?input=${JSON.stringify({
+						`/book?input=${JSON.stringify({
 							...searchFilter,
 							search: { ...searchFilter.search, options: [...(searchFilter?.search?.options || []), value] },
 						})}`,
-						`/property?input=${JSON.stringify({
+						`/book?input=${JSON.stringify({
 							...searchFilter,
 							search: { ...searchFilter.search, options: [...(searchFilter?.search?.options || []), value] },
 						})}`,
@@ -262,14 +351,14 @@ const Filter = (props: FilterType) => {
 					);
 				} else if (searchFilter?.search?.options?.includes(value)) {
 					await router.push(
-						`/property?input=${JSON.stringify({
+						`/book?input=${JSON.stringify({
 							...searchFilter,
 							search: {
 								...searchFilter.search,
 								options: searchFilter?.search?.options?.filter((item: string) => item !== value),
 							},
 						})}`,
-						`/property?input=${JSON.stringify({
+						`/book?input=${JSON.stringify({
 							...searchFilter,
 							search: {
 								...searchFilter.search,
@@ -280,134 +369,26 @@ const Filter = (props: FilterType) => {
 					);
 				}
 
-				console.log('propertyOptionSelectHandler:', e.target.value);
+				console.log('bookOptionSelectHandler:', e.target.value);
 			} catch (err: any) {
-				console.log('ERROR, propertyOptionSelectHandler:', err);
+				console.log('ERROR, bookOptionSelectHandler:', err);
 			}
 		},
 		[searchFilter],
 	);
 
-	const propertyBedSelectHandler = useCallback(
-		async (number: Number) => {
-			try {
-				if (number != 0) {
-					if (searchFilter?.search?.bedsList?.includes(number)) {
-						await router.push(
-							`/property?input=${JSON.stringify({
-								...searchFilter,
-								search: {
-									...searchFilter.search,
-									bedsList: searchFilter?.search?.bedsList?.filter((item: Number) => item !== number),
-								},
-							})}`,
-							`/property?input=${JSON.stringify({
-								...searchFilter,
-								search: {
-									...searchFilter.search,
-									bedsList: searchFilter?.search?.bedsList?.filter((item: Number) => item !== number),
-								},
-							})}`,
-							{ scroll: false },
-						);
-					} else {
-						await router.push(
-							`/property?input=${JSON.stringify({
-								...searchFilter,
-								search: { ...searchFilter.search, bedsList: [...(searchFilter?.search?.bedsList || []), number] },
-							})}`,
-							`/property?input=${JSON.stringify({
-								...searchFilter,
-								search: { ...searchFilter.search, bedsList: [...(searchFilter?.search?.bedsList || []), number] },
-							})}`,
-							{ scroll: false },
-						);
-					}
-				} else {
-					delete searchFilter?.search.bedsList;
-					setSearchFilter({ ...searchFilter });
-					await router.push(
-						`/property?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-							},
-						})}`,
-						`/property?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-							},
-						})}`,
-						{ scroll: false },
-					);
-				}
-
-				console.log('propertyBedSelectHandler:', number);
-			} catch (err: any) {
-				console.log('ERROR, propertyBedSelectHandler:', err);
-			}
-		},
-		[searchFilter],
-	);
-
-	const propertySquareHandler = useCallback(
-		async (e: any, type: string) => {
-			const value = e.target.value;
-
-			if (type == 'start') {
-				await router.push(
-					`/property?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-							squaresRange: { ...searchFilter.search.squaresRange, start: value },
-						},
-					})}`,
-					`/property?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-							squaresRange: { ...searchFilter.search.squaresRange, start: value },
-						},
-					})}`,
-					{ scroll: false },
-				);
-			} else {
-				await router.push(
-					`/property?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-							squaresRange: { ...searchFilter.search.squaresRange, end: value },
-						},
-					})}`,
-					`/property?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-							squaresRange: { ...searchFilter.search.squaresRange, end: value },
-						},
-					})}`,
-					{ scroll: false },
-				);
-			}
-		},
-		[searchFilter],
-	);
-
-	const propertyPriceHandler = useCallback(
+	const bookPriceHandler = useCallback(
 		async (value: number, type: string) => {
 			if (type == 'start') {
 				await router.push(
-					`/property?input=${JSON.stringify({
+					`/book?input=${JSON.stringify({
 						...searchFilter,
 						search: {
 							...searchFilter.search,
 							pricesRange: { ...searchFilter.search.pricesRange, start: value * 1 },
 						},
 					})}`,
-					`/property?input=${JSON.stringify({
+					`/book?input=${JSON.stringify({
 						...searchFilter,
 						search: {
 							...searchFilter.search,
@@ -418,14 +399,14 @@ const Filter = (props: FilterType) => {
 				);
 			} else {
 				await router.push(
-					`/property?input=${JSON.stringify({
+					`/book?input=${JSON.stringify({
 						...searchFilter,
 						search: {
 							...searchFilter.search,
 							pricesRange: { ...searchFilter.search.pricesRange, end: value * 1 },
 						},
 					})}`,
-					`/property?input=${JSON.stringify({
+					`/book?input=${JSON.stringify({
 						...searchFilter,
 						search: {
 							...searchFilter.search,
@@ -443,8 +424,8 @@ const Filter = (props: FilterType) => {
 		try {
 			setSearchText('');
 			await router.push(
-				`/property?input=${JSON.stringify(initialInput)}`,
-				`/property?input=${JSON.stringify(initialInput)}`,
+				`/book?input=${JSON.stringify(initialInput)}`,
+				`/book?input=${JSON.stringify(initialInput)}`,
 				{ scroll: false },
 			);
 		} catch (err: any) {
@@ -453,12 +434,12 @@ const Filter = (props: FilterType) => {
 	};
 
 	if (device === 'mobile') {
-		return <div>PROPERTIES FILTER</div>;
+		return <div>BOOKS FILTER</div>;
 	} else {
 		return (
 			<Stack className={'filter-main'}>
 				<Stack className={'find-your-home'} mb={'40px'}>
-					<Typography className={'title-main'}>Find Your Home</Typography>
+					<Typography className={'title-main'}>Find Your Book</Typography>
 					<Stack className={'input-box'}>
 						<OutlinedInput
 							value={searchText}
@@ -496,43 +477,10 @@ const Filter = (props: FilterType) => {
 						</Tooltip>
 					</Stack>
 				</Stack>
+
 				<Stack className={'find-your-home'} mb={'30px'}>
-					<p className={'title'} style={{ textShadow: '0px 3px 4px #b9b9b9' }}>
-						Location
-					</p>
-					<Stack
-						className={`property-location`}
-						style={{ height: showMore ? '253px' : '115px' }}
-						onMouseEnter={() => setShowMore(true)}
-						onMouseLeave={() => {
-							if (!searchFilter?.search?.locationList) {
-								setShowMore(false);
-							}
-						}}
-					>
-						{propertyLocation.map((location: string) => {
-							return (
-								<Stack className={'input-box'} key={location}>
-									<Checkbox
-										id={location}
-										className="property-checkbox"
-										color="default"
-										size="small"
-										value={location}
-										checked={(searchFilter?.search?.locationList || []).includes(location as PropertyLocation)}
-										onChange={propertyLocationSelectHandler}
-									/>
-									<label htmlFor={location} style={{ cursor: 'pointer' }}>
-										<Typography className="property-type">{location}</Typography>
-									</label>
-								</Stack>
-							);
-						})}
-					</Stack>
-				</Stack>
-				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Property Type</Typography>
-					{propertyType.map((type: string) => (
+					<Typography className={'title'}>Book Types</Typography>
+					{bookType.map((type: string) => (
 						<Stack className={'input-box'} key={type}>
 							<Checkbox
 								id={type}
@@ -540,8 +488,8 @@ const Filter = (props: FilterType) => {
 								color="default"
 								size="small"
 								value={type}
-								onChange={propertyTypeSelectHandler}
-								checked={(searchFilter?.search?.typeList || []).includes(type as PropertyType)}
+								onChange={bookTypeSelectHandler}
+								checked={(searchFilter?.search?.typeList || []).includes(type as BookType)}
 							/>
 							<label style={{ cursor: 'pointer' }}>
 								<Typography className="property_type">{type}</Typography>
@@ -549,135 +497,173 @@ const Filter = (props: FilterType) => {
 						</Stack>
 					))}
 				</Stack>
+
 				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Rooms</Typography>
-					<Stack className="button-group">
-						<Button
-							sx={{
-								borderRadius: '12px 0 0 12px',
-								border: !searchFilter?.search?.roomsList ? '2px solid #181A20' : '1px solid #b9b9b9',
-							}}
-							onClick={() => propertyRoomSelectHandler(0)}
-						>
-							Any
-						</Button>
-						<Button
-							sx={{
-								borderRadius: 0,
-								border: searchFilter?.search?.roomsList?.includes(1) ? '2px solid #181A20' : '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.roomsList?.includes(1) ? undefined : 'none',
-							}}
-							onClick={() => propertyRoomSelectHandler(1)}
-						>
-							1
-						</Button>
-						<Button
-							sx={{
-								borderRadius: 0,
-								border: searchFilter?.search?.roomsList?.includes(2) ? '2px solid #181A20' : '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.roomsList?.includes(2) ? undefined : 'none',
-							}}
-							onClick={() => propertyRoomSelectHandler(2)}
-						>
-							2
-						</Button>
-						<Button
-							sx={{
-								borderRadius: 0,
-								border: searchFilter?.search?.roomsList?.includes(3) ? '2px solid #181A20' : '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.roomsList?.includes(3) ? undefined : 'none',
-							}}
-							onClick={() => propertyRoomSelectHandler(3)}
-						>
-							3
-						</Button>
-						<Button
-							sx={{
-								borderRadius: 0,
-								border: searchFilter?.search?.roomsList?.includes(4) ? '2px solid #181A20' : '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.roomsList?.includes(4) ? undefined : 'none',
-								borderRight: searchFilter?.search?.roomsList?.includes(4) ? undefined : 'none',
-							}}
-							onClick={() => propertyRoomSelectHandler(4)}
-						>
-							4
-						</Button>
-						<Button
-							sx={{
-								borderRadius: '0 12px 12px 0',
-								border: searchFilter?.search?.roomsList?.includes(5) ? '2px solid #181A20' : '1px solid #b9b9b9',
-							}}
-							onClick={() => propertyRoomSelectHandler(5)}
-						>
-							5+
-						</Button>
+					<p className={'title'} style={{ textShadow: '0px 3px 4px #b9b9b9' }}>
+						Book Categories
+					</p>
+					<Stack
+						className={`property-location`}
+						style={{ height: showMore ? '253px' : '115px' }}
+						onMouseEnter={() => setShowMore(true)}
+						onMouseLeave={() => {
+							if (!searchFilter?.search?.collectionList) {
+								setShowMore(false);
+							}
+						}}
+					>
+						{bookCollection.map((collection: string) => {
+							return (
+								<Stack className={'input-box'} key={collection}>
+									<Checkbox
+										id={collection}
+										className="property-checkbox"
+										color="default"
+										size="small"
+										value={collection}
+										checked={(searchFilter?.search?.collectionList || []).includes(collection as BookCollection)}
+										onChange={bookCollectionSelectHandler}
+									/>
+									<label htmlFor={collection} style={{ cursor: 'pointer' }}>
+										<Typography className="property-type">{collection}</Typography>
+									</label>
+								</Stack>
+							);
+						})}
 					</Stack>
 				</Stack>
+
 				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Bedrooms</Typography>
+					<Typography className={'title'}>Kids Books</Typography>
 					<Stack className="button-group">
-						<Button
-							sx={{
-								borderRadius: '12px 0 0 12px',
-								border: !searchFilter?.search?.bedsList ? '2px solid #181A20' : '1px solid #b9b9b9',
-							}}
-							onClick={() => propertyBedSelectHandler(0)}
-						>
-							Any
-						</Button>
-						<Button
-							sx={{
-								borderRadius: 0,
-								border: searchFilter?.search?.bedsList?.includes(1) ? '2px solid #181A20' : '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.bedsList?.includes(1) ? undefined : 'none',
-							}}
-							onClick={() => propertyBedSelectHandler(1)}
-						>
-							1
-						</Button>
-						<Button
-							sx={{
-								borderRadius: 0,
-								border: searchFilter?.search?.bedsList?.includes(2) ? '2px solid #181A20' : '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.bedsList?.includes(2) ? undefined : 'none',
-							}}
-							onClick={() => propertyBedSelectHandler(2)}
-						>
-							2
-						</Button>
-						<Button
-							sx={{
-								borderRadius: 0,
-								border: searchFilter?.search?.bedsList?.includes(3) ? '2px solid #181A20' : '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.bedsList?.includes(3) ? undefined : 'none',
-							}}
-							onClick={() => propertyBedSelectHandler(3)}
-						>
-							3
-						</Button>
-						<Button
-							sx={{
-								borderRadius: 0,
-								border: searchFilter?.search?.bedsList?.includes(4) ? '2px solid #181A20' : '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.bedsList?.includes(4) ? undefined : 'none',
-								// borderRight: false ? undefined : 'none',
-							}}
-							onClick={() => propertyBedSelectHandler(4)}
-						>
-							4
-						</Button>
-						<Button
-							sx={{
-								borderRadius: '0 12px 12px 0',
-								border: searchFilter?.search?.bedsList?.includes(5) ? '2px solid #181A20' : '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.bedsList?.includes(5) ? undefined : 'none',
-							}}
-							onClick={() => propertyBedSelectHandler(5)}
-						>
-							5+
-						</Button>
-					</Stack>
-				</Stack>
+					<Button
+					sx={{
+						borderRadius: 0,
+						border: searchFilter?.search?.ageList?.includes(AgeCategory.AGE_0_2)
+						? '2px solid #181A20'
+						: '1px solid #b9b9b9',
+						borderLeft: searchFilter?.search?.ageList?.includes(AgeCategory.AGE_0_2) ? undefined : 'none',
+					}}
+					onClick={() => ageSelectHandler(AgeCategory.AGE_0_2)}
+					>
+					0-2
+					</Button>
+					<Button
+					sx={{
+						borderRadius: 0,
+						border: searchFilter?.search?.ageList?.includes(AgeCategory.AGE_2_PLUS)
+						? '2px solid #181A20'
+						: '1px solid #b9b9b9',
+						borderLeft: searchFilter?.search?.ageList?.includes(AgeCategory.AGE_2_PLUS) ? undefined : 'none',
+					}}
+					onClick={() => ageSelectHandler(AgeCategory.AGE_2_PLUS)}
+					>
+					2+
+					</Button>
+					<Button
+					sx={{
+						borderRadius: 0,
+						border: searchFilter?.search?.ageList?.includes(AgeCategory.AGE_3_PLUS)
+						? '2px solid #181A20'
+						: '1px solid #b9b9b9',
+						borderLeft: searchFilter?.search?.ageList?.includes(AgeCategory.AGE_3_PLUS) ? undefined : 'none',
+					}}
+					onClick={() => ageSelectHandler(AgeCategory.AGE_3_PLUS)}
+					>
+					3+
+					</Button>
+					<Button
+					sx={{
+						borderRadius: 0,
+						border: searchFilter?.search?.ageList?.includes(AgeCategory.AGE_4_PLUS)
+						? '2px solid #181A20'
+						: '1px solid #b9b9b9',
+						borderLeft: searchFilter?.search?.ageList?.includes(AgeCategory.AGE_4_PLUS) ? undefined : 'none',
+					}}
+					onClick={() => ageSelectHandler(AgeCategory.AGE_4_PLUS)}
+					>
+					4+
+					</Button>
+					<Button
+					sx={{
+						borderRadius: 0,
+						border: searchFilter?.search?.ageList?.includes(AgeCategory.AGE_6_PLUS)
+						? '2px solid #181A20'
+						: '1px solid #b9b9b9',
+						borderLeft: searchFilter?.search?.ageList?.includes(AgeCategory.AGE_6_PLUS) ? undefined : 'none',
+					}}
+					onClick={() => ageSelectHandler(AgeCategory.AGE_6_PLUS)}
+					>
+					6+
+					</Button>
+					<Button
+					sx={{
+						borderRadius: 0,
+						border: searchFilter?.search?.ageList?.includes(AgeCategory.AGE_8_PLUS)
+						? '2px solid #181A20'
+						: '1px solid #b9b9b9',
+						borderLeft: searchFilter?.search?.ageList?.includes(AgeCategory.AGE_8_PLUS) ? undefined : 'none',
+					}}
+					onClick={() => ageSelectHandler(AgeCategory.AGE_8_PLUS)}
+					>
+					8+
+					</Button>
+    		 </Stack>
+
+				<Stack className={'find-your-home'} mb={'30px'}>
+					<Typography className={'title'}>Language</Typography>
+					<Stack className="button-group">
+					<Button
+					sx={{
+						borderRadius: 0,
+						border: searchFilter?.search?.languageList?.includes(BookLanguage.ENGLISH)
+						? '2px solid #181A20'
+						: '1px solid #b9b9b9',
+						borderLeft: searchFilter?.search?.languageList?.includes(BookLanguage.ENGLISH) ? undefined : 'none',
+					}}
+					onClick={() => languageSelectHandler(BookLanguage.ENGLISH)}
+					>
+					ENGLISH
+					</Button>
+					<Button
+					sx={{
+						borderRadius: 0,
+						border: searchFilter?.search?.languageList?.includes(BookLanguage.KOREAN)
+						? '2px solid #181A20'
+						: '1px solid #b9b9b9',
+						borderLeft: searchFilter?.search?.languageList?.includes(BookLanguage.KOREAN) ? undefined : 'none',
+					}}
+					onClick={() => languageSelectHandler(BookLanguage.KOREAN)}
+					>
+					KOREAN
+					</Button>
+					<Button
+					sx={{
+						borderRadius: 0,
+						border: searchFilter?.search?.languageList?.includes(BookLanguage.RUSSIAN)
+						? '2px solid #181A20'
+						: '1px solid #b9b9b9',
+						borderLeft: searchFilter?.search?.languageList?.includes(BookLanguage.RUSSIAN) ? undefined : 'none',
+					}}
+					onClick={() => languageSelectHandler(BookLanguage.RUSSIAN)}
+					>
+					RUSSIAN
+					</Button>
+					<Button
+					sx={{
+						borderRadius: 0,
+						border: searchFilter?.search?.languageList?.includes(BookLanguage.UZBEK)
+						? '2px solid #181A20'
+						: '1px solid #b9b9b9',
+						borderLeft: searchFilter?.search?.languageList?.includes(BookLanguage.UZBEK) ? undefined : 'none',
+					}}
+					onClick={() => languageSelectHandler(BookLanguage.UZBEK)}
+					>
+					UZBEK
+					</Button>
+    		 </Stack>			
+    </Stack>
+				
 				<Stack className={'find-your-home'} mb={'30px'}>
 					<Typography className={'title'}>Options</Typography>
 					<Stack className={'input-box'}>
@@ -686,12 +672,12 @@ const Filter = (props: FilterType) => {
 							className="property-checkbox"
 							color="default"
 							size="small"
-							value={'propertyBarter'}
-							checked={(searchFilter?.search?.options || []).includes('propertyBarter')}
-							onChange={propertyOptionSelectHandler}
+							value={'bookAuthor'}
+							checked={(searchFilter?.search?.options || []).includes('bookAuthor')}
+							onChange={bookOptionSelectHandler}
 						/>
 						<label htmlFor={'Barter'} style={{ cursor: 'pointer' }}>
-							<Typography className="propert-type">Barter</Typography>
+							<Typography className="propert-type">Author</Typography>
 						</label>
 					</Stack>
 					<Stack className={'input-box'}>
@@ -700,61 +686,13 @@ const Filter = (props: FilterType) => {
 							className="property-checkbox"
 							color="default"
 							size="small"
-							value={'propertyRent'}
-							checked={(searchFilter?.search?.options || []).includes('propertyRent')}
-							onChange={propertyOptionSelectHandler}
+							value={'bookRent'}
+							checked={(searchFilter?.search?.options || []).includes('bookRent')}
+							onChange={bookOptionSelectHandler}
 						/>
 						<label htmlFor={'Rent'} style={{ cursor: 'pointer' }}>
 							<Typography className="propert-type">Rent</Typography>
 						</label>
-					</Stack>
-				</Stack>
-				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Square meter</Typography>
-					<Stack className="square-year-input">
-						<FormControl>
-							<InputLabel id="demo-simple-select-label">Min</InputLabel>
-							<Select
-								labelId="demo-simple-select-label"
-								id="demo-simple-select"
-								value={searchFilter?.search?.squaresRange?.start ?? 0}
-								label="Min"
-								onChange={(e: any) => propertySquareHandler(e, 'start')}
-								MenuProps={MenuProps}
-							>
-								{propertySquare.map((square: number) => (
-									<MenuItem
-										value={square}
-										disabled={(searchFilter?.search?.squaresRange?.end || 0) < square}
-										key={square}
-									>
-										{square}
-									</MenuItem>
-								))}
-							</Select>
-						</FormControl>
-						<div className="central-divider"></div>
-						<FormControl>
-							<InputLabel id="demo-simple-select-label">Max</InputLabel>
-							<Select
-								labelId="demo-simple-select-label"
-								id="demo-simple-select"
-								value={searchFilter?.search?.squaresRange?.end ?? 500}
-								label="Max"
-								onChange={(e: any) => propertySquareHandler(e, 'end')}
-								MenuProps={MenuProps}
-							>
-								{propertySquare.map((square: number) => (
-									<MenuItem
-										value={square}
-										disabled={(searchFilter?.search?.squaresRange?.start || 0) > square}
-										key={square}
-									>
-										{square}
-									</MenuItem>
-								))}
-							</Select>
-						</FormControl>
 					</Stack>
 				</Stack>
 				<Stack className={'find-your-home'}>
@@ -767,7 +705,7 @@ const Filter = (props: FilterType) => {
 							value={searchFilter?.search?.pricesRange?.start ?? 0}
 							onChange={(e: any) => {
 								if (e.target.value >= 0) {
-									propertyPriceHandler(e.target.value, 'start');
+									bookPriceHandler(e.target.value, 'start');
 								}
 							}}
 						/>
@@ -778,12 +716,13 @@ const Filter = (props: FilterType) => {
 							value={searchFilter?.search?.pricesRange?.end ?? 0}
 							onChange={(e: any) => {
 								if (e.target.value >= 0) {
-									propertyPriceHandler(e.target.value, 'end');
+									bookPriceHandler(e.target.value, 'end');
 								}
 							}}
 						/>
 					</Stack>
 				</Stack>
+			</Stack>
 			</Stack>
 		);
 	}

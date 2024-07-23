@@ -30,7 +30,7 @@ const HeaderFilter = (props: HeaderFilterProps) => {
         options: search?.options?.length ? search.options : undefined,
       };
 
-      await router.push(`/property?input=${JSON.stringify({ ...searchFilter, search: updatedSearch })}`);
+      await router.push(`/book?input=${JSON.stringify({ ...searchFilter, search: updatedSearch })}`);
     } catch (err) {
       console.error('ERROR, pushSearchHandler:', err);
     }

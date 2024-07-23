@@ -33,7 +33,7 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => (
 const Faq = () => {
 	const device = useDeviceDetect();
 	const router = useRouter();
-	const [category, setCategory] = useState<string>('property');
+	const [category, setCategory] = useState<string>('book');
 	const [expanded, setExpanded] = useState<string | false>('panel1');
 
 	/** APOLLO REQUESTS **/
@@ -49,7 +49,7 @@ const Faq = () => {
 	};
 
 	const data: any = {
-		property: [
+		book: [
 			{
 				id: '00f5a45ed8897f8090116a01',
 				subject: 'Are the properties displayed on the site reliable?',
@@ -440,12 +440,12 @@ const Faq = () => {
 			<Stack className={'faq-content'}>
 				<Box className={'categories'} component={'div'}>
 					<div
-						className={category === 'property' ? 'active' : ''}
+						className={category === 'book' ? 'active' : ''}
 						onClick={() => {
-							changeCategoryHandler('property');
+							changeCategoryHandler('book');
 						}}
 					>
-						Property
+						Book
 					</div>
 					<div
 						className={category === 'payment' ? 'active' : ''}

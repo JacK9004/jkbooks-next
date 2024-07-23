@@ -14,6 +14,7 @@ export enum BookType {
   export enum BookCollection {
 	FICTION = 'FICTION',
 	NON_FICTION = 'NON_FICTION',
+	CHILDREN = 'CHILDREN',
 	SCIENCE = 'SCIENCE',
 	TECHNOLOGY = 'TECHNOLOGY',
 	BIOGRAPHY = 'BIOGRAPHY',
@@ -21,7 +22,7 @@ export enum BookType {
 	MYSTERY = 'MYSTERY',
 	ROMANCE = 'ROMANCE',
 	THRILLER = 'THRILLER',
-	CHILDREN = 'CHILDREN',
+
   }
 
   export enum AgeCategory {

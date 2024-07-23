@@ -1,16 +1,21 @@
 import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import { Box, Button, Menu, MenuItem, Pagination, Stack, Typography } from '@mui/material';
-import PropertyCard from '../../libs/components/book/PropertyCard';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import Filter from '../../libs/components/book/Filter';
 import { useRouter } from 'next/router';
-import { PropertiesInquiry } from '../../libs/types/book/property.input';
-import { Property } from '../../libs/types/book/property';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
-import { Direction } from '../../libs/enums/common.enum';
+import { Direction, Message } from '../../libs/enums/common.enum';
+import { BooksInquiry } from '../../libs/types/book/book.input';
+import { Book } from '../../libs/types/book/book';
+import BookCard from '../../libs/components/book/BookCard';
+import { useMutation, useQuery } from '@apollo/client';
+import { LIKE_TARGET_BOOK } from '../../apollo/user/mutation';
+import { GET_BOOKS } from '../../apollo/user/query';
+import { T } from '../../libs/types/common';
+import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -18,13 +23,13 @@ export const getStaticProps = async ({ locale }: any) => ({
 	},
 });
 
-const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
+const BookList: NextPage = ({ initialInput, ...props }: any) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
-	const [searchFilter, setSearchFilter] = useState<PropertiesInquiry>(
+	const [searchFilter, setSearchFilter] = useState<BooksInquiry>(
 		router?.query?.input ? JSON.parse(router?.query?.input as string) : initialInput,
 	);
-	const [properties, setProperties] = useState<Property[]>([]);
+	const [books, setBooks] = useState<Book[]>([]);
 	const [total, setTotal] = useState<number>(0);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -32,6 +37,22 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 	const [filterSortName, setFilterSortName] = useState('New');
 
 	/** APOLLO REQUESTS **/
+	const [likeTargetBook] = useMutation(LIKE_TARGET_BOOK);
+
+	const {
+		loading: getBooksLoading,
+		data: getBooksData,
+		error: getBooksError,
+		refetch: getBooksRefetch,
+	} = useQuery(GET_BOOKS, {
+		fetchPolicy: 'network-only',
+		variables: { input: searchFilter },
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setBooks(data?.getBooks?.list);
+			setTotal(data?.getBooks?.metaCounter[0]?.total);
+		},
+	});
 
 	/** LIFECYCLES **/
 	useEffect(() => {
@@ -43,19 +64,38 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 		setCurrentPage(searchFilter.page === undefined ? 1 : searchFilter.page);
 	}, [router]);
 
-	useEffect(() => {}, [searchFilter]);
+	useEffect(() => {
+		console.log('searchFilter:', searchFilter);
+		//getBooksRefetch({ input: searchFilter }).then();
+	}, [searchFilter]);
 
 	/** HANDLERS **/
 	const handlePaginationChange = async (event: ChangeEvent<unknown>, value: number) => {
 		searchFilter.page = value;
 		await router.push(
-			`/property?input=${JSON.stringify(searchFilter)}`,
-			`/property?input=${JSON.stringify(searchFilter)}`,
+			`/book?input=${JSON.stringify(searchFilter)}`,
+			`/book?input=${JSON.stringify(searchFilter)}`,
 			{
 				scroll: false,
 			},
 		);
 		setCurrentPage(value);
+	};
+
+	const likeBookHandler = async (user: T, id: string) => {
+		try {
+			if (!id) return;
+			if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
+			//execute likeTargetBook Mutation
+			await likeTargetBook({ variables: { input: id } });
+			await getBooksRefetch({ input: initialInput });
+			//execute getBooksRefetch
+
+			await sweetTopSmallSuccessAlert('success', 800);
+		} catch (err: any) {
+			console.log('Error, likeBookHandler:', err.message);
+			sweetMixinErrorAlert(err.message).then();
+		}
 	};
 
 	const sortingClickHandler = (e: MouseEvent<HTMLElement>) => {
@@ -75,11 +115,11 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 				setFilterSortName('New');
 				break;
 			case 'lowest':
-				setSearchFilter({ ...searchFilter, sort: 'propertyPrice', direction: Direction.ASC });
+				setSearchFilter({ ...searchFilter, sort: 'bookPrice', direction: Direction.ASC });
 				setFilterSortName('Lowest Price');
 				break;
 			case 'highest':
-				setSearchFilter({ ...searchFilter, sort: 'propertyPrice', direction: Direction.DESC });
+				setSearchFilter({ ...searchFilter, sort: 'bookPrice', direction: Direction.DESC });
 				setFilterSortName('Highest Price');
 		}
 		setSortingOpen(false);
@@ -87,7 +127,7 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 	};
 
 	if (device === 'mobile') {
-		return <h1>PROPERTIES MOBILE</h1>;
+		return <h1>BOOKS MOBILE</h1>;
 	} else {
 		return (
 			<div id="property-list-page" style={{ position: 'relative' }}>
@@ -133,19 +173,18 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 						</Stack>
 						<Stack className="main-config" mb={'76px'}>
 							<Stack className={'list-config'}>
-								{properties?.length === 0 ? (
+								{books?.length === 0 ? (
 									<div className={'no-data'}>
 										<img src="/img/icons/icoAlert.svg" alt="" />
-										<p>No Properties found!</p>
+										<p>No Books found!</p>
 									</div>
 								) : (
-									properties.map((property: Property) => {
-										return <PropertyCard property={property} key={property?._id} />;
-									})
+									books.map((book: Book) => {
+										return <BookCard book={book} likeBookHandler={likeBookHandler} key={book?._id} />;})
 								)}
 							</Stack>
 							<Stack className="pagination-config">
-								{properties.length !== 0 && (
+								{books.length !== 0 && (
 									<Stack className="pagination-box">
 										<Pagination
 											page={currentPage}
@@ -157,10 +196,10 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 									</Stack>
 								)}
 
-								{properties.length !== 0 && (
+								{books.length !== 0 && (
 									<Stack className="total-result">
 										<Typography>
-											Total {total} propert{total > 1 ? 'ies' : 'y'} available
+											Total {total} book{total > 1 ? 's' : ''} available
 										</Typography>
 									</Stack>
 								)}
@@ -173,23 +212,19 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 	}
 };
 
-PropertyList.defaultProps = {
+BookList.defaultProps = {
 	initialInput: {
 		page: 1,
 		limit: 9,
 		sort: 'createdAt',
 		direction: 'DESC',
 		search: {
-			squaresRange: {
-				start: 0,
-				end: 500,
-			},
 			pricesRange: {
 				start: 0,
-				end: 2000000,
+				end: 100,
 			},
 		},
 	},
 };
 
-export default withLayoutBasic(PropertyList);
+export default withLayoutBasic(BookList);
