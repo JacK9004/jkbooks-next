@@ -11,11 +11,11 @@ const Advertisement = () => {
 				<Typography variant="h2">For the Love of Reading</Typography>
 				<Typography variant="body1">
 					<strong>Selection</strong>
-					<p>We have more than 13 million titles to choose from, from the earliest board books to the all-time classics of literature.</p>
+					<span>We have more than 13 million titles to choose from, from the earliest board books to the all-time classics of literature.</span>
 					<strong>Purchasing Power</strong>
-					<p>Used books are often treasures that are out-of-print or rare. With Wish Lists you can choose to be notified the instant we find a copy, see how often we find rare titles, and see who else is interested.</p>
+					<span>Used books are often treasures that are out-of-print or rare. With Wish Lists you can choose to be notified the instant we find a copy, see how often we find rare titles, and see who else is interested.</span>
 					<strong>FREE Shipping & More</strong>
-					<p>When you've found the books you want we'll ship qualifying orders to your door for FREE in 100% recyclable packaging. If there is no demand for a book, we will donate it to charity, or we'll recycle it.</p>
+					<span>When you've found the books you want we'll ship qualifying orders to your door for FREE in 100% recyclable packaging. If there is no demand for a book, we will donate it to charity, or we'll recycle it.</span>
 				</Typography>
 				<Button variant="contained" color="primary">More About Us</Button>
 			</Stack>

@@ -109,26 +109,26 @@ const Filter = (props: FilterType) => {
 					.then();
 			}
 	
-			if (searchFilter?.search?.options?.length == 0) {
-				delete searchFilter.search.options;
-				router
-					.push(
-						`/book?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-							},
-						})}`,
-						`/book?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-							},
-						})}`,
-						{ scroll: false },
-					)
-					.then();
-			}
+			// if (searchFilter?.search?.options?.length == 0) {
+			// 	delete searchFilter.search.options;
+			// 	router
+			// 		.push(
+			// 			`/book?input=${JSON.stringify({
+			// 				...searchFilter,
+			// 				search: {
+			// 					...searchFilter.search,
+			// 				},
+			// 			})}`,
+			// 			`/book?input=${JSON.stringify({
+			// 				...searchFilter,
+			// 				search: {
+			// 					...searchFilter.search,
+			// 				},
+			// 			})}`,
+			// 			{ scroll: false },
+			// 		)
+			// 		.then();
+			// }
 	
 			if (searchFilter?.search?.languageList?.length == 0) {
 				delete searchFilter.search.languageList;
@@ -332,50 +332,50 @@ const Filter = (props: FilterType) => {
 	   );
 	  
 
-	const bookOptionSelectHandler = useCallback(
-		async (e: any) => {
-			try {
-				const isChecked = e.target.checked;
-				const value = e.target.value;
-				if (isChecked) {
-					await router.push(
-						`/book?input=${JSON.stringify({
-							...searchFilter,
-							search: { ...searchFilter.search, options: [...(searchFilter?.search?.options || []), value] },
-						})}`,
-						`/book?input=${JSON.stringify({
-							...searchFilter,
-							search: { ...searchFilter.search, options: [...(searchFilter?.search?.options || []), value] },
-						})}`,
-						{ scroll: false },
-					);
-				} else if (searchFilter?.search?.options?.includes(value)) {
-					await router.push(
-						`/book?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-								options: searchFilter?.search?.options?.filter((item: string) => item !== value),
-							},
-						})}`,
-						`/book?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-								options: searchFilter?.search?.options?.filter((item: string) => item !== value),
-							},
-						})}`,
-						{ scroll: false },
-					);
-				}
+	// const bookOptionSelectHandler = useCallback(
+	// 	async (e: any) => {
+	// 		try {
+	// 			const isChecked = e.target.checked;
+	// 			const value = e.target.value;
+	// 			if (isChecked) {
+	// 				await router.push(
+	// 					`/book?input=${JSON.stringify({
+	// 						...searchFilter,
+	// 						search: { ...searchFilter.search, options: [...(searchFilter?.search?.options || []), value] },
+	// 					})}`,
+	// 					`/book?input=${JSON.stringify({
+	// 						...searchFilter,
+	// 						search: { ...searchFilter.search, options: [...(searchFilter?.search?.options || []), value] },
+	// 					})}`,
+	// 					{ scroll: false },
+	// 				);
+	// 			} else if (searchFilter?.search?.options?.includes(value)) {
+	// 				await router.push(
+	// 					`/book?input=${JSON.stringify({
+	// 						...searchFilter,
+	// 						search: {
+	// 							...searchFilter.search,
+	// 							options: searchFilter?.search?.options?.filter((item: string) => item !== value),
+	// 						},
+	// 					})}`,
+	// 					`/book?input=${JSON.stringify({
+	// 						...searchFilter,
+	// 						search: {
+	// 							...searchFilter.search,
+	// 							options: searchFilter?.search?.options?.filter((item: string) => item !== value),
+	// 						},
+	// 					})}`,
+	// 					{ scroll: false },
+	// 				);
+	// 			}
 
-				console.log('bookOptionSelectHandler:', e.target.value);
-			} catch (err: any) {
-				console.log('ERROR, bookOptionSelectHandler:', err);
-			}
-		},
-		[searchFilter],
-	);
+	// 			console.log('bookOptionSelectHandler:', e.target.value);
+	// 		} catch (err: any) {
+	// 			console.log('ERROR, bookOptionSelectHandler:', err);
+	// 		}
+	// 	},
+	// 	[searchFilter],
+	// );
 
 	const bookPriceHandler = useCallback(
 		async (value: number, type: string) => {
@@ -440,8 +440,9 @@ const Filter = (props: FilterType) => {
 			<Stack className={'filter-main'}>
 				<Stack className={'find-your-home'} mb={'40px'}>
 					<Typography className={'title-main'}>Find Your Book</Typography>
-					<Stack className={'input-box'}>
-						<OutlinedInput
+					<Stack className={'input-box'}>	
+					{/* <img src={'/img/icons/search_icon.png'} alt={''} /> */}
+						<OutlinedInput 
 							value={searchText}
 							type={'text'}
 							className={'search-input'}
@@ -469,7 +470,7 @@ const Filter = (props: FilterType) => {
 								</>
 							}
 						/>
-						<img src={'/img/icons/search_icon.png'} alt={''} />
+				
 						<Tooltip title="Reset">
 							<IconButton onClick={refreshHandler}>
 								<RefreshIcon />
@@ -504,7 +505,7 @@ const Filter = (props: FilterType) => {
 					</p>
 					<Stack
 						className={`property-location`}
-						style={{ height: showMore ? '253px' : '115px' }}
+						style={{ height: showMore ? '350px' : '115px' }}
 						onMouseEnter={() => setShowMore(true)}
 						onMouseLeave={() => {
 							if (!searchFilter?.search?.collectionList) {
@@ -534,137 +535,77 @@ const Filter = (props: FilterType) => {
 				</Stack>
 
 				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Kids Books</Typography>
-					<Stack className="button-group">
+				<Typography className={'title'}>Kids Books</Typography>
+				<Stack className="button-group">
 					<Button
-					sx={{
-						borderRadius: 0,
-						border: searchFilter?.search?.ageList?.includes(AgeCategory.AGE_0_2)
-						? '2px solid #181A20'
-						: '1px solid #b9b9b9',
-						borderLeft: searchFilter?.search?.ageList?.includes(AgeCategory.AGE_0_2) ? undefined : 'none',
-					}}
-					onClick={() => ageSelectHandler(AgeCategory.AGE_0_2)}
+						className={searchFilter?.search?.ageList?.includes(AgeCategory.AGE_0_2) ? 'active' : ''}
+						onClick={() => ageSelectHandler(AgeCategory.AGE_0_2)}
 					>
-					0-2
+						0-2
 					</Button>
 					<Button
-					sx={{
-						borderRadius: 0,
-						border: searchFilter?.search?.ageList?.includes(AgeCategory.AGE_2_PLUS)
-						? '2px solid #181A20'
-						: '1px solid #b9b9b9',
-						borderLeft: searchFilter?.search?.ageList?.includes(AgeCategory.AGE_2_PLUS) ? undefined : 'none',
-					}}
-					onClick={() => ageSelectHandler(AgeCategory.AGE_2_PLUS)}
+						className={searchFilter?.search?.ageList?.includes(AgeCategory.AGE_2_PLUS) ? 'active' : ''}
+						onClick={() => ageSelectHandler(AgeCategory.AGE_2_PLUS)}
 					>
-					2+
+						2+
 					</Button>
 					<Button
-					sx={{
-						borderRadius: 0,
-						border: searchFilter?.search?.ageList?.includes(AgeCategory.AGE_3_PLUS)
-						? '2px solid #181A20'
-						: '1px solid #b9b9b9',
-						borderLeft: searchFilter?.search?.ageList?.includes(AgeCategory.AGE_3_PLUS) ? undefined : 'none',
-					}}
-					onClick={() => ageSelectHandler(AgeCategory.AGE_3_PLUS)}
+						className={searchFilter?.search?.ageList?.includes(AgeCategory.AGE_3_PLUS) ? 'active' : ''}
+						onClick={() => ageSelectHandler(AgeCategory.AGE_3_PLUS)}
 					>
-					3+
+						3+
 					</Button>
 					<Button
-					sx={{
-						borderRadius: 0,
-						border: searchFilter?.search?.ageList?.includes(AgeCategory.AGE_4_PLUS)
-						? '2px solid #181A20'
-						: '1px solid #b9b9b9',
-						borderLeft: searchFilter?.search?.ageList?.includes(AgeCategory.AGE_4_PLUS) ? undefined : 'none',
-					}}
-					onClick={() => ageSelectHandler(AgeCategory.AGE_4_PLUS)}
+						className={searchFilter?.search?.ageList?.includes(AgeCategory.AGE_4_PLUS) ? 'active' : ''}
+						onClick={() => ageSelectHandler(AgeCategory.AGE_4_PLUS)}
 					>
-					4+
+						4+
 					</Button>
 					<Button
-					sx={{
-						borderRadius: 0,
-						border: searchFilter?.search?.ageList?.includes(AgeCategory.AGE_6_PLUS)
-						? '2px solid #181A20'
-						: '1px solid #b9b9b9',
-						borderLeft: searchFilter?.search?.ageList?.includes(AgeCategory.AGE_6_PLUS) ? undefined : 'none',
-					}}
-					onClick={() => ageSelectHandler(AgeCategory.AGE_6_PLUS)}
+						className={searchFilter?.search?.ageList?.includes(AgeCategory.AGE_6_PLUS) ? 'active' : ''}
+						onClick={() => ageSelectHandler(AgeCategory.AGE_6_PLUS)}
 					>
-					6+
+						6+
 					</Button>
 					<Button
-					sx={{
-						borderRadius: 0,
-						border: searchFilter?.search?.ageList?.includes(AgeCategory.AGE_8_PLUS)
-						? '2px solid #181A20'
-						: '1px solid #b9b9b9',
-						borderLeft: searchFilter?.search?.ageList?.includes(AgeCategory.AGE_8_PLUS) ? undefined : 'none',
-					}}
-					onClick={() => ageSelectHandler(AgeCategory.AGE_8_PLUS)}
+						className={searchFilter?.search?.ageList?.includes(AgeCategory.AGE_8_PLUS) ? 'active' : ''}
+						onClick={() => ageSelectHandler(AgeCategory.AGE_8_PLUS)}
 					>
-					8+
+						8+
 					</Button>
-    		 </Stack>
+ 		 		</Stack>
 
 				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Language</Typography>
-					<Stack className="button-group">
-					<Button
-					sx={{
-						borderRadius: 0,
-						border: searchFilter?.search?.languageList?.includes(BookLanguage.ENGLISH)
-						? '2px solid #181A20'
-						: '1px solid #b9b9b9',
-						borderLeft: searchFilter?.search?.languageList?.includes(BookLanguage.ENGLISH) ? undefined : 'none',
-					}}
+				<Typography className={'title'}>Language</Typography>
+				<Stack className="button-group1">
+				<Button
+					className={searchFilter?.search?.languageList?.includes(BookLanguage.ENGLISH) ? 'active' : ''}
 					onClick={() => languageSelectHandler(BookLanguage.ENGLISH)}
-					>
+				>
 					ENGLISH
-					</Button>
-					<Button
-					sx={{
-						borderRadius: 0,
-						border: searchFilter?.search?.languageList?.includes(BookLanguage.KOREAN)
-						? '2px solid #181A20'
-						: '1px solid #b9b9b9',
-						borderLeft: searchFilter?.search?.languageList?.includes(BookLanguage.KOREAN) ? undefined : 'none',
-					}}
+				</Button>
+				<Button
+					className={searchFilter?.search?.languageList?.includes(BookLanguage.KOREAN) ? 'active' : ''}
 					onClick={() => languageSelectHandler(BookLanguage.KOREAN)}
-					>
+				>
 					KOREAN
-					</Button>
-					<Button
-					sx={{
-						borderRadius: 0,
-						border: searchFilter?.search?.languageList?.includes(BookLanguage.RUSSIAN)
-						? '2px solid #181A20'
-						: '1px solid #b9b9b9',
-						borderLeft: searchFilter?.search?.languageList?.includes(BookLanguage.RUSSIAN) ? undefined : 'none',
-					}}
+				</Button>
+				<Button
+					className={searchFilter?.search?.languageList?.includes(BookLanguage.RUSSIAN) ? 'active' : ''}
 					onClick={() => languageSelectHandler(BookLanguage.RUSSIAN)}
-					>
+				>
 					RUSSIAN
-					</Button>
-					<Button
-					sx={{
-						borderRadius: 0,
-						border: searchFilter?.search?.languageList?.includes(BookLanguage.UZBEK)
-						? '2px solid #181A20'
-						: '1px solid #b9b9b9',
-						borderLeft: searchFilter?.search?.languageList?.includes(BookLanguage.UZBEK) ? undefined : 'none',
-					}}
+				</Button>
+				<Button
+					className={searchFilter?.search?.languageList?.includes(BookLanguage.UZBEK) ? 'active' : ''}
 					onClick={() => languageSelectHandler(BookLanguage.UZBEK)}
-					>
+				>
 					UZBEK
-					</Button>
+				</Button>
     		 </Stack>			
     </Stack>
 				
-				<Stack className={'find-your-home'} mb={'30px'}>
+				{/* <Stack className={'find-your-home'} mb={'30px'}>
 					<Typography className={'title'}>Options</Typography>
 					<Stack className={'input-box'}>
 						<Checkbox
@@ -694,7 +635,7 @@ const Filter = (props: FilterType) => {
 							<Typography className="propert-type">Rent</Typography>
 						</label>
 					</Stack>
-				</Stack>
+				</Stack> */}
 				<Stack className={'find-your-home'}>
 					<Typography className={'title'}>Price Range</Typography>
 					<Stack className="square-year-input">
