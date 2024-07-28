@@ -12,10 +12,11 @@ import { Book } from '../../types/book/book';
 
 interface TopBookCardProps {
 	book: Book;
+	likeBookHandler: any;
 }
 
 const TopBookCard = (props: TopBookCardProps) => {
-	const { book } = props;
+	const { book, likeBookHandler  } = props;
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const user = useReactiveVar(userVar);
@@ -74,7 +75,7 @@ const TopBookCard = (props: TopBookCardProps) => {
 								<RemoveRedEyeIcon />
 							</IconButton>
 							<Typography className="view-cnt">{book?.bookViews}</Typography>
-							<IconButton color={'default'}>
+							<IconButton color={'default'} onClick={() => likeBookHandler(user, book?._id)}>
 								{book?.meLiked && book?.meLiked[0]?.myFavorite ? (
 									<FavoriteIcon style={{ color: 'red' }} />
 								) : (

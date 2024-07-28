@@ -9,8 +9,11 @@ import { BooksInquiry } from '../../types/book/book.input';
 import { Book } from '../../types/book/book';
 import TopBookCard from './TopBookCard';
 import { GET_BOOKS } from '../../../apollo/user/query';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { T } from '../../types/common';
+import { LIKE_TARGET_BOOK } from '../../../apollo/user/mutation';
+import { Message } from '../../enums/common.enum';
+import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
 
 
 interface TopBooksProps {
@@ -23,6 +26,8 @@ const TopBooks = (props: TopBooksProps) => {
 	const [topBooks, setTopBooks] = useState<Book[]>([]);
 
 	/** APOLLO REQUESTS **/
+	const [likeTargetBook] = useMutation(LIKE_TARGET_BOOK);
+
 	const {
 		loading: getBooksLoading,
 		data: getBooksData,
@@ -37,6 +42,26 @@ const TopBooks = (props: TopBooksProps) => {
 		},
 	});
 	/** HANDLERS **/
+	const likeBookHandler = async  (user: T, id: string) => {
+		try {
+			if (!id) return;
+			if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
+
+			//execute likeTargetBook Mutation
+			await likeTargetBook({
+				variables: { input: id},
+			});
+
+			//execute getBooksRefetch
+			await getBooksRefetch({ input: initialInput});
+
+			await sweetTopSmallSuccessAlert('success', 800);
+		} catch (err: any) {
+			console.log('ERROR, likeBookHandler:', err.message);
+            sweetMixinErrorAlert(err.message).then();
+			
+		}
+	};
 
 	if (device === 'mobile') {
 		return (
@@ -56,7 +81,7 @@ const TopBooks = (props: TopBooksProps) => {
 							{topBooks.map((book: Book) => {
 								return (
 									<SwiperSlide className={'top-property-slide'} key={book?._id}>
-										<TopBookCard book={book} />
+									<TopBookCard book={book} likeBookHandler={likeBookHandler} />
 									</SwiperSlide>
 								);
 							})}
@@ -99,7 +124,7 @@ const TopBooks = (props: TopBooksProps) => {
 							{topBooks.map((book: Book) => {
 								return (
 									<SwiperSlide className={'top-property-slide'} key={book?._id}>
-										<TopBookCard book={book} />
+										<TopBookCard book={book} likeBookHandler={likeBookHandler} />
 									</SwiperSlide>
 								);
 							})}

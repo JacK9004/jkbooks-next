@@ -191,7 +191,7 @@ const BookList: NextPage = ({ initialInput, ...props }: any) => {
 											count={Math.ceil(total / searchFilter.limit)}
 											onChange={handlePaginationChange}
 											shape="circular"
-											color="primary"
+											
 										/>
 									</Stack>
 								)}

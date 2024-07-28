@@ -212,14 +212,17 @@
 								}
 						}							
 				}
-				$card-width: 296px; // Card width
-				$card-height: 360px; // Card height
-				$gap: 15px; // Gap between cards
-				$main-width: 936px; // Width of the main container
+
+			//BookCard
+
+				$card-width: 220px; 
+				$card-height: 300px; 
+				$gap: 15px; 
+				$main-width: 936px; 
 				
 				.main-config {
 				  width: $main-width;
-				  margin: 0 auto; // Centering the container
+				  margin: 0 auto;
 				  display: flex;
 				  flex-direction: column;
 				  align-items: center;
@@ -227,31 +230,31 @@
 				  .list-config {
 					display: flex;
 					flex-wrap: wrap;
-					justify-content: space-between; // Aligns items with equal space between them
+					justify-content: space-between; 
 					flex-direction: row;
 					width: 100%;
 					gap: $gap;
 				
 					.card-config {
-					  width: calc((100% - 3 * #{$gap}) / 4); // Adjust the width for 4 items in a row with gap
+					  width: calc((100% - 3 * #{$gap}) / 4); 
 					  height: $card-height;
 					  margin-bottom: 7px;
 					  border-radius: 12px;
 					  background: #fff;
-					  overflow: hidden; // Ensure content doesn't overflow the card
-					  box-shadow: 0px 4px 8px 0px rgba(24, 26, 32, 0.1); // Updated shadow
+					  overflow: hidden; 
+					  box-shadow: 0px 4px 8px 0px rgba(24, 26, 32, 0.1); 
 					  transition: opacity 0.4s, transform 0.3s ease, box-shadow 0.3s ease; // Added transition for smooth hover effect
 				
 					  &:hover {
 						opacity: 1;
 						transform: scale(1.05);
-						box-shadow: 0px 8px 16px 0px rgba(24, 26, 32, 0.2); // Enhanced shadow on hover
+						box-shadow: 0px 8px 16px 0px rgba(24, 26, 32, 0.2); 
 					  }
 				
 					  .top {
 						position: relative;
 						width: 100%;
-						height: 100%; // Make the top section take the full height of the card
+						height: 100%; 
 				
 						img {
 						  width: 100%;
@@ -344,10 +347,10 @@
 						width: 442px;
 						height: 86px;
 						align-items: center;
-						gap: 20px;
+						gap: 20px;					
 						.pagination-box {
 							width: 100%;
-							align-items: center;
+							align-items: center;							
 						}
 						.total-result {
 							p {
@@ -358,6 +361,7 @@
 								font-style: normal;
 								font-weight: 275;
 								line-height: 26px;
+								
 							}
 						}
 					}

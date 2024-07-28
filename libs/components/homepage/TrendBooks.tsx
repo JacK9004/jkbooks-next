@@ -9,8 +9,11 @@ import { T } from '../../types/common';
 import { BooksInquiry } from '../../types/book/book.input';
 import { GET_BOOKS } from '../../../apollo/user/query';
 import { Book } from '../../types/book/book';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import TrendBookCard from './TrendBookCard';
+import { LIKE_TARGET_BOOK } from '../../../apollo/user/mutation';
+import { Message } from '../../enums/common.enum';
+import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
 
 
 interface TrendBooksProps {
@@ -23,6 +26,8 @@ const TrendBooks = (props: TrendBooksProps) => {
 	const [trendBooks, setTrendBooks] = useState<Book[]>([]);
 
 	/** APOLLO REQUESTS **/
+const [likeTargetBook] = useMutation(LIKE_TARGET_BOOK);
+
 const {
 	loading: getBooksLoading,
 	data: getBooksData,
@@ -38,6 +43,26 @@ const {
 });
 
 	/** HANDLERS **/
+	const likeBookHandler = async  (user: T, id: string) => {
+		try {
+			if (!id) return;
+			if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
+
+			//execute likeTargetBook Mutation
+			await likeTargetBook({
+				variables: { input: id},
+			});
+
+			//execute getBooksRefetch
+			await getBooksRefetch({ input: initialInput});
+
+			await sweetTopSmallSuccessAlert('success', 800);
+		} catch (err: any) {
+			console.log('ERROR, likeBookHandler:', err.message);
+            sweetMixinErrorAlert(err.message).then();
+			
+		}
+	};
 
 	if (trendBooks) console.log('trendBooks:', trendBooks);
 	if (!trendBooks) return null;
@@ -65,7 +90,7 @@ const {
 								{trendBooks.map((book: Book) => {
 									return (
 										<SwiperSlide key={book._id} className={'trend-property-slide'}>
-											<TrendBookCard book={book} />
+											<TrendBookCard book={book}  likeBookHandler={likeBookHandler} />
 										</SwiperSlide>
 									);
 								})}
@@ -114,7 +139,7 @@ const {
 								{trendBooks.map((book: Book) => {
 									return (
 										<SwiperSlide key={book._id} className={'trend-property-slide'}>
-											<TrendBookCard book={book} />
+											<TrendBookCard book={book}  likeBookHandler={likeBookHandler} />
 										</SwiperSlide>
 									);
 								})}
