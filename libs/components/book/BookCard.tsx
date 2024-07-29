@@ -5,10 +5,10 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import Link from 'next/link';
 import { formatterStr } from '../../utils';
-import { REACT_APP_API_URL } from '../../config';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import { REACT_APP_API_URL, topBookRank } from '../../config';
 import { Book } from '../../types/book/book';
 
 interface BookCardType {
@@ -41,7 +41,7 @@ const BookCard: React.FC<BookCardType> = (props) => {
           >
             <img src={imagePath} alt={book.bookTitle} />
           </Link>
-          {book?.bookRank > 0 && (
+					{book && book?.bookRank > topBookRank && (
             <div className="top-badge">
               <img src="/img/icons/electricity.svg" alt="Top Badge" />
               <Typography>TOP</Typography>

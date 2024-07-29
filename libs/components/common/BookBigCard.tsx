@@ -3,7 +3,7 @@ import { Stack, Box, Divider, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { REACT_APP_API_URL } from '../../config';
+import { REACT_APP_API_URL, topBookRank } from '../../config';
 import { formatterStr } from '../../utils';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
@@ -13,10 +13,12 @@ import { Book } from '../../types/book/book';
 
 interface BookBigCardProps {
 	book: Book;
+	likeBookHandler?:any
+
 }
 
 const BookBigCard = (props: BookBigCardProps) => {
-	const { book } = props;
+	const { book, likeBookHandler } = props;
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
 	const router = useRouter();
@@ -36,7 +38,7 @@ const BookBigCard = (props: BookBigCardProps) => {
 					className={'card-img'}
 					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${book?.bookImages?.[0]})` }}
 				>
-					{book?.bookRank && book?.bookRank >= 50 && (
+					{book && book?.bookRank >= topBookRank && (
 						<div className={'status'}>
 							<img src="/img/icons/electricity.svg" alt="" />
 							<span>top</span>
@@ -77,6 +79,7 @@ const BookBigCard = (props: BookBigCardProps) => {
 								color={'default'}
 								onClick={(e) => {
 									e.stopPropagation();
+									likeBookHandler(user, book?._id)
 								}}
 							>
 								{book?.meLiked && book?.meLiked[0]?.myFavorite ? (

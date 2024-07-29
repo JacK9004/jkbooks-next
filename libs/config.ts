@@ -18,4 +18,5 @@ export const Messages = {
 	error5: 'Only images with jpeg, jpg, png format allowed!',
 };
 
-const topBookRank = 50;
+
+export const topBookRank= 3;

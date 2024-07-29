@@ -4,7 +4,7 @@ import IconButton from '@mui/material/IconButton';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import { REACT_APP_API_URL } from '../../config';
+import { REACT_APP_API_URL, topBookRank } from '../../config';
 import { useRouter } from 'next/router';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
@@ -30,7 +30,7 @@ const PopularBookCard = (props: PopularBookCardProps) => {
 					className={'card-img'}
 					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${book?.bookImages[0]})` }}
 				>
-					{book?.bookRank && book?.bookRank >= 50 ? (
+					{book && book?.bookRank >= topBookRank ? (
 						<div className={'status'}>
 							<img src="/img/icons/electricity.svg" alt="" />
 							<span>top</span>
@@ -63,7 +63,7 @@ const PopularBookCard = (props: PopularBookCardProps) => {
 					className={'card-img'}
 					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${book?.bookImages[0]})` }}
 				>
-					{book?.bookRank && book?.bookRank >= 50 ? (
+					{book && book?.bookRank >= topBookRank ? (
 						<div className={'status'}>
 							<img src="/img/icons/electricity.svg" alt="" />
 							<span>top</span>
