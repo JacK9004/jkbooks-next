@@ -28,7 +28,7 @@ import 'swiper/css/pagination';
 import { Book } from '../../libs/types/book/book';
 import BookBigCard from '../../libs/components/common/BookBigCard';
 import { LIKE_TARGET_BOOK } from '../../apollo/user/mutation';
-import { GET_BOOK, GET_BOOKS } from '../../apollo/user/query';
+import { GET_BOOK, GET_BOOKS, GET_COMMENTS } from '../../apollo/user/query';
 import { T } from '../../libs/types/common';
 import { Direction, Message } from '../../libs/enums/common.enum';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
@@ -90,8 +90,7 @@ const BookDetail: NextPage = ({ initialComment, ...props }: any) => {
 				page: 1,
 				limit: 4,
 				sort: 'createdAt',
-				direction: Direction.DESC,
-				search: { collectionList: [book?.bookCollection] },
+				search: { collectionList: book?.bookCollection ? [book?.bookCollection] : [] },
 			},
 		},
 		skip: !bookId && !book,
@@ -100,6 +99,24 @@ const BookDetail: NextPage = ({ initialComment, ...props }: any) => {
 			if (data?.getBooks?.list) setDestinationBooks(data?.getBooks?.list);
 		},
 	});
+
+	const {
+		loading: getCommentsLoading,
+		data: getCommentsData,
+		error: getCommentsError,
+		refetch: getCommentsRefetch,
+	} = useQuery(GET_COMMENTS, {
+		fetchPolicy: 'cache-and-network',
+		variables: {
+			input: initialComment,
+		},
+		skip: !commentInquiry.search.commentRefId,
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			if (data?.getComments?.list) setBookComments(data?.getComments?.list);
+			setCommentTotal(data?.getComments?.metaCounter[0]?.total ?? 0);
+		},
+	});	
 
 	/** LIFECYCLES **/
 	useEffect(() => {
@@ -118,7 +135,11 @@ const BookDetail: NextPage = ({ initialComment, ...props }: any) => {
 		}
 	}, [router]);
 
-	useEffect(() => {}, [commentInquiry]);
+	useEffect(() => {
+		if (commentInquiry.search.commentRefId) {
+			getCommentsRefetch({ input: commentInquiry });
+		}
+	}, [commentInquiry]);
 
 	/** HANDLERS **/
 	const changeImageHandler = (image: string) => {
@@ -131,7 +152,7 @@ const BookDetail: NextPage = ({ initialComment, ...props }: any) => {
 			if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
 			//execute likeTargetBook Mutation
 			await likeTargetBook({ variables: { input: id } });
-			await getBookRefetch({input: id})
+			await getBookRefetch({ input: id });
 			await getBooksRefetch({
 				input: {
 					page: 1,
@@ -177,7 +198,7 @@ const BookDetail: NextPage = ({ initialComment, ...props }: any) => {
 										const imagePath: string = `${REACT_APP_API_URL}/${subImg}`;
 										return (
 											<Stack className={'sub-img-box'} onClick={() => changeImageHandler(subImg)} key={subImg}>
-												{/* <img src={imagePath} alt={'sub-image'} /> */}
+												 <img src={imagePath} alt={'sub-image'} /> 
 											</Stack>
 										);
 									})}
