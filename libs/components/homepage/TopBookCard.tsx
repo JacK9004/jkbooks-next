@@ -22,6 +22,10 @@ const TopBookCard = (props: TopBookCardProps) => {
 	const user = useReactiveVar(userVar);
 
 	/** HANDLERS **/
+	const pushDetailHandler = async (bookId: string) => {
+		console.log('ID:', bookId);
+		await router.push({ pathname: '/book/detail', query: { id: bookId } });
+	};
 
 	if (device === 'mobile') {
 		return (
@@ -30,11 +34,12 @@ const TopBookCard = (props: TopBookCardProps) => {
 					component={'div'}
 					className={'card-img'}
 					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${book?.bookImages[0]})` }}
+					onClick={() => pushDetailHandler(book._id)}
 				>
 					<div>${book?.bookPrice}</div>
 				</Box>
 				<Box component={'div'} className={'info'}>
-					<strong className={'title'}>{book?.bookTitle}</strong>
+				<strong className={'title'}	onClick={() => pushDetailHandler(book._id)}>{book?.bookTitle}</strong>
 					<p className={'desc'}>{book?.bookAuthor}</p>
 					<Divider sx={{ mt: '15px', mb: '17px' }} />
 					<div className={'bott'}>
@@ -43,7 +48,7 @@ const TopBookCard = (props: TopBookCardProps) => {
 								<RemoveRedEyeIcon />
 							</IconButton>
 							<Typography className="view-cnt">{book?.bookViews}</Typography>
-							<IconButton color={'default'}>
+							<IconButton color={'default'}  onClick={()=> likeBookHandler(user, book?._id)}>
 								{book?.meLiked && book?.meLiked[0]?.myFavorite ? (
 									<FavoriteIcon style={{ color: 'red' }} />
 								) : (
@@ -63,10 +68,11 @@ const TopBookCard = (props: TopBookCardProps) => {
 					component={'div'}
 					className={'card-img'}
 					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${book?.bookImages[0]})` }}
+					onClick={() => pushDetailHandler(book._id)}
 				>
 				</Box>
 				<Box component={'div'} className={'info'}>
-					<strong className={'title'}>{book?.bookTitle}</strong>
+				<strong className={'title'}	onClick={() => pushDetailHandler(book._id)}>{book?.bookTitle}</strong>
 					<p className={'desc'}>{book?.bookAuthor}</p>
 					{/* <div>${book?.bookPrice}</div> */}
 					<div className={'bott'}>
@@ -75,7 +81,7 @@ const TopBookCard = (props: TopBookCardProps) => {
 								<RemoveRedEyeIcon />
 							</IconButton>
 							<Typography className="view-cnt">{book?.bookViews}</Typography>
-							<IconButton color={'default'} onClick={() => likeBookHandler(user, book?._id)}>
+							<IconButton color={'default'}  onClick={()=> likeBookHandler(user, book?._id)}>
 								{book?.meLiked && book?.meLiked[0]?.myFavorite ? (
 									<FavoriteIcon style={{ color: 'red' }} />
 								) : (

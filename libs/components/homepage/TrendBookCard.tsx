@@ -23,6 +23,10 @@ const TrendBookCard = (props: TrendBookCardProps) => {
 	const user = useReactiveVar(userVar);
 
 	/** HANDLERS **/
+	const pushDetailHandler = async (bookId: string) => {
+		console.log('ID:', bookId);
+		await router.push({pathname:'/book/detail', query:{id:bookId}})
+	};
 
 	if (device === 'mobile') {
 		return (
@@ -31,11 +35,14 @@ const TrendBookCard = (props: TrendBookCardProps) => {
 					component={'div'}
 					className={'card-img'}
 					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${book?.bookImages[0]})` }}
+					onClick={() => pushDetailHandler(book._id)}
 				>
 		
 				</Box>
 				<Box component={'div'} className={'info'}>
-					<strong className={'title'}>{book.bookTitle}</strong>
+				<strong className={'title'} onClick={() => pushDetailHandler(book._id)}>
+						{book.bookTitle}
+					</strong>
 					<Divider sx={{ mt: '15px', mb: '17px' }} />
 				</Box>
 			</Stack>
@@ -47,10 +54,16 @@ const TrendBookCard = (props: TrendBookCardProps) => {
 					component={'div'}
 					className={'card-img'}
 					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${book?.bookImages[0]})` }}
+					onClick={() => pushDetailHandler(book._id)}
 				>
 				</Box>
 				<Box component={'div'}>
-					<strong className={'title'}>{book.bookTitle}</strong>
+				<strong
+						className={'title'}
+						onClick={() => pushDetailHandler(book._id)}
+					>
+						{book.bookTitle}{' '}
+					</strong>
 					<p className={'auth'}>{book.bookAuthor ?? 'no author'}</p>
 					<div className={'bott'}>
 						<div className="view-like-box">

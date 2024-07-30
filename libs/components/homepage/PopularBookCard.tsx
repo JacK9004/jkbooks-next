@@ -21,6 +21,11 @@ const PopularBookCard = (props: PopularBookCardProps) => {
 	const user = useReactiveVar(userVar);
 
 	/** HANDLERS **/
+	const pushDetailHandler = async (bookId: string) => {
+		console.log('ID:', bookId);
+		await router.push({ pathname: '/book/detail', query: { id: bookId } });
+	};
+
 
 	if (device === 'mobile') {
 		return (
@@ -29,7 +34,8 @@ const PopularBookCard = (props: PopularBookCardProps) => {
 					component={'div'}
 					className={'card-img'}
 					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${book?.bookImages[0]})` }}
-				>
+					onClick={() => pushDetailHandler(book._id)}
+>
 					{book && book?.bookRank >= topBookRank ? (
 						<div className={'status'}>
 							<img src="/img/icons/electricity.svg" alt="" />
@@ -40,7 +46,9 @@ const PopularBookCard = (props: PopularBookCardProps) => {
 					)}
 				</Box>
 				<Box component={'div'} className={'info'}>
-					<strong className={'title'}>{book.bookTitle}</strong>
+				<strong className={'title'} onClick={() => pushDetailHandler(book._id)}>
+						{book.bookTitle}
+					</strong>
 					<p className={'desc'}>{book.bookAuthor}</p>
 					<Divider sx={{ mt: '15px', mb: '17px' }} />
 					<div className={'bott'}>
@@ -62,6 +70,7 @@ const PopularBookCard = (props: PopularBookCardProps) => {
 					component={'div'}
 					className={'card-img'}
 					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${book?.bookImages[0]})` }}
+					onClick={() => pushDetailHandler(book._id)}
 				>
 					{book && book?.bookRank >= topBookRank ? (
 						<div className={'status'}>
@@ -73,7 +82,9 @@ const PopularBookCard = (props: PopularBookCardProps) => {
 					)}
 				</Box>
 				<Box component={'div'} className={'info'}>
-					<strong className={'title'}>{book.bookTitle}</strong>
+				<strong className={'title'} onClick={() => pushDetailHandler(book._id)}>
+						{book.bookTitle}
+					</strong>
 					<p className={'auth'}>{book.bookAuthor}</p>
 						<div className={'bott'}>
 						<div className="view-like-box">
