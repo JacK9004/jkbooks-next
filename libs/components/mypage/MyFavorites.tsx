@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import { NextPage } from 'next';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Pagination, Stack, Typography } from '@mui/material';
-import PropertyCard from '../book/PropertyCard';
-import { Property } from '../../types/book/property';
+import { Book } from '../../types/book/book';
 import { T } from '../../types/common';
+import BookCard from '../book/BookCard';
+
+
 
 const MyFavorites: NextPage = () => {
 	const device = useDeviceDetect();
-	const [myFavorites, setMyFavorites] = useState<Property[]>([]);
+	const [myFavorites, setMyFavorites] = useState<Book[]>([]);
 	const [total, setTotal] = useState<number>(0);
 	const [searchFavorites, setSearchFavorites] = useState<T>({ page: 1, limit: 6 });
 
@@ -32,8 +34,8 @@ const MyFavorites: NextPage = () => {
 				</Stack>
 				<Stack className="favorites-list-box">
 					{myFavorites?.length ? (
-						myFavorites?.map((property: Property) => {
-							return <PropertyCard property={property} myFavorites={true} />;
+						myFavorites?.map((book: Book) => {
+							return <BookCard book={book} myFavorites={true} />;
 						})
 					) : (
 						<div className={'no-data'}>
@@ -55,7 +57,7 @@ const MyFavorites: NextPage = () => {
 						</Stack>
 						<Stack className="total-result">
 							<Typography>
-								Total {total} favorite propert{total > 1 ? 'ies' : 'y'}
+								Total {total} favorite book{total > 1 ? 'ies' : 'y'}
 							</Typography>
 						</Stack>
 					</Stack>

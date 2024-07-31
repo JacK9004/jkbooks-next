@@ -2,46 +2,43 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button, Stack, Typography } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { PropertyLocation, PropertyType } from '../../enums/property.enum';
-import { REACT_APP_API_URL, propertySquare } from '../../config';
-import { PropertyInput } from '../../types/book/property.input';
 import axios from 'axios';
 import { getJwtToken } from '../../auth';
 import { sweetMixinErrorAlert } from '../../sweetAlert';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
+import { BookInput } from '../../types/book/book.input';
+import { BookCollection, BookType } from '../../enums/book.enum';
+import { REACT_APP_API_URL } from '../../config';
 
-const AddProperty = ({ initialValues, ...props }: any) => {
+
+const AddBook = ({ initialValues, ...props }: any) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const inputRef = useRef<any>(null);
-	const [insertPropertyData, setInsertPropertyData] = useState<PropertyInput>(initialValues);
-	const [propertyType, setPropertyType] = useState<PropertyType[]>(Object.values(PropertyType));
-	const [propertyLocation, setPropertyLocation] = useState<PropertyLocation[]>(Object.values(PropertyLocation));
+	const [insertBookData, setInsertBookData] = useState<BookInput>(initialValues);
+	const [bookType, setBookType] = useState<BookType[]>(Object.values(BookType));
+	const [bookCollection, setBookCollection] = useState<BookCollection[]>(Object.values(BookCollection));
 	const token = getJwtToken();
 	const user = useReactiveVar(userVar);
 
 	/** APOLLO REQUESTS **/
-	let getPropertyData: any, getPropertyLoading: any;
+	let getBookData: any, getBookLoading: any;
 
 	/** LIFECYCLES **/
 	useEffect(() => {
-		setInsertPropertyData({
-			...insertPropertyData,
-			propertyTitle: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyTitle : '',
-			propertyPrice: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyPrice : 0,
-			propertyType: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyType : '',
-			propertyLocation: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyLocation : '',
-			propertyAddress: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyAddress : '',
-			propertyBarter: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyBarter : false,
-			propertyRent: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyRent : false,
-			propertyRooms: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyRooms : 0,
-			propertyBeds: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyBeds : 0,
-			propertySquare: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertySquare : 0,
-			propertyDesc: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyDesc : '',
-			propertyImages: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyImages : [],
+		setInsertBookData({
+			...insertBookData,
+			bookTitle: getBookData?.getBook ? getBookData?.getBook?.BookTitle : '',
+			bookPrice: getBookData?.getProperty ? getBookData?.getBook?.bookPrice : 0,
+			bookType: getBookData?.getBook ? getBookData?.getBook?.bookType : '',
+			bookCollection: getBookData?.getProperty ? getBookData?.getBook?.bookCollection : '',
+			bookAuthor: getBookData?.getBook ? getBookData?.getBook?.bookAuthor : '',
+			bookISBN: getBookData?.getBook ? getBookData?.getBook?.bookISBN : '',
+			bookDesc: getBookData?.getBook ? getBookData?.getBook?.bookDesc : '',
+			bookImages: getBookData?.getBook ? getBookData?.getBook?.BookImages : [],
 		});
-	}, [getPropertyLoading, getPropertyData]);
+	}, [getBookLoading, getBookData]);
 
 	/** HANDLERS **/
 	async function uploadImages() {
@@ -60,7 +57,7 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 				  }`,
 					variables: {
 						files: [null, null, null, null, null],
-						target: 'property',
+						target: 'book',
 					},
 				}),
 			);
@@ -89,7 +86,7 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 			const responseImages = response.data.data.imagesUploader;
 
 			console.log('+responseImages: ', responseImages);
-			setInsertPropertyData({ ...insertPropertyData, propertyImages: responseImages });
+			setInsertBookData({ ...insertBookData, bookImages: responseImages });
 		} catch (err: any) {
 			console.log('err: ', err.message);
 			await sweetMixinErrorAlert(err.message);
@@ -98,32 +95,28 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 
 	const doDisabledCheck = () => {
 		if (
-			insertPropertyData.propertyTitle === '' ||
-			insertPropertyData.propertyPrice === 0 || // @ts-ignore
-			insertPropertyData.propertyType === '' || // @ts-ignore
-			insertPropertyData.propertyLocation === '' || // @ts-ignore
-			insertPropertyData.propertyAddress === '' || // @ts-ignore
-			insertPropertyData.propertyBarter === '' || // @ts-ignore
-			insertPropertyData.propertyRent === '' ||
-			insertPropertyData.propertyRooms === 0 ||
-			insertPropertyData.propertyBeds === 0 ||
-			insertPropertyData.propertySquare === 0 ||
-			insertPropertyData.propertyDesc === '' ||
-			insertPropertyData.propertyImages.length === 0
+			insertBookData.bookTitle === '' ||
+			insertBookData.bookPrice === 0 || // @ts-ignore
+			insertBookData.bookType === '' || // @ts-ignore
+			insertBookData.bookCollection === '' || // @ts-ignore
+			insertBookData.bookAuthor === '' || // @ts-ignore
+			insertBookData.bookISBN === '' || // @ts-ignore
+			insertBookData.bookDesc === '' ||
+			insertBookData.bookImages.length === 0
 		) {
 			return true;
 		}
 	};
 
-	const insertPropertyHandler = useCallback(async () => {}, [insertPropertyData]);
+	const insertBookHandler = useCallback(async () => {}, [insertBookData]);
 
-	const updatePropertyHandler = useCallback(async () => {}, [insertPropertyData]);
+	const updateBookHandler = useCallback(async () => {}, [insertBookData]);
 
 	if (user?.memberType !== 'AGENT') {
 		router.back();
 	}
 
-	console.log('+insertPropertyData', insertPropertyData);
+	console.log('+insertBookData', insertBookData);
 
 	if (device === 'mobile') {
 		return <div>ADD NEW PROPERTY MOBILE PAGE</div>;
@@ -144,9 +137,9 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 									type="text"
 									className="description-input"
 									placeholder={'Title'}
-									value={insertPropertyData.propertyTitle}
+									value={insertBookData.bookTitle}
 									onChange={({ target: { value } }) =>
-										setInsertPropertyData({ ...insertPropertyData, propertyTitle: value })
+										setInsertBookData({ ...insertBookData, bookTitle: value })
 									}
 								/>
 							</Stack>
@@ -158,9 +151,9 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 										type="text"
 										className="description-input"
 										placeholder={'Price'}
-										value={insertPropertyData.propertyPrice}
+										value={insertBookData.bookPrice}
 										onChange={({ target: { value } }) =>
-											setInsertPropertyData({ ...insertPropertyData, propertyPrice: parseInt(value) })
+											setInsertBookData({ ...insertBookData, bookPrice: parseInt(value) })
 										}
 									/>
 								</Stack>
@@ -168,18 +161,18 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 									<Typography className="title">Select Type</Typography>
 									<select
 										className={'select-description'}
-										defaultValue={insertPropertyData.propertyType || 'select'}
-										value={insertPropertyData.propertyType || 'select'}
+										defaultValue={insertBookData.bookType || 'select'}
+										value={insertBookData.bookType || 'select'}
 										onChange={({ target: { value } }) =>
 											// @ts-ignore
-											setInsertPropertyData({ ...insertPropertyData, propertyType: value })
+											setInsertBookData({ ...insertBookData, bookType: value })
 										}
 									>
 										<>
 											<option selected={true} disabled={true} value={'select'}>
 												Select
 											</option>
-											{propertyType.map((type: any) => (
+											{bookType.map((type: any) => (
 												<option value={`${type}`} key={type}>
 													{type}
 												</option>
@@ -196,20 +189,20 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 									<Typography className="title">Select Location</Typography>
 									<select
 										className={'select-description'}
-										defaultValue={insertPropertyData.propertyLocation || 'select'}
-										value={insertPropertyData.propertyLocation || 'select'}
+										defaultValue={insertBookData.bookCollection || 'select'}
+										value={insertBookData.bookCollection || 'select'}
 										onChange={({ target: { value } }) =>
 											// @ts-ignore
-											setInsertPropertyData({ ...insertPropertyData, propertyLocation: value })
+											setInsertBookData({ ...insertBookData, bookCollection: value })
 										}
 									>
 										<>
 											<option selected={true} disabled={true} value={'select'}>
 												Select
 											</option>
-											{propertyLocation.map((location: any) => (
-												<option value={`${location}`} key={location}>
-													{location}
+											{bookCollection.map((collection: any) => (
+												<option value={`${collection}`} key={collection}>
+													{collection}
 												</option>
 											))}
 										</>
@@ -218,26 +211,26 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 									<img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
 								</Stack>
 								<Stack className="price-year-after-price">
-									<Typography className="title">Address</Typography>
+									<Typography className="title">Category</Typography>
 									<input
 										type="text"
 										className="description-input"
 										placeholder={'Address'}
-										value={insertPropertyData.propertyAddress}
+										value={insertBookData.bookAuthor}
 										onChange={({ target: { value } }) =>
-											setInsertPropertyData({ ...insertPropertyData, propertyAddress: value })
+											setInsertBookData({ ...insertBookData, bookAuthor: value })
 										}
 									/>
 								</Stack>
 							</Stack>
 
-							<Stack className="config-row">
+							{/* <Stack className="config-row">
 								<Stack className="price-year-after-price">
 									<Typography className="title">Barter</Typography>
 									<select
 										className={'select-description'}
-										value={insertPropertyData.propertyBarter ? 'yes' : 'no'}
-										defaultValue={insertPropertyData.propertyBarter ? 'yes' : 'no'}
+										value={insertBookData.bookBarter ? 'yes' : 'no'}
+										defaultValue={insertBookData.bookBarter ? 'yes' : 'no'}
 										onChange={({ target: { value } }) =>
 											setInsertPropertyData({ ...insertPropertyData, propertyBarter: value === 'yes' })
 										}
@@ -270,14 +263,14 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 									<div className={'divider'}></div>
 									<img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
 								</Stack>
-							</Stack>
+							</Stack> */}
 
-							<Stack className="config-row">
+							{/* <Stack className="config-row">
 								<Stack className="price-year-after-price">
 									<Typography className="title">Rooms</Typography>
 									<select
 										className={'select-description'}
-										value={insertPropertyData.propertyRooms || 'select'}
+										value={insertBookData.propertyRooms || 'select'}
 										defaultValue={insertPropertyData.propertyRooms || 'select'}
 										onChange={({ target: { value } }) =>
 											setInsertPropertyData({ ...insertPropertyData, propertyRooms: parseInt(value) })
@@ -335,24 +328,24 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 									<div className={'divider'}></div>
 									<img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
 								</Stack>
-							</Stack>
+							</Stack> */}
 
-							<Typography className="property-title">Property Description</Typography>
+							<Typography className="property-title">Book Description</Typography>
 							<Stack className="config-column">
 								<Typography className="title">Description</Typography>
 								<textarea
 									name=""
 									id=""
 									className="description-text"
-									value={insertPropertyData.propertyDesc}
+									value={insertBookData.bookDesc}
 									onChange={({ target: { value } }) =>
-										setInsertPropertyData({ ...insertPropertyData, propertyDesc: value })
+										setInsertBookData({ ...insertBookData, bookDesc: value })
 									}
 								></textarea>
 							</Stack>
 						</Stack>
 
-						<Typography className="upload-title">Upload photos of your property</Typography>
+						<Typography className="upload-title">Upload photos of your book</Typography>
 						<Stack className="images-box">
 							<Stack className="upload-box">
 								<svg xmlns="http://www.w3.org/2000/svg" width="121" height="120" viewBox="0 0 121 120" fill="none">
@@ -431,7 +424,7 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 								</Button>
 							</Stack>
 							<Stack className="gallery-box">
-								{insertPropertyData?.propertyImages.map((image: string) => {
+								{insertBookData?.bookImages.map((image: string) => {
 									const imagePath: string = `${REACT_APP_API_URL}/${image}`;
 									return (
 										<Stack className="image-box">
@@ -443,12 +436,12 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 						</Stack>
 
 						<Stack className="buttons-row">
-							{router.query.propertyId ? (
-								<Button className="next-button" disabled={doDisabledCheck()} onClick={updatePropertyHandler}>
+							{router.query.bookId ? (
+								<Button className="next-button" disabled={doDisabledCheck()} onClick={updateBookHandler}>
 									<Typography className="next-button-text">Save</Typography>
 								</Button>
 							) : (
-								<Button className="next-button" disabled={doDisabledCheck()} onClick={insertPropertyHandler}>
+								<Button className="next-button" disabled={doDisabledCheck()} onClick={insertBookHandler}>
 									<Typography className="next-button-text">Save</Typography>
 								</Button>
 							)}
@@ -460,21 +453,17 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 	}
 };
 
-AddProperty.defaultProps = {
+AddBook.defaultProps = {
 	initialValues: {
-		propertyTitle: '',
-		propertyPrice: 0,
-		propertyType: '',
-		propertyLocation: '',
-		propertyAddress: '',
-		propertyBarter: false,
-		propertyRent: false,
-		propertyRooms: 0,
-		propertyBeds: 0,
-		propertySquare: 0,
-		propertyDesc: '',
-		propertyImages: [],
+		bookTitle: '',
+		bookPrice: 0,
+		bookType: '',
+		bookCollection: '',
+		bookAuthor: '',
+		bookISBN: '',
+		bookDesc: '',
+		bookImages: [],
 	},
 };
 
-export default AddProperty;
+export default AddBook;

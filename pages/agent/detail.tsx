@@ -2,22 +2,22 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
-import PropertyBigCard from '../../libs/components/common/PropertyBigCard';
 import ReviewCard from '../../libs/components/agent/ReviewCard';
 import { Box, Button, Pagination, Stack, Typography } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import { useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
-import { Property } from '../../libs/types/book/property';
 import { Member } from '../../libs/types/member/member';
 import { sweetErrorHandling } from '../../libs/sweetAlert';
 import { userVar } from '../../apollo/store';
-import { PropertiesInquiry } from '../../libs/types/book/property.input';
 import { CommentInput, CommentsInquiry } from '../../libs/types/comment/comment.input';
 import { Comment } from '../../libs/types/comment/comment';
 import { CommentGroup } from '../../libs/enums/comment.enum';
 import { REACT_APP_API_URL } from '../../libs/config';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { Book } from '../../libs/types/book/book';
+import { BooksInquiry } from '../../libs/types/book/book.input';
+import BookBigCard from '../../libs/components/common/BookBigCard';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -31,9 +31,9 @@ const AgentDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 	const user = useReactiveVar(userVar);
 	const [mbId, setMbId] = useState<string | null>(null);
 	const [agent, setAgent] = useState<Member | null>(null);
-	const [searchFilter, setSearchFilter] = useState<PropertiesInquiry>(initialInput);
-	const [agentProperties, setAgentProperties] = useState<Property[]>([]);
-	const [propertyTotal, setPropertyTotal] = useState<number>(0);
+	const [searchFilter, setSearchFilter] = useState<BooksInquiry>(initialInput);
+	const [agentBooks, setAgentBooks] = useState<Book[]>([]);
+	const [bookTotal, setBookTotal] = useState<number>(0);
 	const [commentInquiry, setCommentInquiry] = useState<CommentsInquiry>(initialComment);
 	const [agentComments, setAgentComments] = useState<Comment[]>([]);
 	const [commentTotal, setCommentTotal] = useState<number>(0);
@@ -62,7 +62,7 @@ const AgentDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 		}
 	};
 
-	const propertyPaginationChangeHandler = async (event: ChangeEvent<unknown>, value: number) => {
+	const bookPaginationChangeHandler = async (event: ChangeEvent<unknown>, value: number) => {
 		searchFilter.page = value;
 		setSearchFilter({ ...searchFilter });
 	};
@@ -100,34 +100,34 @@ const AgentDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 					</Stack>
 					<Stack className={'agent-home-list'}>
 						<Stack className={'card-wrap'}>
-							{agentProperties.map((property: Property) => {
+							{agentBooks.map((book: Book) => {
 								return (
-									<div className={'wrap-main'} key={property?._id}>
-										<PropertyBigCard property={property} key={property?._id} />
+									<div className={'wrap-main'} key={book?._id}>
+										<BookBigCard book={book} key={book?._id} />
 									</div>
 								);
 							})}
 						</Stack>
 						<Stack className={'pagination'}>
-							{propertyTotal ? (
+							{bookTotal ? (
 								<>
 									<Stack className="pagination-box">
 										<Pagination
 											page={searchFilter.page}
-											count={Math.ceil(propertyTotal / searchFilter.limit) || 1}
-											onChange={propertyPaginationChangeHandler}
+											count={Math.ceil(bookTotal / searchFilter.limit) || 1}
+											onChange={bookPaginationChangeHandler}
 											shape="circular"
 											color="primary"
 										/>
 									</Stack>
 									<span>
-										Total {propertyTotal} propert{propertyTotal > 1 ? 'ies' : 'y'} available
+										Total {bookTotal} book{bookTotal > 1 ? 'ies' : 'y'} available
 									</span>
 								</>
 							) : (
 								<div className={'no-data'}>
 									<img src="/img/icons/icoAlert.svg" alt="" />
-									<p>No properties found!</p>
+									<p>No books found!</p>
 								</div>
 							)}
 						</Stack>

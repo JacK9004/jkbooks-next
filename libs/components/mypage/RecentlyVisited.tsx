@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { NextPage } from 'next';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Pagination, Stack, Typography } from '@mui/material';
-import PropertyCard from '../book/PropertyCard';
-import { Property } from '../../types/book/property';
+import { Book } from '../../types/book/book';
 import { T } from '../../types/common';
+import BookCard from '../book/BookCard';
+
 
 const RecentlyVisited: NextPage = () => {
 	const device = useDeviceDetect();
-	const [recentlyVisited, setRecentlyVisited] = useState<Property[]>([]);
+	const [recentlyVisited, setRecentlyVisited] = useState<Book[]>([]);
 	const [total, setTotal] = useState<number>(0);
 	const [searchVisited, setSearchVisited] = useState<T>({ page: 1, limit: 6 });
 
@@ -32,13 +33,13 @@ const RecentlyVisited: NextPage = () => {
 				</Stack>
 				<Stack className="favorites-list-box">
 					{recentlyVisited?.length ? (
-						recentlyVisited?.map((property: Property) => {
-							return <PropertyCard property={property} recentlyVisited={true} />;
+						recentlyVisited?.map((book: Book) => {
+							return <BookCard book={book} recentlyVisited={true} />;
 						})
 					) : (
 						<div className={'no-data'}>
 							<img src="/img/icons/icoAlert.svg" alt="" />
-							<p>No Recently Visited Properties found!</p>
+							<p>No Recently Visited Books found!</p>
 						</div>
 					)}
 				</Stack>
@@ -55,7 +56,7 @@ const RecentlyVisited: NextPage = () => {
 						</Stack>
 						<Stack className="total-result">
 							<Typography>
-								Total {total} recently visited propert{total > 1 ? 'ies' : 'y'}
+								Total {total} recently visited book{total > 1 ? 'ies' : 'y'}
 							</Typography>
 						</Stack>
 					</Stack>
