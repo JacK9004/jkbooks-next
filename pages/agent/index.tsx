@@ -2,7 +2,7 @@ import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
-import { Stack, Box, Button, Pagination } from '@mui/material';
+import { Stack, Box, Button, Pagination, TextField } from '@mui/material';
 import { Menu, MenuItem } from '@mui/material';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import AgentCard from '../../libs/components/common/AgentCard';
@@ -72,7 +72,7 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
 			if (!user._id) throw new Error(Messages.error2);
 			await likeTargetMember({ variables: { input: id } });
 			await getAgentsRefetch({ input: searchFilter });
-			await sweetTopSmallSuccessAlert('success', 800);
+			await sweetTopSmallSuccessAlert('Success', 800);
 		} catch (err: any) {
 			console.log('Error, likeMemberHandler:', err.message);
 			sweetMixinErrorAlert(err.message).then();
@@ -96,7 +96,7 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
 				break;
 			case 'old':
 				setSearchFilter({ ...searchFilter, sort: 'createdAt', direction: 'ASC' });
-				setFilterSortName('Oldest order');
+				setFilterSortName('Oldest');
 				break;
 			case 'likes':
 				setSearchFilter({ ...searchFilter, sort: 'memberLikes', direction: 'DESC' });
@@ -127,24 +127,27 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
 				<Stack className={'container'}>
 					<Stack className={'filter'}>
 						<Box component={'div'} className={'left'}>
-							<input
+							<TextField
 								type="text"
-								placeholder={'Search for an agent'}
+								className={'search-input'}
+								placeholder={'Search for a publisher'}
 								value={searchText}
-								onChange={(e: any) => setSearchText(e.target.value)}
-								onKeyDown={(event: any) => {
-									if (event.key == 'Enter') {
+								onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchText(e.target.value)}
+								onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
+									if (event.key === 'Enter') {
 										setSearchFilter({
 											...searchFilter,
 											search: { ...searchFilter.search, text: searchText },
 										});
 									}
 								}}
+								variant="outlined"
+								fullWidth
 							/>
 						</Box>
 						<Box component={'div'} className={'right'}>
-							<span>Sort by</span>
-							<div>
+							<span className={'sort-label'}>Sort by</span>
+							<div className={'sort-dropdown'}>
 								<Button onClick={sortingClickHandler} endIcon={<KeyboardArrowDownRoundedIcon />}>
 									{filterSortName}
 								</Button>
@@ -172,9 +175,9 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
 								<p>No Agents found!</p>
 							</div>
 						) : (
-							agents.map((agent: Member) => {
-								return <AgentCard agent={agent} key={agent._id} likeMemberHandler={likeMemberHandler} />;
-							})
+							agents.map((agent: Member) => (
+								<AgentCard agent={agent} key={agent._id} likeMemberHandler={likeMemberHandler} />
+							))
 						)}
 					</Stack>
 					<Stack className={'pagination'}>
@@ -207,7 +210,7 @@ const AgentList: NextPage = ({ initialInput, ...props }: any) => {
 AgentList.defaultProps = {
 	initialInput: {
 		page: 1,
-		limit: 10,
+		limit: 6,
 		sort: 'createdAt',
 		direction: 'DESC',
 		search: {},

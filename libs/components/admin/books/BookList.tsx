@@ -157,16 +157,25 @@ export const BookPanelList = (props: BookPanelListType) => {
 									<TableRow hover key={book?._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
 										<TableCell align="left">{book._id}</TableCell>
 										<TableCell align="left" className={'name'}>
-											<Stack direction={'row'}>
-												<Link href={`/book/detail?id=${book?._id}`}>
+										{book.bookStatus === BookStatus.AVAILABLE ? (
+												<Stack direction={'row'}>
+													<Link href={`/book/detail?id=${book?._id}`}>
+														<div>
+															<Avatar alt="Remy Sharp" src={bookImage} sx={{ ml: '2px', mr: '10px' }} />
+														</div>
+													</Link>
+													<Link href={`/book/detail?id=${book?._id}`}>
+														<div>{book.bookTitle}</div>
+													</Link>
+												</Stack>
+											) : (
+												<Stack direction={'row'}>
 													<div>
 														<Avatar alt="Remy Sharp" src={bookImage} sx={{ ml: '2px', mr: '10px' }} />
 													</div>
-												</Link>
-												<Link href={`/book/detail?id=${book?._id}`}>
-													<div>{book.bookTitle}</div>
-												</Link>
-											</Stack>
+													<div style={{ marginTop: '10px' }}>{book.bookTitle}</div>
+												</Stack>
+											)}
 										</TableCell>
 										<TableCell align="center">{book.bookPrice}</TableCell>
 										<TableCell align="center">{book.memberData?.memberNick}</TableCell>

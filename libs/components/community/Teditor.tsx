@@ -8,14 +8,19 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import { T } from '../../types/common';
 import '@toast-ui/editor/dist/toastui-editor.css';
+import { useMutation } from '@apollo/client';
+import { CREATE_BOARD_ARTICLE } from '../../../apollo/user/mutation';
+import { Message } from '../../enums/common.enum';
+import { sweetErrorHandling, sweetTopSuccessAlert } from '../../sweetAlert';
 
 const TuiEditor = () => {
 	const editorRef = useRef<Editor>(null),
 		token = getJwtToken(),
 		router = useRouter();
-	const [articleCategory, setArticleCategory] = useState<BoardArticleCategory>(BoardArticleCategory.FREE);
+	const [articleCategory, setArticleCategory] = useState<BoardArticleCategory>(BoardArticleCategory.REVIEWS);
 
 	/** APOLLO REQUESTS **/
+	const [createBoardArticle] = useMutation(CREATE_BOARD_ARTICLE);
 
 	const memoizedValues = useMemo(() => {
 		const articleTitle = '',
@@ -76,7 +81,33 @@ const TuiEditor = () => {
 		memoizedValues.articleTitle = e.target.value;
 	};
 
-	const handleRegisterButton = async () => {};
+	const handleRegisterButton = async () => {
+		try {
+			const editor = editorRef.current;
+			const articleContent = editor?.getInstance().getHTML() as string;
+			memoizedValues.articleContent = articleContent;
+
+			if (memoizedValues.articleContent === '' && memoizedValues.articleTitle === '') {
+				throw new Error(Message.INSERT_ALL_INPUTS);
+			}
+			await createBoardArticle({
+				variables: {
+					input: { ...memoizedValues, articleCategory },
+				},
+			});
+
+			await sweetTopSuccessAlert('Article is created successfully', 700);
+			await router.push({
+				pathname: 'mypage',
+				query: {
+					category: 'myArticles',
+				},
+			});
+		} catch (err: any) {
+			console.log(err);
+			sweetErrorHandling(new Error(Message.INSERT_ALL_INPUTS)).then();
+		}
+	};
 
 	const doDisabledCheck = () => {
 		if (memoizedValues.articleContent === '' || memoizedValues.articleTitle === '') {
@@ -98,12 +129,12 @@ const TuiEditor = () => {
 							displayEmpty
 							inputProps={{ 'aria-label': 'Without label' }}
 						>
-							<MenuItem value={BoardArticleCategory.FREE}>
-								<span>Free</span>
+							<MenuItem value={BoardArticleCategory.REVIEWS}>
+								<span>REVIEWS</span>
 							</MenuItem>
-							<MenuItem value={BoardArticleCategory.HUMOR}>Humor</MenuItem>
+							<MenuItem value={BoardArticleCategory.INTERVIEWS}>INTERVIEWS</MenuItem>
 							<MenuItem value={BoardArticleCategory.NEWS}>News</MenuItem>
-							<MenuItem value={BoardArticleCategory.RECOMMEND}>Recommendation</MenuItem>
+							<MenuItem value={BoardArticleCategory.EVENTS}>EVENTS</MenuItem>
 						</Select>
 					</FormControl>
 				</Box>

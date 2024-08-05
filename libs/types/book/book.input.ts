@@ -11,6 +11,7 @@ export interface BookInput {
 	bookDate: string;
     bookISBN: string;
     bookPages: number;
+	bookLanguages: BookLanguage[];
     bookDesc?: string;
     bookImages: string[];
     bookRent?: boolean;

@@ -1,81 +1,136 @@
 #pc-wrap {
 	.agent-list-page {
-		position: relative;
-		padding: 147px 0 75px;
-		width: 100%;
-		height: auto;
+	  position: relative;
+	  padding: 80px 0 40px;
+	  width: 100%;
+	  height: auto;
+	  display: flex;
+	  flex-direction: column;
+	  align-items: center;
+	  background: white;
+  
+	  .container {
+		width: 90%;
+		max-width: 1200px;
 		display: flex;
-		flex-direction: row;
-		justify-content: center;
-		.container {
+		flex-direction: column;
+		align-items: center;
+  
+		.filter {
+		  display: flex;
+		  flex-direction: row;
+		  justify-content: space-between;
+		  align-items: center;
+		  width: 100%;
+		  margin-bottom: 20px;
+  
+		  .left {
+			flex: 1;
+			margin-right: 10px;
+  
+			.search-input {
+			  width: 100%;
+			  max-width: 400px;
+			  border-radius: 20px;
+			  border: 1px solid #ddd;
+			  background: #E8F6F3;
+			  color: #333;
+			  font-size: 14px;
+			  padding: 10px 20px;
+  
+			  &:focus {
+				border-color: #007bff;
+			  }
+			}
+		  }
+  
+		  .right {
 			display: flex;
-			flex-direction: column;
-			.filter {
+			align-items: center;
+  
+			.sort-label {
+			  color: #555;
+			  font-size: 14px;
+			  margin-right: 10px;
+			}
+  
+			.sort-dropdown {
+			  position: relative;
+  
+			  button {
+				color: #333;
+				font-size: 14px;
+				font-weight: bold;
+				line-height: 26px;
+				background: none;
+				border: 1px solid #ddd;
+				border-radius: 5px;
+				padding: 5px 10px;
 				display: flex;
-				flex-direction: row;
-				justify-content: space-between;
 				align-items: center;
-				.left {
-					display: flex;
-					flex-direction: row;
-					input {
-						padding: 22px 10px;
-						width: 333px;
-						height: 50px;
-						border-radius: 40px;
-						border: 1px solid #ddd;
-						background: #fff;
-						color: #181a20;
-						font-family: $font;
-						font-size: 14px;
-						font-style: normal;
-						font-weight: 400;
-						line-height: 26px;
-						box-sizing: border-box;
-					}
+				cursor: pointer;
+				transition: background-color 0.3s ease-in-out;
+  
+				&:hover {
+				  background-color: #E8F6F3;
 				}
-				.right {
-					display: flex;
-					flex-direction: row;
-					align-items: center;
-					button {
-						margin-left: 10px;
-						color: #181a20;
-						font-family: $font;
-						font-size: 14px;
-						font-style: normal;
-						font-weight: bold;
-						line-height: 26px;
-						&:hover {
-							background: none;
-						}
-					}
+			  }
+  
+			  .MuiMenu-paper {
+				margin-top: 5px;
+			  }
+  
+			  .MuiMenuItem-root {
+				font-size: 14px;
+				color: #333;
+  
+				&:hover {
+				  background-color: #86C2BA;
 				}
+			  }
 			}
-			.card-wrap {
-				position: relative;
-				margin-top: 35px;
-				width: 100%;
-				min-height: 500px;
-				height: auto;
-				display: flex;
-				flex-direction: row;
-				flex-wrap: wrap;
-			}
-			.pagination {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				span {
-					margin-top: 20px;
-					color: #181a20;
-					font-family: $font;
-					font-size: 14px;
-					font-style: normal;
-					font-weight: 400;
-					line-height: 26px; /* 185.714% */
-				}
-			}
+		  }
 		}
+  
+		.card-wrap {
+		  margin-top: 40px;
+		  display: grid;
+		  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		  gap: 20px;
+		  width: 100%;
+  
+		  .no-data {
+			width: 100%;
+			text-align: center;
+			color: #888;
+			font-size: 16px;
+			margin-top: 50px;
+  
+			img {
+			  margin-bottom: 10px;
+			}
+		  }
+		}
+  
+		.pagination {
+		  display: flex;
+		  flex-direction: column;
+		  align-items: center;
+		  margin-top: 20px;
+  
+		  .pagination-box {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		  }
+  
+		  span {
+			margin-top: 10px;
+			color: #555;
+			font-size: 14px;
+		  }
+		}
+	  }
 	}
-}
+  }
+  

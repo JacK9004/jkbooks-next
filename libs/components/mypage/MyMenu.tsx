@@ -45,7 +45,7 @@ const MyMenu = () => {
 							<img src={'/img/icons/call.svg'} alt={'icon'} />
 							<Typography className={'p-number'}>{user?.memberPhone}</Typography>
 						</Box>
-						{user?.memberType === 'ADMIN' ? (
+						{user?.memberType === 'PUBLISHER' ? (
 							<a href="/_admin/users" target={'_blank'}>
 								<Typography className={'view-list'}>{user?.memberType}</Typography>
 							</a>
@@ -55,12 +55,12 @@ const MyMenu = () => {
 					</Stack>
 				</Stack>
 				<Stack className={'sections'}>
-					<Stack className={'section'} style={{ height: user.memberType === 'AGENT' ? '228px' : '153px' }}>
+					<Stack className={'section'} style={{ height: user.memberType === 'PUBLISHER' ? '228px' : '153px' }}>
 						<Typography className="title" variant={'h5'}>
 							MANAGE LISTINGS
 						</Typography>
 						<List className={'sub-section'}>
-							{user.memberType === 'AGENT' && (
+							{user.memberType === 'PUBLISHER' && (
 								<>
 									<ListItem className={pathname === 'addProperty' ? 'focus' : ''}>
 										<Link

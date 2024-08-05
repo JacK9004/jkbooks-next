@@ -14,6 +14,10 @@ import { Book } from '../../../libs/types/book/book';
 import { BookCollection, BookStatus } from '../../../libs/enums/book.enum';
 import { BookUpdate } from '../../../libs/types/book/book.update';
 import { BookPanelList } from '../../../libs/components/admin/books/BookList';
+import { useMutation, useQuery } from '@apollo/client';
+import { REMOVE_BOOK_BY_ADMIN, UPDATE_BOOK_BY_ADMIN } from '../../../apollo/admin/mutation';
+import { GET_ALL_BOOKS_BY_ADMIN } from '../../../apollo/admin/query';
+import { T } from '../../../libs/types/common';
 
 
 const AdminBooks: NextPage = ({ initialInquiry, ...props }: any) => {
@@ -27,19 +31,42 @@ const AdminBooks: NextPage = ({ initialInquiry, ...props }: any) => {
 	const [searchType, setSearchType] = useState('ALL');
 
 	/** APOLLO REQUESTS **/
+	const [updateBookByAdmin] = useMutation(UPDATE_BOOK_BY_ADMIN);
+	const [removeBookByAdmin] = useMutation(REMOVE_BOOK_BY_ADMIN);
+
+	const {
+		loading: getAllBooksdminData,
+		error: getAllBooksByAdminError,
+		refetch: getAllBooksRefetch,
+	} = useQuery(GET_ALL_BOOKS_BY_ADMIN, {
+		fetchPolicy: 'network-only',
+		variables: { input: booksInquiry },
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setBooks(data?.getAllBooksyAdmin?.list);
+			setBooksTotal(data?.getAllBooksByAdmin?.metaCounter[0]?.total ?? 0);
+		},
+	});
 
 	/** LIFECYCLES **/
-	useEffect(() => {}, [booksInquiry]);
+	useEffect(() => {
+		getAllBooksRefetch({ input: booksInquiry }).then();
+	}, [booksInquiry]);
 
 	/** HANDLERS **/
 	const changePageHandler = async (event: unknown, newPage: number) => {
 		booksInquiry.page = newPage + 1;
+		booksInquiry.page = newPage + 1;
+		await getAllBooksRefetch({ input: booksInquiry });
+
 		setBooksInquiry({ ...booksInquiry });
 	};
 
 	const changeRowsPerPageHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
 		booksInquiry.limit = parseInt(event.target.value, 10);
 		booksInquiry.page = 1;
+		await getAllBooksRefetch({ input: booksInquiry });
+
 		setBooksInquiry({ ...booksInquiry });
 	};
 
@@ -78,7 +105,13 @@ const AdminBooks: NextPage = ({ initialInquiry, ...props }: any) => {
 	const removeBookHandler = async (id: string) => {
 		try {
 			if (await sweetConfirmAlert('Are you sure to remove?')) {
+				await removeBookByAdmin({
+					variables: {
+						input: id,
+					},
+				});
 			}
+			await getAllBooksRefetch({ input: booksInquiry });
 			menuIconCloseHandler();
 		} catch (err: any) {
 			sweetErrorHandling(err).then();
@@ -111,7 +144,13 @@ const AdminBooks: NextPage = ({ initialInquiry, ...props }: any) => {
 	const updateBookHandler = async (updateData: BookUpdate) => {
 		try {
 			console.log('+updateData: ', updateData);
+			await updateBookByAdmin({
+				variables: {
+					input: updateData,
+				},
+			});
 			menuIconCloseHandler();
+		await getAllBooksRefetch({ input: booksInquiry });
 		} catch (err: any) {
 			menuIconCloseHandler();
 			sweetErrorHandling(err).then();

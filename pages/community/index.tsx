@@ -11,6 +11,11 @@ import { T } from '../../libs/types/common';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { BoardArticlesInquiry } from '../../libs/types/board-article/board-article.input';
 import { BoardArticleCategory } from '../../libs/enums/board-article.enum';
+import { useMutation, useQuery } from '@apollo/client';
+import { LIKE_TARGET_BOARD_ARTICLE } from '../../apollo/user/mutation';
+import { GET_BOARD_ARTICLES } from '../../apollo/user/query';
+import { Messages } from '../../libs/config';
+import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -29,6 +34,21 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 	if (articleCategory) initialInput.search.articleCategory = articleCategory;
 
 	/** APOLLO REQUESTS **/
+	const [likeTargetBoardArticle] = useMutation(LIKE_TARGET_BOARD_ARTICLE);
+	const {
+		loading: boardArticlesLoading,
+		data: boardArticlesData,
+		error: getBoardArticlesError,
+		refetch: boardArticlesRefetch,
+	} = useQuery(GET_BOARD_ARTICLES, {
+		fetchPolicy: 'cache-and-network',
+		variables: { input: searchCommunity },
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setBoardArticles(data?.getBoardArticles?.list);
+			setTotalCount(data?.getBoardArticles?.metaCounter[0]?.total);
+		},
+	});
 
 	/** LIFECYCLES **/
 	useEffect(() => {
@@ -44,6 +64,19 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 	}, []);
 
 	/** HANDLERS **/
+	const likeArticleHandler = async (e: any, user: any, id: string) => {
+		try {
+			e.stopPropagation();
+			if (!id) return;
+			if (!user._id) throw new Error(Messages.error2);
+			await likeTargetBoardArticle({ variables: { input: id } });
+			await boardArticlesRefetch({ input: searchCommunity });
+			await sweetTopSmallSuccessAlert('success', 800);
+		} catch (err: any) {
+			console.log('Error, likeArticleHandler:', err.message);
+			sweetMixinErrorAlert(err.message).then();
+		}
+	};
 	const tabChangeHandler = async (e: T, value: string) => {
 		console.log(value);
 
@@ -87,14 +120,14 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 									onChange={tabChangeHandler}
 								>
 									<Tab
-										value={'FREE'}
-										label={'Free Board'}
-										className={`tab-button ${searchCommunity.search.articleCategory == 'FREE' ? 'active' : ''}`}
+										value={'REVIEWS'}
+										label={'Review Board'}
+										className={`tab-button ${searchCommunity.search.articleCategory == 'REVIEWS' ? 'active' : ''}`}
 									/>
 									<Tab
-										value={'RECOMMEND'}
-										label={'Recommendation'}
-										className={`tab-button ${searchCommunity.search.articleCategory == 'RECOMMEND' ? 'active' : ''}`}
+										value={'INTERVIEWS'}
+										label={'Interviews'}
+										className={`tab-button ${searchCommunity.search.articleCategory == 'INTERVIEWS' ? 'active' : ''}`}
 									/>
 									<Tab
 										value={'NEWS'}
@@ -102,9 +135,9 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 										className={`tab-button ${searchCommunity.search.articleCategory == 'NEWS' ? 'active' : ''}`}
 									/>
 									<Tab
-										value={'HUMOR'}
-										label={'Humor'}
-										className={`tab-button ${searchCommunity.search.articleCategory == 'HUMOR' ? 'active' : ''}`}
+										value={'EVENTS'}
+										label={'Events'}
+										className={`tab-button ${searchCommunity.search.articleCategory == 'EVENTS' ? 'active' : ''}`}
 									/>
 								</TabList>
 							</Stack>
@@ -136,7 +169,13 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 										<Stack className="list-box">
 											{totalCount ? (
 												boardArticles?.map((boardArticle: BoardArticle) => {
-													return <CommunityCard boardArticle={boardArticle} key={boardArticle?._id} />;
+													return (
+														<CommunityCard
+															boardArticle={boardArticle}
+															key={boardArticle?._id}
+															likeArticleHandler={likeArticleHandler}
+														/>
+													);
 												})
 											) : (
 												<Stack className={'no-data'}>
@@ -150,7 +189,13 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 										<Stack className="list-box">
 											{totalCount ? (
 												boardArticles?.map((boardArticle: BoardArticle) => {
-													return <CommunityCard boardArticle={boardArticle} key={boardArticle?._id} />;
+													return (
+														<CommunityCard
+															boardArticle={boardArticle}
+															key={boardArticle?._id}
+															likeArticleHandler={likeArticleHandler}
+														/>
+													);
 												})
 											) : (
 												<Stack className={'no-data'}>
@@ -164,7 +209,13 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 										<Stack className="list-box">
 											{totalCount ? (
 												boardArticles?.map((boardArticle: BoardArticle) => {
-													return <CommunityCard boardArticle={boardArticle} key={boardArticle?._id} />;
+													return (
+														<CommunityCard
+															boardArticle={boardArticle}
+															key={boardArticle?._id}
+															likeArticleHandler={likeArticleHandler}
+														/>
+													);
 												})
 											) : (
 												<Stack className={'no-data'}>
@@ -178,7 +229,13 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 										<Stack className="list-box">
 											{totalCount ? (
 												boardArticles?.map((boardArticle: BoardArticle) => {
-													return <CommunityCard boardArticle={boardArticle} key={boardArticle?._id} />;
+													return (
+														<CommunityCard
+															boardArticle={boardArticle}
+															key={boardArticle?._id}
+															likeArticleHandler={likeArticleHandler}
+														/>
+													);
 												})
 											) : (
 												<Stack className={'no-data'}>

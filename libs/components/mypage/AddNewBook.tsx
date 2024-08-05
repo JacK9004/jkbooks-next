@@ -4,12 +4,14 @@ import { Button, Stack, Typography } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import axios from 'axios';
 import { getJwtToken } from '../../auth';
-import { sweetMixinErrorAlert } from '../../sweetAlert';
-import { useReactiveVar } from '@apollo/client';
+import { sweetErrorHandling, sweetMixinErrorAlert, sweetMixinSuccessAlert } from '../../sweetAlert';
+import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
 import { BookInput } from '../../types/book/book.input';
 import { BookCollection, BookType } from '../../enums/book.enum';
 import { REACT_APP_API_URL } from '../../config';
+import { CREATE_BOOK, UPDATE_BOOK } from '../../../apollo/user/mutation';
+import { GET_BOOK } from '../../../apollo/user/query';
 
 
 const AddBook = ({ initialValues, ...props }: any) => {
@@ -23,7 +25,18 @@ const AddBook = ({ initialValues, ...props }: any) => {
 	const user = useReactiveVar(userVar);
 
 	/** APOLLO REQUESTS **/
-	let getBookData: any, getBookLoading: any;
+	const [createBook] = useMutation(CREATE_BOOK);
+	const [updateBook] = useMutation(UPDATE_BOOK);
+	const {
+		loading: getBookLoading,
+		data: getBookData,
+		error: getBookError,
+		refetch: getBookRefetch,
+	} = useQuery(GET_BOOK, {
+		fetchPolicy: 'network-only',
+		variables: { input: router.query.bookId },
+	});
+
 
 	/** LIFECYCLES **/
 	useEffect(() => {
@@ -35,6 +48,10 @@ const AddBook = ({ initialValues, ...props }: any) => {
 			bookCollection: getBookData?.getProperty ? getBookData?.getBook?.bookCollection : '',
 			bookAuthor: getBookData?.getBook ? getBookData?.getBook?.bookAuthor : '',
 			bookISBN: getBookData?.getBook ? getBookData?.getBook?.bookISBN : '',
+			bookLanguages: getBookData?.getBook ? getBookData?.getBook?.bookLanguages : '',
+			bookPages: getBookData?.getBook ? getBookData?.getBook?.bookPages : 0,
+			bookDate: getBookData?.getBook ? getBookData?.getBook?.bookDate : '',
+			ageCategory: getBookData?.getBook ? getBookData?.getBook?.ageCaategory : '',
 			bookDesc: getBookData?.getBook ? getBookData?.getBook?.bookDesc : '',
 			bookImages: getBookData?.getBook ? getBookData?.getBook?.BookImages : [],
 		});
@@ -101,6 +118,9 @@ const AddBook = ({ initialValues, ...props }: any) => {
 			insertBookData.bookCollection === '' || // @ts-ignore
 			insertBookData.bookAuthor === '' || // @ts-ignore
 			insertBookData.bookISBN === '' || // @ts-ignore
+			insertBookData.bookLanguages === '' || // @ts-ignore
+			insertBookData.bookPages === 0 || // @ts-ignore
+			insertBookData.bookDate === "" || // @ts-ignore
 			insertBookData.bookDesc === '' ||
 			insertBookData.bookImages.length === 0
 		) {
@@ -108,18 +128,56 @@ const AddBook = ({ initialValues, ...props }: any) => {
 		}
 	};
 
-	const insertBookHandler = useCallback(async () => {}, [insertBookData]);
+	const insertBookHandler = useCallback(async () => {
+		try {
+			const result = await createBook({
+				variables: {
+					input: insertBookData,
+				},
+			});
 
-	const updateBookHandler = useCallback(async () => {}, [insertBookData]);
+			await sweetMixinSuccessAlert('This book has been created successfully.');
+			await router.push({
+				pathname: '/mypage',
+				query: {
+					category: 'myBooks',
+				},
+			});
+		} catch (err: any) {
+			sweetErrorHandling(err).then();
+		}
+	}, [insertBookData]);
 
-	if (user?.memberType !== 'AGENT') {
+	const updateBookHandler = useCallback(async () => {
+		try {
+			//@ts-ignore
+			insertBookData._id = getBookData?.getBook?._id;
+			const result = await updateBook({
+				variables: {
+					input: insertBookData,
+				},
+			});
+
+			await sweetMixinSuccessAlert('This book has been updated successfully.');
+			await router.push({
+				pathname: '/mypage',
+				query: {
+					category: 'myBooks',
+				},
+			});
+		} catch (err: any) {
+			sweetErrorHandling(err).then();
+		}
+	}, [insertBookData]);
+
+	if (user?.memberType !== 'PUBLISHER') {
 		router.back();
 	}
 
 	console.log('+insertBookData', insertBookData);
 
 	if (device === 'mobile') {
-		return <div>ADD NEW PROPERTY MOBILE PAGE</div>;
+		return <div>ADD NEW BOOK MOBILE PAGE</div>;
 	} else {
 		return (
 			<div id="add-property-page">
@@ -458,9 +516,13 @@ AddBook.defaultProps = {
 		bookTitle: '',
 		bookPrice: 0,
 		bookType: '',
+		ageCategory: '',
 		bookCollection: '',
 		bookAuthor: '',
 		bookISBN: '',
+		bookPages: 0,
+		bookDate: '',
+		bookLanguages: '',
 		bookDesc: '',
 		bookImages: [],
 	},

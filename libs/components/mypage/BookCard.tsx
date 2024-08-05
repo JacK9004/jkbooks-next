@@ -63,7 +63,7 @@ export const BookCard = (props: BookCardProps) => {
 					<Typography className="name">{book.bookTitle}</Typography>
 					<Typography className="address">{book.bookAuthor}</Typography>
 					<Typography className="price">
-						<strong>${formatterStr(book?.bookPrice)}</strong>/ mo
+					<strong>${formatterStr(book?.bookPrice)}</strong>
 					</Typography>
 				</Stack>
 				<Stack className="date-box">
@@ -118,7 +118,7 @@ export const BookCard = (props: BookCardProps) => {
 				<Stack className="views-box">
 					<Typography className="views">{book.bookViews.toLocaleString()}</Typography>
 				</Stack>
-				{!memberPage && (
+				{!memberPage &&  book.bookStatus === BookStatus.AVAILABLE &&(
 					<Stack className="action-box">
 						<IconButton className="icon-button" onClick={() => pushEditBook(book._id)}>
 							<ModeIcon className="buttons" />

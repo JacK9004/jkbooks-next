@@ -5,19 +5,22 @@ import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import ReviewCard from '../../libs/components/agent/ReviewCard';
 import { Box, Button, Pagination, Stack, Typography } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
-import { useReactiveVar } from '@apollo/client';
+import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { Member } from '../../libs/types/member/member';
-import { sweetErrorHandling } from '../../libs/sweetAlert';
+import { sweetErrorHandling, sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 import { userVar } from '../../apollo/store';
 import { CommentInput, CommentsInquiry } from '../../libs/types/comment/comment.input';
 import { Comment } from '../../libs/types/comment/comment';
 import { CommentGroup } from '../../libs/enums/comment.enum';
-import { REACT_APP_API_URL } from '../../libs/config';
+import { Messages, REACT_APP_API_URL } from '../../libs/config';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Book } from '../../libs/types/book/book';
 import { BooksInquiry } from '../../libs/types/book/book.input';
 import BookBigCard from '../../libs/components/common/BookBigCard';
+import { CREATE_COMMENT, LIKE_TARGET_BOOK } from '../../apollo/user/mutation';
+import { GET_BOOKS, GET_COMMENTS, GET_MEMBER } from '../../apollo/user/query';
+import { T } from '../../libs/types/common';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -30,6 +33,7 @@ const AgentDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 	const router = useRouter();
 	const user = useReactiveVar(userVar);
 	const [mbId, setMbId] = useState<string | null>(null);
+	const [agentId, setAgentId] = useState<string | null>(null);
 	const [agent, setAgent] = useState<Member | null>(null);
 	const [searchFilter, setSearchFilter] = useState<BooksInquiry>(initialInput);
 	const [agentBooks, setAgentBooks] = useState<Book[]>([]);
@@ -44,13 +48,84 @@ const AgentDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 	});
 
 	/** APOLLO REQUESTS **/
+	const [createComment] = useMutation(CREATE_COMMENT);
+	const [likeTargetBook] = useMutation(LIKE_TARGET_BOOK);
+
+	const {
+		loading: getMemberLoading,
+		data: getMemberData,
+		error: getMemberError,
+		refetch: getMemberRefetch,
+	} = useQuery(GET_MEMBER, {
+		fetchPolicy: 'network-only',
+		variables: { input: agentId },
+		skip: !agentId,
+		onCompleted: (data: T) => {
+			setAgent(data?.getMember);
+			setSearchFilter({ ...searchFilter, search: { memberId: data?.getMember?._id } });
+			setCommentInquiry({
+				...commentInquiry,
+				search: {
+					commentRefId: data?.getMember?._id,
+				},
+			});
+			setInsertCommentData({
+				...insertCommentData,
+				commentRefId: data?.getMember?._id,
+			});
+		},
+	});
+
+	const {
+		loading: getBooksLoading,
+		data: getBooksData,
+		error: getBooksError,
+		refetch: getBooksRefetch,
+	} = useQuery(GET_BOOKS, {
+		fetchPolicy: 'network-only',
+		variables: { input: searchFilter },
+		skip: !searchFilter.search.memberId,
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setAgentBooks(data?.getBooks?.list);
+			setBookTotal(data?.getBooks?.metaCounter[0]?.total ?? 0);
+		},
+	});
+
+	const {
+		loading: getCommentsLoading,
+		data: getCommentsData,
+		error: getCommentsError,
+		refetch: getCommentsRefetch,
+	} = useQuery(GET_COMMENTS, {
+		fetchPolicy: 'network-only',
+		variables: { input: commentInquiry },
+		skip: !commentInquiry.search.commentRefId,
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setAgentComments(data?.getComments?.list);
+			setCommentTotal(data?.getComments?.metaCounter[0]?.total ?? 0);
+		},
+	});
+
 	/** LIFECYCLES **/
 	useEffect(() => {
 		if (router.query.agentId) setMbId(router.query.agentId as string);
+		if (router.query.agentId) setAgentId(router.query.agentId as string);
 	}, [router]);
 
 	useEffect(() => {}, [searchFilter]);
 	useEffect(() => {}, [commentInquiry]);
+	useEffect(() => {
+		if (searchFilter.search.memberId) {
+			getBooksRefetch({ variables: { input: searchFilter } }).then();
+		}
+	}, [searchFilter]);
+	useEffect(() => {
+		if (commentInquiry.search.commentRefId) {
+			getBooksRefetch({ variables: { input: commentInquiry } }).then();
+		}
+	}, [commentInquiry]);
 
 	/** HANDLERS **/
 	const redirectToMemberPageHandler = async (memberId: string) => {
@@ -74,8 +149,32 @@ const AgentDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 
 	const createCommentHandler = async () => {
 		try {
+			if (!user._id) throw new Error(Messages.error2);
+			if (user._id === agentId) throw new Error('Cannot write a review for yourself');
+			await createComment({
+				variables: {
+					input: insertCommentData,
+				},
+			});
+			setInsertCommentData({ ...insertCommentData, commentContent: '' });
+			await getCommentsRefetch({ input: commentInquiry });
 		} catch (err: any) {
 			sweetErrorHandling(err).then();
+		}
+	};
+
+	const likeBookHandler = async (user: any, id: string) => {
+		try {
+			if (!id) return;
+			if (!user._id) throw new Error(Messages.error2);
+			await likeTargetBook({ variables: { input: id } });
+			await getBooksRefetch({ input: searchFilter });
+			//execute getBooksRefetch
+
+			await sweetTopSmallSuccessAlert('success', 800);
+		} catch (err: any) {
+			console.log('Error, likeBookHandler:', err.message);
+			sweetMixinErrorAlert(err.message).then();
 		}
 	};
 
@@ -103,7 +202,12 @@ const AgentDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 							{agentBooks.map((book: Book) => {
 								return (
 									<div className={'wrap-main'} key={book?._id}>
-										<BookBigCard book={book} key={book?._id} />
+										
+										<BookBigCard
+											book={book}
+											key={book?._id}
+											likeBookHandler={likeBookHandler}
+										/>
 									</div>
 								);
 							})}
