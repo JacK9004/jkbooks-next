@@ -248,14 +248,14 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 								value={articleCategory}
 							>
 								<Tab
-									value={'FREE'}
-									label={'Free Board'}
-									className={`tab-button ${articleCategory === 'FREE' ? 'active' : ''}`}
+									value={'REVIEWS'}
+									label={'Reviews'}
+									className={`tab-button ${articleCategory === 'REVIEWS' ? 'active' : ''}`}
 								/>
 								<Tab
-									value={'RECOMMEND'}
-									label={'Recommendation'}
-									className={`tab-button ${articleCategory === 'RECOMMEND' ? 'active' : ''}`}
+									value={'INTERVIEWS'}
+									label={'Interview'}
+									className={`tab-button ${articleCategory === 'INTERVIEWS' ? 'active' : ''}`}
 								/>
 								<Tab
 									value={'NEWS'}
@@ -263,9 +263,9 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 									className={`tab-button ${articleCategory === 'NEWS' ? 'active' : ''}`}
 								/>
 								<Tab
-									value={'HUMOR'}
-									label={'Humor'}
-									className={`tab-button ${articleCategory === 'HUMOR' ? 'active' : ''}`}
+									value={'EVENTS'}
+									label={'Event'}
+									className={`tab-button ${articleCategory === 'EVENTS' ? 'active' : ''}`}
 								/>
 							</Tabs>
 						</Stack>
@@ -407,7 +407,7 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 																<DeleteForeverIcon sx={{ color: '#757575', cursor: 'pointer' }} />
 															</IconButton>
 															<IconButton
-																onClick={(e) => {
+																onClick={(e: any) => {
 																	setUpdatedComment(commentData?.commentContent);
 																	setUpdatedCommentWordsCnt(commentData?.commentContent?.length);
 																	setUpdatedCommentId(commentData?._id);

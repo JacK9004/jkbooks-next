@@ -56,7 +56,7 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 			router.push(
 				{
 					pathname: router.pathname,
-					query: { articleCategory: 'FREE' },
+					query: { articleCategory: 'REVIEWS' },
 				},
 				router.pathname,
 				{ shallow: true },
@@ -165,7 +165,7 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 										</Button>
 									</Stack>
 
-									<TabPanel value="FREE">
+									<TabPanel value="REVIEWS">
 										<Stack className="list-box">
 											{totalCount ? (
 												boardArticles?.map((boardArticle: BoardArticle) => {
@@ -185,7 +185,7 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 											)}
 										</Stack>
 									</TabPanel>
-									<TabPanel value="RECOMMEND">
+									<TabPanel value="INTERVIEWS">
 										<Stack className="list-box">
 											{totalCount ? (
 												boardArticles?.map((boardArticle: BoardArticle) => {
@@ -225,7 +225,7 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 											)}
 										</Stack>
 									</TabPanel>
-									<TabPanel value="HUMOR">
+									<TabPanel value="EVENTS">
 										<Stack className="list-box">
 											{totalCount ? (
 												boardArticles?.map((boardArticle: BoardArticle) => {
@@ -281,7 +281,7 @@ Community.defaultProps = {
 		sort: 'createdAt',
 		direction: 'ASC',
 		search: {
-			articleCategory: 'FREE',
+			articleCategory: 'REVIEWS',
 		},
 	},
 };
