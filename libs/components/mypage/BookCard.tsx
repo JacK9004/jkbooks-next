@@ -30,7 +30,7 @@ export const BookCard = (props: BookCardProps) => {
 		console.log('+pushEditBook: ', id);
 		await router.push({
 			pathname: '/mypage',
-			query: { category: 'addBook', bookId: id },
+			query: { category: 'addProperty', bookId: id },
 		});
 	};
 

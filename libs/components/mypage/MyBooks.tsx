@@ -55,7 +55,7 @@ const MyBooks: NextPage = ({ initialInput, ...props }: any) => {
 					variables: {
 						input: {
 							_id: id,
-							bookStatus: 'DELETE',
+							bookStatus: 'DISCONTINUED',
 						},
 					},
 				});

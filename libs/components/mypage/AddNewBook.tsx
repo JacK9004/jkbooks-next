@@ -43,10 +43,10 @@ const AddBook = ({ initialValues, ...props }: any) => {
 	useEffect(() => {
 		setInsertBookData({
 			...insertBookData,
-			bookTitle: getBookData?.getBook ? getBookData?.getBook?.BookTitle : '',
-			bookPrice: getBookData?.getProperty ? getBookData?.getBook?.bookPrice : 0,
+			bookTitle: getBookData?.getBook ? getBookData?.getBook?.bookTitle : '',
+			bookPrice: getBookData?.getBook ? getBookData?.getBook?.bookPrice : 0,
 			bookType: getBookData?.getBook ? getBookData?.getBook?.bookType : '',
-			bookCollection: getBookData?.getProperty ? getBookData?.getBook?.bookCollection : '',
+			bookCollection: getBookData?.getBook ? getBookData?.getBook?.bookCollection : '',
 			bookAuthor: getBookData?.getBook ? getBookData?.getBook?.bookAuthor : '',
 			bookISBN: getBookData?.getBook ? getBookData?.getBook?.bookISBN : '',
 			bookLanguages: getBookData?.getBook ? getBookData?.getBook?.bookLanguages : '',
@@ -54,7 +54,7 @@ const AddBook = ({ initialValues, ...props }: any) => {
 			bookDate: getBookData?.getBook ? getBookData?.getBook?.bookDate : '',
 			ageCategory: getBookData?.getBook ? getBookData?.getBook?.ageCaategory : '',
 			bookDesc: getBookData?.getBook ? getBookData?.getBook?.bookDesc : '',
-			bookImages: getBookData?.getBook ? getBookData?.getBook?.BookImages : [],
+			bookImages: getBookData?.getBook ? getBookData?.getBook?.bookImages : [],
 		});
 	}, [getBookLoading, getBookData]);
 
@@ -141,7 +141,7 @@ const AddBook = ({ initialValues, ...props }: any) => {
 			await router.push({
 				pathname: '/mypage',
 				query: {
-					category: 'myBooks',
+					category: 'myProperties',
 				},
 			});
 		} catch (err: any) {
@@ -163,7 +163,7 @@ const AddBook = ({ initialValues, ...props }: any) => {
 			await router.push({
 				pathname: '/mypage',
 				query: {
-					category: 'myBooks',
+					category: 'myProperties',
 				},
 			});
 		} catch (err: any) {
@@ -363,7 +363,7 @@ const AddBook = ({ initialValues, ...props }: any) => {
 								<Stack className="price-year-after-price">
 									<Typography className="title">Price</Typography>
 									<input
-										type="text"
+										type="number"
 										className="description-input"
 										placeholder={'Price'}
 										value={insertBookData.bookPrice}
