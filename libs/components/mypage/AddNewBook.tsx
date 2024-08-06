@@ -8,7 +8,7 @@ import { sweetErrorHandling, sweetMixinErrorAlert, sweetMixinSuccessAlert } from
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
 import { BookInput } from '../../types/book/book.input';
-import { BookCollection, BookType } from '../../enums/book.enum';
+import { AgeCategory, BookCollection, BookLanguage, BookType } from '../../enums/book.enum';
 import { REACT_APP_API_URL } from '../../config';
 import { CREATE_BOOK, UPDATE_BOOK } from '../../../apollo/user/mutation';
 import { GET_BOOK } from '../../../apollo/user/query';
@@ -20,6 +20,7 @@ const AddBook = ({ initialValues, ...props }: any) => {
 	const inputRef = useRef<any>(null);
 	const [insertBookData, setInsertBookData] = useState<BookInput>(initialValues);
 	const [bookType, setBookType] = useState<BookType[]>(Object.values(BookType));
+	const [ageCategory, setAgeCategory] = useState<AgeCategory[]>(Object.values(AgeCategory));
 	const [bookCollection, setBookCollection] = useState<BookCollection[]>(Object.values(BookCollection));
 	const token = getJwtToken();
 	const user = useReactiveVar(userVar);
@@ -175,6 +176,14 @@ const AddBook = ({ initialValues, ...props }: any) => {
 	}
 
 	console.log('+insertBookData', insertBookData);
+	const handleLanguageChange = (language: BookLanguage) => {
+        setInsertBookData(prevState => {
+            const newLanguage = prevState.bookLanguages.includes(language)
+                ? prevState.bookLanguages.filter(a => a !== language)
+                : [...prevState.bookLanguages, language];
+            return { ...prevState, bookLanguages: newLanguage };
+        });
+    };
 
 	if (device === 'mobile') {
 		return <div>ADD NEW BOOK MOBILE PAGE</div>;
@@ -182,7 +191,7 @@ const AddBook = ({ initialValues, ...props }: any) => {
 		return (
 			<div id="add-property-page">
 				<Stack className="main-title-box">
-					<Typography className="main-title">Add New Property</Typography>
+					<Typography className="main-title">Add New Book</Typography>
 					<Typography className="sub-title">We are glad to see you again!</Typography>
 				</Stack>
 
@@ -202,18 +211,44 @@ const AddBook = ({ initialValues, ...props }: any) => {
 								/>
 							</Stack>
 
+							<Stack className="config-column">
+								<Typography className="title">Author</Typography>
+								<input
+									type="text"
+									className="description-input"
+									placeholder={'Author Name'}
+									value={insertBookData.bookAuthor}
+									onChange={({ target: { value } }) =>
+										setInsertBookData({ ...insertBookData, bookAuthor: value })
+									}
+								/>
+							</Stack>
+
 							<Stack className="config-row">
-								<Stack className="price-year-after-price">
-									<Typography className="title">Price</Typography>
-									<input
-										type="text"
-										className="description-input"
-										placeholder={'Price'}
-										value={insertBookData.bookPrice}
+									<Stack className="price-year-after-price">
+									<Typography className="title">Select Category</Typography>
+									<select
+										className={'select-description'}
+										defaultValue={insertBookData.bookCollection || 'select'}
+										value={insertBookData.bookCollection || 'select'}
 										onChange={({ target: { value } }) =>
-											setInsertBookData({ ...insertBookData, bookPrice: parseInt(value) })
+											// @ts-ignore
+											setInsertBookData({ ...insertBookData, bookCollection: value })
 										}
-									/>
+									>
+										<>
+											<option selected={true} disabled={true} value={'select'}>
+												Select
+											</option>
+											{bookCollection.map((collection: any) => (
+												<option value={`${collection}`} key={collection}>
+													{collection}
+												</option>
+											))}
+										</>
+									</select>
+									<div className={'divider'}></div>
+									<img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
 								</Stack>
 								<Stack className="price-year-after-price">
 									<Typography className="title">Select Type</Typography>
@@ -243,22 +278,51 @@ const AddBook = ({ initialValues, ...props }: any) => {
 							</Stack>
 
 							<Stack className="config-row">
-								<Stack className="price-year-after-price">
-									<Typography className="title">Select Location</Typography>
+							<Stack className="price-year-after-price">
+							<Typography className="title">Languages</Typography>
+											{Object.values(BookLanguage).map((language) => (
+												<label key={language}>
+													<input
+														type="checkbox"
+														checked={insertBookData.bookLanguages.includes(language)}
+														onChange={() => handleLanguageChange(language)}
+													/>
+													{language}
+												</label>
+											))}
+								</Stack>
+								</Stack>
+
+							<Stack className="config-column">
+								<Typography className="title">ISBN Number</Typography>
+								<input
+									type="text"
+									className="description-input"
+									placeholder={'ISBN'}
+									value={insertBookData.bookISBN}
+									onChange={({ target: { value } }) =>
+										setInsertBookData({ ...insertBookData, bookISBN: value })
+									}
+								/>
+							</Stack>
+
+							<Stack className="config-row">
+							<Stack className="price-year-after-price">
+									<Typography className="title">Age Category</Typography>
 									<select
 										className={'select-description'}
-										defaultValue={insertBookData.bookCollection || 'select'}
-										value={insertBookData.bookCollection || 'select'}
+										defaultValue={insertBookData.ageCategory || 'select'}
+										value={insertBookData.ageCategory|| 'select'}
 										onChange={({ target: { value } }) =>
 											// @ts-ignore
-											setInsertBookData({ ...insertBookData, bookCollection: value })
+											setInsertBookData({ ...insertBookData, ageCategory: value })
 										}
 									>
 										<>
 											<option selected={true} disabled={true} value={'select'}>
 												Select
 											</option>
-											{bookCollection.map((collection: any) => (
+											{ageCategory.map((collection: any) => (
 												<option value={`${collection}`} key={collection}>
 													{collection}
 												</option>
@@ -268,125 +332,49 @@ const AddBook = ({ initialValues, ...props }: any) => {
 									<div className={'divider'}></div>
 									<img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
 								</Stack>
-								<Stack className="price-year-after-price">
-									<Typography className="title">Category</Typography>
+
+							<Stack className="price-year-after-price">
+									<Typography className="title">Pages</Typography>
 									<input
 										type="text"
 										className="description-input"
-										placeholder={'Address'}
-										value={insertBookData.bookAuthor}
+										placeholder={'Pages'}
+										value={insertBookData.bookPages}
 										onChange={({ target: { value } }) =>
-											setInsertBookData({ ...insertBookData, bookAuthor: value })
+											setInsertBookData({ ...insertBookData, bookPages: parseInt(value) })
+										}
+									/>
+								</Stack>				
+							</Stack> 
+													
+							<Stack className="config-row">
+							<Stack className="config-column">
+								<Typography className="title">Published Date</Typography>
+								<input
+									type="text"
+									className="description-input"
+									placeholder={'Date'}
+									value={insertBookData.bookDate}
+									onChange={({ target: { value } }) =>
+										setInsertBookData({ ...insertBookData, bookDate: value })
+									}
+								/>
+							</Stack>
+								<Stack className="price-year-after-price">
+									<Typography className="title">Price</Typography>
+									<input
+										type="text"
+										className="description-input"
+										placeholder={'Price'}
+										value={insertBookData.bookPrice}
+										onChange={({ target: { value } }) =>
+											setInsertBookData({ ...insertBookData, bookPrice: parseInt(value) })
 										}
 									/>
 								</Stack>
+
 							</Stack>
-
-							{/* <Stack className="config-row">
-								<Stack className="price-year-after-price">
-									<Typography className="title">Barter</Typography>
-									<select
-										className={'select-description'}
-										value={insertBookData.bookBarter ? 'yes' : 'no'}
-										defaultValue={insertBookData.bookBarter ? 'yes' : 'no'}
-										onChange={({ target: { value } }) =>
-											setInsertPropertyData({ ...insertPropertyData, propertyBarter: value === 'yes' })
-										}
-									>
-										<option disabled={true} selected={true}>
-											Select
-										</option>
-										<option value={'yes'}>Yes</option>
-										<option value={'no'}>No</option>
-									</select>
-									<div className={'divider'}></div>
-									<img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
-								</Stack>
-								<Stack className="price-year-after-price">
-									<Typography className="title">Rent</Typography>
-									<select
-										className={'select-description'}
-										value={insertPropertyData.propertyRent ? 'yes' : 'no'}
-										defaultValue={insertPropertyData.propertyRent ? 'yes' : 'no'}
-										onChange={({ target: { value } }) =>
-											setInsertPropertyData({ ...insertPropertyData, propertyRent: value === 'yes' })
-										}
-									>
-										<option disabled={true} selected={true}>
-											Select
-										</option>
-										<option value={'yes'}>Yes</option>
-										<option value={'no'}>No</option>
-									</select>
-									<div className={'divider'}></div>
-									<img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
-								</Stack>
-							</Stack> */}
-
-							{/* <Stack className="config-row">
-								<Stack className="price-year-after-price">
-									<Typography className="title">Rooms</Typography>
-									<select
-										className={'select-description'}
-										value={insertBookData.propertyRooms || 'select'}
-										defaultValue={insertPropertyData.propertyRooms || 'select'}
-										onChange={({ target: { value } }) =>
-											setInsertPropertyData({ ...insertPropertyData, propertyRooms: parseInt(value) })
-										}
-									>
-										<option disabled={true} selected={true} value={'select'}>
-											Select
-										</option>
-										{[1, 2, 3, 4, 5].map((room: number) => (
-											<option value={`${room}`}>{room}</option>
-										))}
-									</select>
-									<div className={'divider'}></div>
-									<img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
-								</Stack>
-								<Stack className="price-year-after-price">
-									<Typography className="title">Bed</Typography>
-									<select
-										className={'select-description'}
-										value={insertPropertyData.propertyBeds || 'select'}
-										defaultValue={insertPropertyData.propertyBeds || 'select'}
-										onChange={({ target: { value } }) =>
-											setInsertPropertyData({ ...insertPropertyData, propertyBeds: parseInt(value) })
-										}
-									>
-										<option disabled={true} selected={true} value={'select'}>
-											Select
-										</option>
-										{[1, 2, 3, 4, 5].map((bed: number) => (
-											<option value={`${bed}`}>{bed}</option>
-										))}
-									</select>
-									<div className={'divider'}></div>
-									<img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
-								</Stack>
-								<Stack className="price-year-after-price">
-									<Typography className="title">Square</Typography>
-									<select
-										className={'select-description'}
-										value={insertPropertyData.propertySquare || 'select'}
-										defaultValue={insertPropertyData.propertySquare || 'select'}
-										onChange={({ target: { value } }) =>
-											setInsertPropertyData({ ...insertPropertyData, propertySquare: parseInt(value) })
-										}
-									>
-										<option disabled={true} selected={true} value={'select'}>
-											Select
-										</option>
-										{propertySquare.map((square: number) => {
-											if (square !== 0) {
-												return <option value={`${square}`}>{square}</option>;
-											}
-										})}
-									</select>
-									<div className={'divider'}></div>
-									<img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
-								</Stack>
-							</Stack> */}
+					
 
 							<Typography className="property-title">Book Description</Typography>
 							<Stack className="config-column">

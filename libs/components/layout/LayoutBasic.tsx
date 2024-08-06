@@ -29,50 +29,50 @@ const withLayoutBasic = (Component: any) => {
 
 			switch (router.pathname) {
 				case '/book':
-					title = 'Property Search';
-					desc = 'We are glad to see you again!';
-					bgImage = '/img/banner/properties.png';
+					title = 'Product Search';
+					// desc = 'We are glad to see you again!';
+					bgImage = '/img/banner/product1.webp';
 					break;
 				case '/agent':
-					title = 'Agents';
-					desc = 'Home / For Rent';
-					bgImage = '/img/banner/agents.webp';
+					// title = 'Publishers';
+					// desc = 'Home / For Rent';
+					bgImage = '/img/banner/product0.png';
 					break;
 				case '/agent/detail':
-					title = 'Agent Page';
-					desc = 'Home / For Rent';
-					bgImage = '/img/banner/header2.svg';
+					title = 'Publisher Page';
+					desc = 'Home / Detail Products';
+					bgImage = '/img/banner/product2.webp';
 					break;
 				case '/mypage':
 					title = 'my page';
 					desc = 'Home / For Rent';
-					bgImage = '/img/banner/header1.svg';
+					bgImage = '/img/banner/product.jpg';
 					break;
 				case '/community':
-					title = 'Community';
-					desc = 'Home / For Rent';
-					bgImage = '/img/banner/header2.svg';
+					// title = 'Community';
+					// desc = 'Home / For Rent';
+					bgImage = '/img/banner/agent.jpeg';
 					break;
 				case '/community/detail':
 					title = 'Community Detail';
 					desc = 'Home / For Rent';
-					bgImage = '/img/banner/header2.svg';
+					bgImage = '/img/banner/agent.jpeg';
 					break;
 				case '/cs':
-					title = 'CS';
-					desc = 'We are glad to see you again!';
-					bgImage = '/img/banner/header2.svg';
+					// title = 'CS';
+					// desc = 'We are glad to see you again!';
+					bgImage = '/img/banner/cs.png';
 					break;
 				case '/account/join':
 					title = 'Login/Signup';
 					desc = 'Authentication Process';
-					bgImage = '/img/banner/header2.svg';
+					bgImage = '/img/banner/publisher.jpg';
 					setAuthHeader(true);
 					break;
 				case '/member':
 					title = 'Member Page';
 					desc = 'Home / For Rent';
-					bgImage = '/img/banner/header1.svg';
+					bgImage = '/img/banner/publisher.jpg';
 					break;
 				default:
 					break;

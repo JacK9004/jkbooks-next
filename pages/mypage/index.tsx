@@ -101,7 +101,7 @@ const MyPage: NextPage = () => {
 	};
 
 	if (device === 'mobile') {
-		return <div>MY PAGE</div>;
+		return <div>MY Profile</div>;
 	} else {
 		return (
 			<div id="my-page" style={{ position: 'relative' }}>
