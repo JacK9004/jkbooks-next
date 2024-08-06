@@ -369,12 +369,7 @@ const BookDetail: NextPage = ({ initialComment, ...props }: any) => {
 							<Stack className={'left-config'}>
 							<Stack className={'prop-desc-config'}>
 								<Stack className={'column'}>
-									<Typography className={'title'}>Description</Typography>
-									<Typography className={'desc'}>{book?.bookDesc}</Typography>
-								</Stack>
-								<Stack className={'divider'}></Stack>
-								<Stack className={'column'}>
-									<Typography className={'title'}>Product Details</Typography>
+								<Typography className={'title'}>Product Details</Typography>
 									<Stack className={'info-box'}>
 									<Box component={'div'} className={'info'}>
 										<Typography className={'title'}>Format:</Typography>
@@ -401,6 +396,12 @@ const BookDetail: NextPage = ({ initialComment, ...props }: any) => {
 										<Typography className={'data'}>${formatterStr(book?.bookPrice)}</Typography>
 									</Box>
 									</Stack>
+								</Stack>
+
+								<Stack className={'divider'}></Stack>
+								<Stack className={'column'}>
+									<Typography className={'title'}>Description</Typography>
+									<Typography className={'desc'}>{book?.bookDesc}</Typography>
 								</Stack>
 								<Stack className={'divider'}></Stack>
 								<Stack className={'column'}>
