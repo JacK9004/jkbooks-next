@@ -1,142 +1,320 @@
-#pc-wrap {
-	#my-page {
-		background: #f6f6f6;
-		.container {
-			.my-page {
-				position: relative;
-				width: 100%;
-				flex-direction: row;
-				gap: 25px;
-				padding-top: 96px;
-				.back-frame {
-					width: 100%;
-					max-width: 1260px;
-					height: auto;
+.pcWrap {
+	margin-top: 50px;
+	display: flex;
+	flex-direction: row;
+	max-width: 1300px;
+	// width: 100%;
+	background: #e8f6f3;
+	border-radius: 12px;
+	border: 1px solid rgba(196, 196, 196, 0.79);
+	box-shadow: 0 1px 4px rgba(24, 26, 32, 0.07);
+	padding: 8px;
+  
+	.container {
+	  position: relative;
+	  width: 100%;
+	  display: flex;
+	  flex-direction: row;
+	  padding-top: 96px;
+  
+	  .backFrame {
+		width: 100%;
+		max-width: 1300px;
+		height: auto;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		margin: 0 auto;
+		border-radius: 12px;
+		border: 1px solid #c4c4c4;
+		background: #fff;
+		box-shadow: 0 1px 4px rgba(24, 26, 32, 0.07);
+  
+		.leftConfig {
+		  display: flex;
+		  flex-direction: column;
+		  max-width: 1300px;
+		  border-radius: 12px;
+		  background: #e8f6f3;
+		  border: 1px solid rgba(196, 196, 196, 0.79);
+		  box-shadow: 0 1px 4px rgba(24, 26, 32, 0.07);
+		  padding: 16px;
+  
+		  .profile {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			margin-top: 5px;
+  
+			.profileImg {
+			  img {
+				width: 79px;
+				height: 79px;
+				border-radius: 50%;
+				object-fit: cover;
+			  }
+			}
+  
+			.userInfo {
+			  display: flex;
+			  flex-direction: column;
+			  align-items: center;
+			  margin-top: 8px;
+  
+			  .userName {
+				color: #181a20;
+				font-size: 15px;
+				font-weight: 600;
+				line-height: normal;
+			  }
+  
+			  .userPhone {
+				display: flex;
+				align-items: center;
+				margin-top: 8px;
+  
+				img {
+				  margin-right: 4px;
+				  width: 16px;
+				  height: 16px;
+				}
+			  }
+			}
+		  }
+  
+		  .sections {
+			display: flex;
+			flex-direction: column;
+			margin-top: 20px;
+  
+			.section {
+			  .title {
+				font-size: 15px;
+				font-weight: 400;
+				line-height: 28px;
+			  }
+  
+			  .subSection {
+				width: 230px;
+				display: flex;
+				align-items: center;
+				cursor: pointer;
+				padding: 0 5px;
+  
+				li {
+				  height: 33px;
+				  margin-bottom: 6px;
+				  border-radius: 4px;
+				}
+  
+				&.focus {
+				  height: 50px;
+				  background: #000;
+				  border-radius: 10px;
+				  display: flex;
+				  align-items: center;
+				  justify-content: center;
+  
+				  p {
+					font-size: 14px;
+					color: #fff;
+				  }
+				}
+  
+				.flexBox {
+				  display: flex;
+				  align-items: center;
+  
+				  .comIcon {
 					display: flex;
-					flex-direction: row;
-					margin: 100px auto;
-					border-radius: 12px;
-					border: 1px solid #c4c4c4;
-					background: #fff;
-					box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
-					.left-config {
-						position: relative;
-						padding: 0;
-						width: 266px;
-						height: 100%;
-						border-radius: 12px;
-						background: #fff;
-						border: 1px solid rgba(196, 196, 196, 0.79);
-						box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
-						margin: 20px;
-						.profile {
-							margin-top: 5px;
-							position: relative;
-							display: flex;
-							flex-direction: row;
-							.profile-img {
-								img {
-									width: 79px;
-									height: 79px;
-									border-radius: 50%;
-									right: 30px;
-									bottom: 12px;
-									object-fit: cover;
-								}
-							}
-							.user-info {
-								margin-left: 20px;
-								display: flex;
-								flex-direction: column;
-								.user-name {
-									color: #181a20;
-									font-family: $font;
-									font-size: 15px;
-									font-style: normal;
-									font-weight: 600;
-									line-height: normal;
-								}
-								.user-phone {
-									display: flex;
-									flex-direction: row;
-									img {
-										margin-top: 7px;
-										margin-right: 4px;
-										width: 16px;
-										height: 16px;
-									}
-								}
-								.view-list {
-									font-weight: bold;
-									color: red;
-								}
-							}
-						}
-						.sections {
-							height: auto;
-							gap: 45px;
-							margin-top: 30px;
-							.section {
-								height: auto;
-								.title {
-									font-family: $font;
-									font-size: 15px;
-									font-style: normal;
-									font-weight: 400;
-									line-height: 28px;
-								}
-								.sub-section {
-									width: 230px;
-									height: 26px;
-									display: flex;
-									flex-direction: column;
-									align-items: center;
-									cursor: pointer;
-									padding: 0 5px;
-									li {
-										height: 33px;
-										margin-bottom: 6px;
-										border-radius: 4px;
-									}
-									.focus {
-										height: 50px;
-										background: #000000;
-										border-radius: 10px;
-										p {
-											font-size: 14px;
-											color: #ffffff;
-										}
-									}
-									.flex-box {
-										display: flex;
-										align-items: center;
-										.com-icon {
-											display: flex;
-											flex-direction: row;
-											justify-content: flex-end;
-											margin-left: 11px;
-										}
-										p {
-											font-size: 14px;
-										}
-									}
-								}
-								img {
-									width: 16px;
-									height: 16px;
-								}
-								.sub-title {
-									margin-left: 12px;
-									color: #181a20;
-									font-family: $font;
-									font-size: 14px;
-									font-style: normal;
-									font-weight: 600;
-									line-height: 55px;
-								}
-							}
-						}
-					}
+					margin-left: 11px;
+				  }
+  
+				  p {
+					font-size: 14px;
+				  }
+				}
+			  }
+  
+			  img {
+				width: 16px;
+				height: 16px;
+			  }
+  
+			  .subTitle {
+				margin-left: 12px;
+				color: #181a20;
+				font-size: 14px;
+				font-weight: 600;
+				line-height: 55px;
+			  }
+			}
+		  }
+  
+		  .community {
+			margin-top: 20px;
+  
+			.title {
+			  font-size: 15px;
+			  font-weight: 400;
+			  line-height: 28px;
+			}
+  
+			.subSection {
+			  width: 230px;
+			  display: flex;
+			  align-items: center;
+			  cursor: pointer;
+			  padding: 0 5px;
+  
+			  li {
+				height: 33px;
+				margin-bottom: 6px;
+				border-radius: 4px;
+			  }
+  
+			  &.focus {
+				height: 50px;
+				background: #000;
+				border-radius: 10px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+  
+				p {
+				  font-size: 14px;
+				  color: #fff;
+				}
+			  }
+  
+			  .flexBox {
+				display: flex;
+				align-items: center;
+  
+				.comIcon {
+				  display: flex;
+				  margin-left: 11px;
+				}
+  
+				p {
+				  font-size: 14px;
+				}
+			  }
+			}
+  
+			img {
+			  width: 16px;
+			  height: 16px;
+			}
+  
+			.subTitle {
+			  margin-left: 12px;
+			  color: #181a20;
+			  font-size: 14px;
+			  font-weight: 600;
+			  line-height: 55px;
+			}
+		  }
+  
+		  .manageList {
+			display: flex;
+			flex-direction: row;
+			margin-top: 20px;
+		  }
+  
+		  .agentName,
+		  .logout {
+			margin-top: 20px;
+		  }
+		}
+  
+		/* Adjust styles for right side */
+		.rightConfig {
+		  display: flex;
+		  flex-direction: column;
+		  flex: 1;
+		  padding: 24px;
+  
+		  .topButtons {
+			display: flex;
+			flex-direction: row;
+			margin-bottom: 16px;
+  
+			.button {
+			  border-radius: 50%;
+			  width: 150px;
+			  height: 50px;
+			  display: flex;
+			  align-items: center;
+			  justify-content: center;
+			  cursor: pointer;
+			  transition: background-color 0.3s ease;
+  
+			  &.active {
+				background-color: #018675;
+				color: #fff;
+  
+				p {
+				  font-size: 14px;
+				}
+			  }
+  
+			  &:hover {
+				background-color: #018675;
+			  }
+  
+			  p {
+				font-size: 14px;
+			  }
+			}
+		  }
+  
+		  .menuItems {
+			display: flex;
+			flex-direction: row;
+			padding: 0;
+			gap: 16px;
+  
+			.menuItem {
+			  display: flex;
+			  flex-direction: row;
+			  align-items: center;
+			  justify-content: center;
+			  width: 150px;
+			  height: 50px;
+			  border-radius: 50%;
+			  cursor: pointer;
+			  transition: background-color 0.3s ease;
+  
+			  &.active {
+				background-color: #018675;
+				color: #fff;
+  
+				img {
+				  width: 22px;
+				  height: 22px;
+				}
+  
+				p {
+				  font-size: 14px;
+				}
+			  }
+  
+			  &:hover {
+				background-color: #018675;
+			  }
+  
+			  img {
+				width: 22px;
+				height: 22px;
+			  }
+  
+			  p {
+				font-size: 14px;
+				margin-left: 12px;
+			  }
+			}  
+		  
 					.main-config {
 						position: relative;
 						width: 936px;
