@@ -120,7 +120,7 @@ const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
 				</Stack>
 				<Stack className="top-box">
 					<Stack className="photo-box">
-						<Typography className="title">Photo</Typography>
+						{/* <Typography className="title"></Typography> */}
 						<Stack className="image-big-box">
 							<Stack className="image-box">
 								<img

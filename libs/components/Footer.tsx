@@ -97,14 +97,16 @@ const Footer = () => {
 						</Box>
 					</Stack>
 					<Stack className={'right'}>
-						<Box component={'div'} className={'top'}>
-							<strong>keep yourself up to date</strong>
-							<div>
-								<input type="text" placeholder={'Your Email'} />
-								<span>Subscribe</span>
-							</div>
-						</Box>
-						<Box component={'div'} className={'bottom'}>
+					<Box component={'div'} className={'top'}>
+						<strong>Keep yourself up to date</strong>
+						<a target="_blank" rel="noopener noreferrer" className="subscribe-link">
+						<div>
+							<input type="text" placeholder={'Your Email'} />
+							<span>Subscribe</span>
+						</div>
+						</a>
+					</Box>
+					<Box component={'div'} className={'bottom'}>
 						<div>
 								<strong>Quick Links</strong>
 								<span>Terms of Use</span>

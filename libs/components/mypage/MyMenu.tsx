@@ -38,7 +38,7 @@ const MyMenu = () => {
         direction="column"
         spacing={1}
         sx={{
-          width: '250px',
+          width: '150px',
           padding: '16px',
           backgroundColor: '#f5f5f5',
           borderRight: '1px solid #ddd',

@@ -72,7 +72,7 @@ const {
 			<Stack className={'trend-properties'}>
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
-						<span>Trend Properties</span>
+						<span>Trend Books</span>
 					</Stack>
 					<Stack className={'card-box'}>
 						{trendBooks.length === 0 ? (

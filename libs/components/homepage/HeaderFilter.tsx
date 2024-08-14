@@ -49,11 +49,10 @@ const HeaderFilter = (props: HeaderFilterProps) => {
       <div className="header-container">
         <Stack className="search-box" direction="row" alignItems="center">
           <Box component="div" className="search-input-box">
-            {/* <img src="/img/icons/search.svg" alt="Search icon" /> */}
             <input
               value={searchFilter?.search?.text ?? ''}
               type="text"
-              placeholder={'Search by Title, Author, Keyword or ISBN'}
+              placeholder={'Search 5 million books by title, author or keyword'}
               onChange={(e) => {
                 setSearchFilter({
                   ...searchFilter,

@@ -1,60 +1,193 @@
 #pc-wrap {
 	#my-articles-page {
+		margin-top: 2px;
 		width: 100%;
 		height: auto;
-		.main-title-box {
-			width: auto;
-			height: auto;
-			flex-direction: row;
-			justify-content: space-between;
-			.right-box {
-				width: 315px;
-				.main-title {
-					color: #181a20;
-					font-family: $font;
-					font-size: 30px;
-					font-style: normal;
-					font-weight: 600;
-					line-height: normal;
-					letter-spacing: 0.6px;
-					text-transform: capitalize;
-				}
-				.sub-title {
-					color: #181a20;
-					font-family: $font;
-					font-size: 14px;
-					font-style: normal;
-					font-weight: 400;
-					line-height: 26px;
-				}
-			}
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+  
+	  .main-title-box {
+		width: auto;
+		height: auto;
+		flex-direction: row;
+		justify-content: space-between;
+		background: #fff;
+		border-radius: 12px;
+		border: 1px solid rgba(196, 196, 196, 0.79);
+		box-shadow: 0 1px 4px rgba(24, 26, 32, 0.07);
+		padding: 8px;
+  
+		.main-title {
+		  color: #343a40;
+		  font-family: 'Roboto', sans-serif;
+		  font-size: 28px;
+		  font-weight: 600;
+		  letter-spacing: 0.5px;
 		}
-		.article-list-box {
-			width: 100%;
-			height: auto;
-			flex-direction: row;
-			flex-wrap: wrap;
-			gap: 25px;
-			margin-top: 55px;
-			margin-bottom: 87px;
+  
+		.sub-title {
+		  color: #6c757d;
+		  font-family: 'Roboto', sans-serif;
+		  font-size: 16px;
+		  font-weight: 400;
 		}
-		.pagination-conf {
-			width: 100%;
-			height: auto;
-			justify-content: center;
-			align-items: center;
-			margin-top: 30px;
-			.total {
-				p {
-					color: #181a20;
-					font-size: 14px;
-					text-align: center;
-					font-family: $font;
-					font-style: normal;
-					font-weight: 400;
-					line-height: 26px;
-				}
-			}
+	  }
+  
+	  .article-list-box {
+		display: flex;
+		flex-wrap: wrap;
+		flex-direction: row;
+		gap: 40px;
+		margin-top: 30px;
+  
+		.no-data {
+		  display: flex;
+		  flex-direction: row;
+		  align-items: center;
+		  justify-content: center;
+		  color: #6c757d;
+		  font-family: 'Roboto', sans-serif;
+		  font-size: 18px;
+  
+		  img {
+			margin-bottom: 12px;
+		  }
 		}
+	  }
+  
+	  .pagination-conf {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-top: 40px;
+  
+		.pagination-box {
+		  margin-right: 20px;
+		}
+  
+		.total {
+		  p {
+			color: #343a40;
+			font-family: 'Roboto', sans-serif;
+			font-size: 16px;
+			font-weight: 400;
+		  }
+		}
+	  }
 	}
-}
+  }
+  	.community-general-card-config {
+	  display: flex;
+	  flex-direction: column;
+	  background-color: #ffffff;
+	  border-radius: 8px;
+	  border: 1px solid #e0e0e0;
+	  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	  transition: transform 0.3s ease, box-shadow 0.3s ease;
+	  cursor: pointer;
+	  overflow: hidden;
+	  width: 100%;
+	  max-width: 350px;
+
+  
+	  &:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+	  }
+  
+	  .image-box1 {
+		width: 100%;
+		height: 200px;
+		overflow: hidden;
+		background-color: #f5f5f5;
+  
+		.card-img1 {
+		  width: 100%;
+		  height: 100%;
+		  object-fit: cover;
+		  transition: transform 0.3s ease;
+  
+		  &:hover {
+			transform: scale(1.05);
+		  }
+		}
+	  }
+  
+	  .desc-box1 {
+		padding: 16px;
+  
+		.desc1 {
+		  margin-top: 10px;
+		  color: #018675;
+		  font-family: 'Roboto', sans-serif;
+		  font-size: 14px;
+		  font-weight: 500;
+		  margin-bottom: 5px;
+		  cursor: pointer;
+  
+		  &:hover {
+			text-decoration: underline;
+		  }
+		}
+  
+		.title1 {
+		  color: #343a40;
+		  font-family: 'Merriweather', serif;
+		  font-size: 20px;
+		  font-weight: 700;
+		  line-height: 1.4;
+		  overflow: hidden;
+		  text-overflow: ellipsis;
+		  display: -webkit-box;
+		  -webkit-box-orient: vertical;
+		}
+ 
+		.buttons1 {
+		  display: flex;
+		  align-items: center;
+		  gap: 16px; 
+		  flex-direction: row; 
+  
+		  .view-cnt1 {
+			color: #6c757d;
+			font-family: 'Roboto', sans-serif;
+			font-size: 14px;
+			font-weight: 400;
+		  }
+  
+		  .MuiIconButton-root {
+			padding: 6px;
+  
+			svg {
+			  font-size: 20px;
+			}
+		  }
+		}
+	  }
+  
+	  .date-box1 {
+		padding: 12px;
+		background-color: #f8f9fa;
+		border-top: 1px solid #e0e0e0;
+		text-align: center;
+  
+		.month1 {
+		  font-family: 'Roboto', sans-serif;
+		  font-size: 12px;
+		  font-weight: 400;
+		  text-transform: uppercase;
+		  color: #6c757d;
+		}
+  
+		.day1 {
+		  font-family: 'Merriweather', serif;
+		  font-size: 24px;
+		  font-weight: 700;
+		  color: #343a40;
+		}
+	  }
+	}
+  
+
+  

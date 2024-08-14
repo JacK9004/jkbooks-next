@@ -591,8 +591,13 @@
 							width: 14px;
 							height: 14px;
 						}
+						&.swiper-agents-prev {
+							color: #fff;
+						
+						}
 						&.swiper-agents-next {
 							transform: rotate(180deg);
+							color: #fff;
 						}
 					}
 					.card-wrapper {
@@ -613,14 +618,14 @@
 						}
 						.top-agent-card {
 							width: 280px;
-							height: 300px;
+							height: 250px;
 							display: flex;
 							flex-direction: column;
-							align-items: center;  /* Center-align the contents */
+							align-items: center;  
 							padding: 10px;
 							background: #F2F2F2;
 							border-radius: 15px;
-							box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Add shadow for better visibility */
+							box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 							transition: transform 0.3s;
 							
 							&:hover {
@@ -628,12 +633,12 @@
 							}
 						
 							img {
-								width: 200px;
-								height: 200px;
-								border-radius: 10px;  /* Change to square shape with rounded corners */
+								width: 180px;
+								height: 180px;
+								border-radius: 10px; 
 								cursor: pointer;
 								object-fit: cover;
-								margin-bottom: 15px;
+								margin-bottom: 10px;
 							}
 						
 							strong {
@@ -646,7 +651,7 @@
 								line-height: 20px;
 								text-transform: capitalize;
 								cursor: pointer;
-								margin-bottom: 10px;  /* Add margin for better spacing */
+								margin-bottom: 10px;  
 							}
 						
 							span {
@@ -662,13 +667,13 @@
 
 				.events {
 							padding: 20px 0px 30px;
-							width: 1300px; /* Fixed width */
+							width: 1300px; 
 							height: 480px;
 							display: flex;
-							flex-direction: column; /* Align content vertically */
-							align-items: center; /* Center align items horizontally */
-							background: white; /* Section background color */
-							margin: 0 auto; /* Center the container horizontally */
+							flex-direction: column; 
+							align-items: center; 
+							background: white; 
+							margin: 0 auto; 
 						  }
 						  
 						  .events h4 {
@@ -679,7 +684,7 @@
 							line-height: 29px;
 							letter-spacing: -0.646px;
 							text-transform: capitalize;
-							text-align: left; /* Center the text inside the h4 element */
+							text-align: left; 
 							&.white {
 							  color: #008675;
 							}

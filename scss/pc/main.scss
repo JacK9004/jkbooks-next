@@ -52,7 +52,7 @@ body::-webkit-scrollbar {
 				position: fixed;
 				padding: 10px 0px;
 				width: 100%;
-				height: 110px;
+				height: 112px;
 				display: flex;
 				flex-direction: column;
 				box-sizing: border-box;
@@ -80,7 +80,7 @@ body::-webkit-scrollbar {
 						flex-direction: row;
 						justify-content: flex-end;
 						.join-box {
-							width: 184px;
+							width: 180px;
 							height: 47px;
 							display: flex;
 							align-items: center;
@@ -135,43 +135,52 @@ body::-webkit-scrollbar {
 				}
 				.router-box {
 					position: relative;
-					margin-left: -250px;
-					width: 617px;
+					margin-left: -150px;
+					width: 700px;
 					display: flex;
 					flex-direction: row;
 					justify-content: space-between;
-					div {
-						position: relative;
-						color:  #F5F5F5;
-						font-family: $font;
-						font-size: 15px;
-						font-style: normal;
-						font-weight: 600;
-						line-height: normal;
-						cursor: pointer;
-						.community_menu {
-							position: absolute;
-							left: -177%;
-							top: 30px;
-							width: 434px;
-							height: 33px;
-							background: white;
-							transition: all ease 2s;
-							&:before {
-								content: '';
-								display: block;
-								position: absolute;
-								top: 0;
-								right: 50%;
-								width: 10px;
-								height: 10px;
-								background: white;
-								transform: translateY(-50%) rotate(45deg);
-								z-index: 0;
-							}
-						}
+					
+					a {
+					  text-decoration: none; 
+					  color: inherit; 
 					}
-				}
+				  
+					div {
+					  position: relative;
+					  color: #F5F5F5;
+					  font-family: 'Roboto', sans-serif; 
+					  font-size: 16px;
+					  font-style: normal;
+					  font-weight: 600;
+					  line-height: normal;
+					  cursor: pointer;
+					  padding: 10px; 
+					  transition: color 0.3s ease; 
+				  
+					  &.active {
+						color: wheat;
+						
+						&:after {
+						  content: '';
+						  display: block;
+						  position: absolute;
+						  bottom: -10px; 
+						  left: 50%; 
+						  transform: translateX(-50%); 
+						  width: 0; 
+						  height: 0; 
+						  border-left: 10px solid transparent;
+						  border-right: 10px solid transparent;
+						  border-top: 10px solid wheat; 					
+						}
+					  }
+					  
+					  &:hover {
+						color: wheat; 
+					  }
+					}
+				  }				  
 			}
 		}
 	}
@@ -179,78 +188,71 @@ body::-webkit-scrollbar {
 	.header-container {
 		display: flex;
 		margin: -60px 60px 0 100px;
-		width: 900px;
-		justify-content: center; /* Center the search box horizontally */
-		padding: 10px 0; /* Padding at the top and bottom */
-		width: 100%; /* Full width of the container */
+		width: 830px;
+		justify-content: center; 
+		padding: 10px 0;
+		width: 100%;
 
 	  
 	  .search-input-box {
 		display: flex;
-		align-items: center; /* Center items vertically */
-		width: 900px; /* Set the width to 900px */
-		height: 45px; /* Set the height to 45px */
-		border-radius: 22px; /* Rounded corners */
-		// padding: 0 10px; /* Padding inside the input box */
-		// box-sizing: border-box; /* Include padding in width and height */
-		overflow: hidden; /* Hide overflow */
-		flex-grow: 1; /* Allow the input box to take up remaining space */
+		align-items: center; 
+		width: 830px; 
+		height: 45px; 
+		border-radius: 22px; 
+		overflow: hidden; 
+		flex-grow: 1; 
 	  }
 	  	  
 	  .search-box {
 		display: flex;
-		align-items: center; /* Center items vertically */
-		background-color: #FFFF; /* Light gray background */
-		border-radius: 22px; /* Rounded corners */
-		// box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-		// box-sizing: border-box; /* Include padding in width and height */
-		max-width: 900px; /* Set a max width for the search box */
-		width: 100%; /* Full width of the container */
+		align-items: center; 
+		background-color: #FFFF; 
+		border-radius: 22px; 
+		max-width: 830px; 
+		width: 100%; 
 	  }
 	  
 	  .search-input-box img {
-		// margin-right: 10px; /* Space between icon and text */
-		height: 20px; /* Adjust icon size */
+		height: 20px; 
 	
 	  }
 	  
 	  .search-input-box input {
-		flex-grow: 1; /* Allow the input to take up available space */
-		border: none; /* Remove default border */
-		outline: none; /* Remove focus outline */
-		height: 100%; /* Match the height of the parent */
-		padding: 0 10px; /* Padding inside the input field */
-		font-size: 16px; /* Font size for the input text */
-		box-sizing: border-box; /* Include padding in width */
+		flex-grow: 1; 
+		border: none; 
+		outline: none; 
+		height: 100%; 
+		padding: 0 10px; 
+		font-size: 16px; 
+		box-sizing: border-box; 
 	  }
 	  
 	  .search-btn {
-		background-color: #ffff; /* Blue background */
+		background-color: #ffff;
 		width: 5%;
-		color: #ffffff; /* White text */
-		border: none; /* Remove default border */
-		border-radius: 22px; /* Rounded corners */
-		padding: 0 20px; /* Padding inside the button */
-		height: 45px; /* Match the height of the input box */
+		color: #ffffff;
+		border: none; 
+		border-radius: 22px; 
+		padding: 0 20px; 
+		height: 45px; 
 		display: flex;
-		align-items: center; /* Center align items vertically */
-		justify-content: center; /* Center align text and icon horizontally */
-		cursor: pointer; /* Pointer cursor on hover */
-		font-size: 16px; /* Font size for the button text */
-		margin-left: 10px; /* Space between input and button */
-		box-sizing: border-box; /* Include padding in height calculation */
-		gap: -5px; /* Space between input and button
-		
-		// Ensure button aligns with input box
-		flex-shrink: 0; /* Prevent button from shrinking */
+		align-items: center;
+		justify-content: center; 
+		cursor: pointer;
+		font-size: 16px; 
+		margin-left: 10px; 
+		box-sizing: border-box; 
+		gap: -5px;	
+
 	  }
 
 	  .search-btn:hover {
-		background-color: #86C2BA; /* Darker blue on hover */
+		background-color: #86C2BA;
 	  }
 	  
 	  .search-btn img {
-		height: 30px; /* Adjust icon size */
+		height: 30px; 
 		margin-left: 10px;
 	  }
 	}
@@ -504,14 +506,13 @@ body::-webkit-scrollbar {
 		width: 100%;
 		height: auto;
 		display: flex;
-		justify-content: center;  /* Center the footer-container horizontally */
+		justify-content: center; 
 		align-items: center; 
 		.footer-container {
-			left: 108px;
 			width: 1300px;
-			height: 500px;
+			height: 550px;
 			background-color: #008675;
-			border-radius: 10px;
+			border-radius: 15px;
 			.main {
 				width: 90%;
 				display: flex;
@@ -550,13 +551,21 @@ body::-webkit-scrollbar {
 						}
 						.media-box {
 							margin-top: 12px;
-							color: white;
+							color: white; /* Default color for the icons */
+							
 							svg {
-								font-size: 32px;
-								margin-right: 22px;
-								cursor: pointer;
+							  font-size: 32px;
+							  margin-right: 22px;
+							  cursor: pointer;
+							  transition: transform 0.3s ease, color 0.3s ease, filter 0.3s ease; 
+						  
+							  &:hover {
+								color: #00bfae; 
+								transform: scale(1.1); 
+								filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+							  }
 							}
-						}
+						  }						  
 					}
 				}
 				.right {
@@ -566,16 +575,24 @@ body::-webkit-scrollbar {
 						margin-top: 30px;
 						display: flex;
 						flex-direction: column;
+					
 						strong {
-							color: #fff;
-							font-family: "Roboto", sans-serif;
-							font-size: 15px;
-							font-style: normal;
-							font-weight: 600;
-							line-height: normal;
-							text-transform: capitalize;
+						  color: #fff;
+						  font-family: "Roboto", sans-serif;
+						  font-size: 15px;
+						  font-style: normal;
+						  font-weight: 600;
+						  line-height: normal;
+						  text-transform: capitalize;
 						}
-						div {
+					
+						.subscribe-link {
+						  text-decoration: none; /* Remove underline from the link */
+						  color: inherit; /* Inherit color from parent */
+						  display: flex; /* Ensure the link behaves as a flex container */
+						  align-items: center;
+					
+						  div {
 							padding: 20px 30px;
 							margin-top: 20px;
 							width: 600px;
@@ -586,28 +603,31 @@ body::-webkit-scrollbar {
 							box-sizing: border-box;
 							border-radius: 12px;
 							background: white;
+					
 							input {
-								margin-right: 10px;
-								width: 85%;
-								border: none;
-								outline: none;
-								color: #fff;
-								font-family: "Roboto", sans-serif;
-								font-size: 14px;
-								font-style: normal;
-								font-weight: 400;
-								line-height: 26px;
-								background: none;
+							  margin-right: 10px;
+							  width: 85%;
+							  border: none;
+							  outline: none;
+							  color: #333; 
+							  font-family: "Roboto", sans-serif;
+							  font-size: 14px;
+							  font-style: normal;
+							  font-weight: 400;
+							  line-height: 26px;
+							  background: none;
 							}
+					
 							span {
-								color: #fff;
-								font-family: "Roboto", sans-serif;
-								font-size: 15px;
-								font-style: normal;
-								font-weight: 600;
-								line-height: normal;
-								cursor: pointer;
+							  color: #033e36; 
+							  font-family: "Roboto", sans-serif;
+							  font-size: 15px;
+							  font-style: normal;
+							  font-weight: 600;
+							  line-height: normal;
+							  cursor: pointer;
 							}
+						  }
 						}
 					}
 					.bottom {
@@ -646,13 +666,14 @@ body::-webkit-scrollbar {
 				}
 			}
 			.second {
-				margin-top: 30px;
-				height: 40px;
+				margin-top: 80px;
+				height: 60px;
 				border-top: 1px solid #bebdbd;
 				display: flex;
 				flex-direction: row;
-				justify-content: space-between;
-				align-items: flex-end;
+				justify-content:center;
+				align-items: center;
+				gap: 600px;
 				span {
 					color: white;
 					font-family: $font;

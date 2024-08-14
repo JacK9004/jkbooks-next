@@ -49,27 +49,26 @@ const CommunityCard = (props: CommunityCardProps) => {
 	} else {
 		return (
 			<Stack
-				sx={{ width: size === 'small' ? '285px' : '317px' }}
 				className="community-general-card-config"
-				onClick={(e) => chooseArticleHandler(e, boardArticle)}
+				onClick={(e: any) => chooseArticleHandler(e, boardArticle)}
 			>
-				<Stack className="image-box">
-					<img src={imagePath} alt="" className="card-img" />
+				<Stack className="image-box1">
+					<img src={imagePath} alt="" className="card-img1" />
 				</Stack>
-				<Stack className="desc-box" sx={{ marginTop: '-20px' }}>
+				<Stack className="desc-box1" sx={{ marginTop: '-20px' }}>
 					<Stack>
 						<Typography
-							className="desc"
-							onClick={(e) => {
+							className="desc1"
+							onClick={(e: any) => {
 								e.stopPropagation();
 								goMemberPage(boardArticle?.memberData?._id as string);
 							}}
 						>
 							{boardArticle?.memberData?.memberNick}
 						</Typography>
-						<Typography className="title">{boardArticle?.articleTitle}</Typography>
+						<Typography className="title1">{boardArticle?.articleTitle}</Typography>
 					</Stack>
-					<Stack className={'buttons'}>
+					<Stack className={'buttons1'}>
 						<IconButton color={'default'}>
 							<RemoveRedEyeIcon />
 						</IconButton>
@@ -81,14 +80,14 @@ const CommunityCard = (props: CommunityCardProps) => {
 								<FavoriteBorderIcon />
 							)}
 						</IconButton>
-						<Typography className="view-cnt">{boardArticle?.articleLikes}</Typography>
+						<Typography className="view-cnt1">{boardArticle?.articleLikes}</Typography>
 					</Stack>
 				</Stack>
-				<Stack className="date-box">
-					<Moment className="month" format={'MMMM'}>
+				<Stack className="date-box1">
+					<Moment className="month1" format={'MMMM'}>
 						{boardArticle?.createdAt}
 					</Moment>
-					<Typography className="day">
+					<Typography className="day1">
 						<Moment format={'DD'}>{boardArticle?.createdAt}</Moment>
 					</Typography>
 				</Stack>

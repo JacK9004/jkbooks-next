@@ -1,9 +1,9 @@
 // components/StaticHeaderSwiper.tsx
 
 import React from 'react';
+import SwiperCore, { Autoplay } from 'swiper'; 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/swiper-bundle.min.css'; // Import Swiper styles
-import { Autoplay } from 'swiper';
+import 'swiper/swiper-bundle.min.css'; 
 
 // Static image URLs
 const staticImages = [
@@ -24,7 +24,7 @@ const StaticHeaderSwiper: React.FC = () => {
       centeredSlides={true}
       spaceBetween={25}
       autoplay={{
-        delay: 5000, // Delay in ms between slides
+        delay: 5000,
         disableOnInteraction: false,
       }}
       modules={[Autoplay]}

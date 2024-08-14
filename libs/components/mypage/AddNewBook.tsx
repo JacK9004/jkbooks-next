@@ -277,22 +277,21 @@ const AddBook = ({ initialValues, ...props }: any) => {
 								</Stack>
 							</Stack>
 
-							<Stack className="config-row">
-							<Stack className="price-year-after-price">
-							<Typography className="title">Languages</Typography>
-											{Object.values(BookLanguage).map((language) => (
-												<label key={language}>
-													<input
-														type="checkbox"
-														checked={insertBookData.bookLanguages.includes(language)}
-														onChange={() => handleLanguageChange(language)}
-													/>
-													{language}
-												</label>
-											))}
-								</Stack>
-								</Stack>
-
+							<Stack className="config-row1">
+							<Typography className="title1">Languages</Typography>
+							<Stack className="checkbox-container1">
+								{Object.values(BookLanguage).map((language) => (
+								<label key={language} className="checkbox-label1">
+									<input
+									type="checkbox"
+									checked={insertBookData.bookLanguages.includes(language)}
+									onChange={() => handleLanguageChange(language)}
+									/>
+									{language.toUpperCase()}
+								</label>
+								))}
+							</Stack>
+							</Stack>
 							<Stack className="config-column">
 								<Typography className="title">ISBN Number</Typography>
 								<input

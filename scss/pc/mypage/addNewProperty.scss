@@ -450,6 +450,44 @@
 						}
 					}
 				}
+				.config-row1{
+					width: 100%;
+					height: auto;
+					flex-direction: column;
+					gap: 15px;
+					margin-top: 25px;
+				  }
+				  
+				  .title1{
+					color: #181a20;
+					font-family: $font;
+					font-size: 14px;
+					font-style: normal;
+					font-weight: 600;
+					line-height: normal;
+				  }
+				  
+				  .checkbox-container1{
+					display: flex;
+					flex-direction: row;
+					flex-wrap: wrap; 
+					gap: 20px; 
+					border: 1px solid #ccc; 
+					padding: 15px; 
+					border-radius: 10px;
+				  }
+				  
+				  .checkbox-label1{
+					display: flex;
+					align-items: center;
+					font-family: $font;
+					font-size: 14px;
+					color: #181a20;
+					gap: 5px; 
+					text-transform: uppercase; 
+				  }
+				  
+				  
 				.map-title {
 					margin-top: 39px;
 					color: #181a20;

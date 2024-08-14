@@ -220,9 +220,9 @@ const Top = () => {
 								>
 									<Box component={'div'} className={'flag'}>
 										{lang !== null ? (
-											<img src={`/img/flag/lang${lang}.png`} alt={'usaFlag'} />
+											<img src={`/img/flag/lang${lang}.png`} alt={`/img/flag/english.png`} />
 										) : (
-											<img src={`/img/flag/langen.png`} alt={'usaFlag'} />
+											<img src={`/img/flag/english.png`} alt={`/img/flag/english.png`} />
 										)}
 									</Box>
 								</Button>
@@ -231,10 +231,10 @@ const Top = () => {
 									<MenuItem disableRipple onClick={langChoice} id="en">
 										<img
 											className="img-flag"
-											src={'/img/flag/langen.png'}
+											src={'/img/flag/english.png'}
 											onClick={langChoice}
 											id="en"
-											alt={'usaFlag'}
+											alt={`/img/flag/english.png`}
 										/>
 										{t('English')}
 									</MenuItem>
@@ -264,26 +264,26 @@ const Top = () => {
 					</Stack>
 					<Stack>
 					<Box component={'div'} className={'router-box'}>
-							<Link href={'/'}>
-								<div>{t('Home')}</div>
+						<Link href={'/'}>
+							<div className={router.pathname === '/' ? 'active' : ''}>{t('Home')}</div>
+						</Link>
+						<Link href={'/book'}>
+							<div className={router.pathname === '/book' ? 'active' : ''}>{t('All Books')}</div>
+						</Link>
+						<Link href={'/agent'}>
+							<div className={router.pathname === '/agent' ? 'active' : ''}>{t('Publishers')}</div>
+						</Link>
+						<Link href={'/community?articleCategory=FREE'}>
+							<div className={router.pathname.startsWith('/community') ? 'active' : ''}>{t('Blog')}</div>
+						</Link>
+						{user?._id && (
+							<Link href={'/mypage'}>
+							<div className={router.pathname === '/mypage' ? 'active' : ''}>{t('My Profile')}</div>
 							</Link>
-							<Link href={'/book'}>
-								<div>{t('All Books')}</div>
-							</Link>
-							<Link href={'/agent'}>
-								<div> {t('Publishers')} </div>
-							</Link>
-							<Link href={'/community?articleCategory=FREE'}>
-								<div> {t('Blog')} </div>
-							</Link>
-							{user?._id && (
-								<Link href={'/mypage'}>
-									<div> {t('My Profile')} </div>
-								</Link>
-							)}
-							<Link href={'/cs'}>
-								<div> {t('Contact Us')} </div>
-							</Link>
+						)}
+						<Link href={'/cs'}>
+							<div className={router.pathname === '/cs' ? 'active' : ''}>{t('Contact Us')}</div>
+						</Link>
 						</Box>
 					</Stack>
 				</Stack>

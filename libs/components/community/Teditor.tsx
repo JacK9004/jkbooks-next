@@ -117,38 +117,96 @@ const TuiEditor = () => {
 
 	return (
 		<Stack>
-			<Stack direction="row" style={{ margin: '40px' }} justifyContent="space-evenly">
-				<Box component={'div'} className={'form_row'} style={{ width: '300px' }}>
-					<Typography style={{ color: '#7f838d', margin: '10px' }} variant="h3">
-						Category
-					</Typography>
-					<FormControl sx={{ width: '100%', background: 'white' }}>
-						<Select
-							value={articleCategory}
-							onChange={changeCategoryHandler}
-							displayEmpty
-							inputProps={{ 'aria-label': 'Without label' }}
-						>
-							<MenuItem value={BoardArticleCategory.REVIEWS}>
-								<span>REVIEWS</span>
-							</MenuItem>
-							<MenuItem value={BoardArticleCategory.INTERVIEWS}>INTERVIEWS</MenuItem>
-							<MenuItem value={BoardArticleCategory.NEWS}>NEWS</MenuItem>
-							<MenuItem value={BoardArticleCategory.EVENTS}>EVENTS</MenuItem>
-						</Select>
-					</FormControl>
-				</Box>
-				<Box component={'div'} style={{ width: '300px', flexDirection: 'column' }}>
-					<Typography style={{ color: '#7f838d', margin: '10px' }} variant="h3">
-						Title
-					</Typography>
-					<TextField
-						onChange={articleTitleHandler}
-						id="filled-basic"
-						label="Type Title"
-						style={{ width: '300px', background: 'white' }}
-					/>
-				</Box>
+			<Stack
+			direction="column"
+			style={{
+				margin: '10px auto',
+				width: '1300px',
+				padding: '20px',
+				border: '1px solid #ccc',
+				borderRadius: '8px',
+				background: '#f9f9f9',
+			}}
+			>
+			<Box
+				component={'div'}
+				className={'form_row'}
+				style={{
+				marginBottom: '20px',
+				width: '100%',
+				}}
+			>
+				<Typography style={{ color: '#7f838d', marginBottom: '10px' }} variant="h6">
+				Category
+				</Typography>
+				<FormControl
+				sx={{
+					width: '100%',
+					background: 'white',
+					'& .MuiOutlinedInput-root': {
+					'& fieldset': {
+						borderColor: '#ccc', 
+					},
+					'&:hover fieldset': {
+						borderColor: '#ccc', 
+					},
+					'&.Mui-focused fieldset': {
+						borderColor: '#E8F6F3',
+					},
+					},
+					'& .MuiSelect-select:focus': {
+					backgroundColor: 'transparent', 
+					},
+				}}
+				>
+				<Select
+					value={articleCategory}
+					onChange={changeCategoryHandler}
+					displayEmpty
+					inputProps={{ 'aria-label': 'Without label' }}
+				>
+					<MenuItem value={BoardArticleCategory.REVIEWS}>
+					<span>REVIEWS</span>
+					</MenuItem>
+					<MenuItem value={BoardArticleCategory.INTERVIEWS}>INTERVIEWS</MenuItem>
+					<MenuItem value={BoardArticleCategory.NEWS}>NEWS</MenuItem>
+					<MenuItem value={BoardArticleCategory.EVENTS}>EVENTS</MenuItem>
+				</Select>
+				</FormControl>
+			</Box>
+
+			<Box
+				component={'div'}
+				className={'form_row'}
+				style={{
+				width: '100%',
+				}}
+			>
+				<Typography style={{ color: '#7f838d', marginBottom: '10px' }} variant="h6">
+				Title
+				</Typography>
+				<TextField
+				onChange={articleTitleHandler}
+				id="filled-basic"
+				label="Type Title"
+				variant="outlined"
+				sx={{
+					width: '100%',
+					background: 'white',
+					'& .MuiOutlinedInput-root': {
+					'& fieldset': {
+						borderColor: '#ccc', 
+					},
+					'&:hover fieldset': {
+						borderColor: '#ccc', 
+					},
+					'&.Mui-focused fieldset': {
+						borderColor: '#E8F6F3', 
+					},
+					},
+				}}
+				/>
+			</Box>
 			</Stack>
 
 			<Editor
@@ -177,14 +235,22 @@ const TuiEditor = () => {
 			/>
 
 			<Stack direction="row" justifyContent="center">
-				<Button
-					variant="contained"
-					color="primary"
-					style={{ margin: '30px', width: '250px', height: '45px' }}
-					onClick={handleRegisterButton}
+			<Button
+				variant="contained"
+				sx={{ 
+					backgroundColor: '#018675',
+					color: 'white', // Text color
+					'&:hover': {
+					backgroundColor: '#016A59', // Slightly darker shade for hover effect
+					},
+					margin: '30px',
+					width: '250px',
+					height: '45px'
+				}}
+				onClick={handleRegisterButton}
 				>
-					Register
-				</Button>
+				Register
+			</Button>
 			</Stack>
 		</Stack>
 	);
