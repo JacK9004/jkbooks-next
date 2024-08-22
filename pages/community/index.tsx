@@ -78,8 +78,6 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 		}
 	};
 	const tabChangeHandler = async (e: T, value: string) => {
-		console.log(value);
-
 		setSearchCommunity({ ...searchCommunity, page: 1, search: { articleCategory: value as BoardArticleCategory } });
 		await router.push(
 			{
@@ -96,176 +94,108 @@ const Community: NextPage = ({ initialInput, ...props }: T) => {
 	};
 
 	if (device === 'mobile') {
-		return <h1>COMMUNITY PAGE MOBILE</h1>;
+		return <h1>BLOG PAGE MOBILE</h1>;
 	} else {
 		return (
 			<div id="community-list-page">
 				<div className="container">
 					<TabContext value={searchCommunity.search.articleCategory}>
-						<Stack className="main-box">
-							<Stack className="left-config">
-								<Stack className={'image-info'}>
-									<img src={'/img/logo/logoText.svg'} />
-									<Stack className={'community-name'}>
-										<Typography className={'name'}>Nestar Community</Typography>
+						<Stack className="main-box" direction="column" spacing={2}>
+							<Stack className="tabs-container" direction="row" spacing={2}>
+							<Stack className="left-config" spacing={3}>
+									<Stack className="image-info" direction="row" spacing={2}>
+										<img src="/img/logo/logo.png" alt="Community Logo" />
+										<Stack className="community-name">
+											<Typography className="name">Blog</Typography>
+										</Stack>
 									</Stack>
 								</Stack>
-
 								<TabList
-									orientation="vertical"
 									aria-label="lab API tabs example"
-									TabIndicatorProps={{
-										style: { display: 'none' },
-									}}
+									TabIndicatorProps={{ style: { display: 'none' } }}
 									onChange={tabChangeHandler}
 								>
 									<Tab
-										value={'REVIEWS'}
-										label={'Review Board'}
-										className={`tab-button ${searchCommunity.search.articleCategory == 'REVIEWS' ? 'active' : ''}`}
+										value="REVIEWS"
+										label="Reviews"
+										className={`tab-button ${searchCommunity.search.articleCategory === 'REVIEWS' ? 'active' : ''}`}
 									/>
 									<Tab
-										value={'INTERVIEWS'}
-										label={'Interviews'}
-										className={`tab-button ${searchCommunity.search.articleCategory == 'INTERVIEWS' ? 'active' : ''}`}
+										value="INTERVIEWS"
+										label="Interviews"
+										className={`tab-button ${searchCommunity.search.articleCategory === 'INTERVIEWS' ? 'active' : ''}`}
 									/>
 									<Tab
-										value={'NEWS'}
-										label={'News'}
-										className={`tab-button ${searchCommunity.search.articleCategory == 'NEWS' ? 'active' : ''}`}
+										value="NEWS"
+										label="News"
+										className={`tab-button ${searchCommunity.search.articleCategory === 'NEWS' ? 'active' : ''}`}
 									/>
 									<Tab
-										value={'EVENTS'}
-										label={'Events'}
-										className={`tab-button ${searchCommunity.search.articleCategory == 'EVENTS' ? 'active' : ''}`}
+										value="EVENTS"
+										label="Events"
+										className={`tab-button ${searchCommunity.search.articleCategory === 'EVENTS' ? 'active' : ''}`}
 									/>
 								</TabList>
 							</Stack>
-							<Stack className="right-config">
-								<Stack className="panel-config">
-									<Stack className="title-box">
-										<Stack className="left">
-											<Typography className="title">{searchCommunity.search.articleCategory} BOARD</Typography>
-											<Typography className="sub-title">
-												Express your opinions freely here without content restrictions
-											</Typography>
-										</Stack>
-										<Button
-											onClick={() =>
-												router.push({
-													pathname: '/mypage',
-													query: {
-														category: 'writeArticle',
-													},
-												})
-											}
-											className="right"
-										>
-											Write
-										</Button>
-									</Stack>
 
-									<TabPanel value="REVIEWS">
-										<Stack className="list-box">
+							<Stack className="content-box" direction="row" spacing={3}>
+							
+								<Stack className="right-config" direction="column" spacing={3}>
+									<Stack className="panel-config">
+										<Stack className="title-box" direction="row" justifyContent="space-between" alignItems="center">
+											<Stack className="left" spacing={1}>
+												<Typography className="title">{searchCommunity.search.articleCategory} BOARD</Typography>
+												<Typography className="sub-title">
+													Express your opinions freely here without content restrictions
+												</Typography>
+											</Stack>
+											<Button
+												onClick={() =>
+													router.push({
+														pathname: '/mypage',
+														query: { category: 'writeArticle' },
+													})
+												}
+												className="right"
+											>
+												Write
+											</Button>
+										</Stack>
+										
+										<Stack className="list-box" direction="row" spacing={2} flexWrap="wrap">
 											{totalCount ? (
-												boardArticles?.map((boardArticle: BoardArticle) => {
-													return (
-														<CommunityCard
-															boardArticle={boardArticle}
-															key={boardArticle?._id}
-															likeArticleHandler={likeArticleHandler}
-														/>
-													);
-												})
+												boardArticles.map((boardArticle: BoardArticle) => (
+													<CommunityCard
+														boardArticle={boardArticle}
+														key={boardArticle._id}
+														likeArticleHandler={likeArticleHandler}
+													/>
+												))
 											) : (
-												<Stack className={'no-data'}>
-													<img src="/img/icons/icoAlert.svg" alt="" />
+												<Stack className="no-data" direction="row" alignItems="center" spacing={1}>
+													<img src="/img/icons/icoAlert.svg" alt="No Articles" />
 													<p>No Article found!</p>
 												</Stack>
 											)}
 										</Stack>
-									</TabPanel>
-									<TabPanel value="INTERVIEWS">
-										<Stack className="list-box">
-											{totalCount ? (
-												boardArticles?.map((boardArticle: BoardArticle) => {
-													return (
-														<CommunityCard
-															boardArticle={boardArticle}
-															key={boardArticle?._id}
-															likeArticleHandler={likeArticleHandler}
-														/>
-													);
-												})
-											) : (
-												<Stack className={'no-data'}>
-													<img src="/img/icons/icoAlert.svg" alt="" />
-													<p>No Article found!</p>
-												</Stack>
-											)}
-										</Stack>
-									</TabPanel>
-									<TabPanel value="NEWS">
-										<Stack className="list-box">
-											{totalCount ? (
-												boardArticles?.map((boardArticle: BoardArticle) => {
-													return (
-														<CommunityCard
-															boardArticle={boardArticle}
-															key={boardArticle?._id}
-															likeArticleHandler={likeArticleHandler}
-														/>
-													);
-												})
-											) : (
-												<Stack className={'no-data'}>
-													<img src="/img/icons/icoAlert.svg" alt="" />
-													<p>No Article found!</p>
-												</Stack>
-											)}
-										</Stack>
-									</TabPanel>
-									<TabPanel value="EVENTS">
-										<Stack className="list-box">
-											{totalCount ? (
-												boardArticles?.map((boardArticle: BoardArticle) => {
-													return (
-														<CommunityCard
-															boardArticle={boardArticle}
-															key={boardArticle?._id}
-															likeArticleHandler={likeArticleHandler}
-														/>
-													);
-												})
-											) : (
-												<Stack className={'no-data'}>
-													<img src="/img/icons/icoAlert.svg" alt="" />
-													<p>No Article found!</p>
-												</Stack>
-											)}
-										</Stack>
-									</TabPanel>
+									</Stack>
 								</Stack>
 							</Stack>
 						</Stack>
 					</TabContext>
 
 					{totalCount > 0 && (
-						<Stack className="pagination-config">
-							<Stack className="pagination-box">
-								<Pagination
-									count={Math.ceil(totalCount / searchCommunity.limit)}
-									page={searchCommunity.page}
-									shape="circular"
-									color="primary"
-									onChange={paginationHandler}
-								/>
-							</Stack>
-							<Stack className="total-result">
-								<Typography>
-									Total {totalCount} article{totalCount > 1 ? 's' : ''} available
-								</Typography>
-							</Stack>
+						<Stack className="pagination-config" direction="row" alignItems="center" justifyContent="center" spacing={2}>
+							<Pagination
+								count={Math.ceil(totalCount / searchCommunity.limit)}
+								page={searchCommunity.page}
+								shape="circular"
+								color="primary"
+								onChange={paginationHandler}
+							/>
+							<Typography>
+								Total {totalCount} article{totalCount > 1 ? 's' : ''} available
+							</Typography>
 						</Stack>
 					)}
 				</div>

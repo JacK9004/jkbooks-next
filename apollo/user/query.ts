@@ -432,7 +432,7 @@ export const GET_BOARD_ARTICLE = gql`
 				memberDesc
 				memberWarnings
 				memberBlocks
-				memberProperties
+				memberBooks
 				memberRank
 				memberPoints
 				memberLikes

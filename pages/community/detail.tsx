@@ -231,40 +231,39 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 			<div id="community-detail-page">
 				<div className="container">
 					<Stack className="main-box">
-						<Stack className="left-config">
-							<Stack className={'image-info'}>
-								<img src={'/img/logo/logoText.svg'} />
-								<Stack className={'community-name'}>
-									<Typography className={'name'}>Community Board Article</Typography>
+						<Stack className="top-section" direction="row" alignItems="left">
+							<Stack className="image-info">
+								<img src="/img/logo.png" alt="Community Logo" />
+								<Stack className="community-name">
+									<Typography className="name">Community Board Article</Typography>
 								</Stack>
 							</Stack>
 							<Tabs
-								orientation="vertical"
+								orientation="horizontal"
 								aria-label="lab API tabs example"
-								TabIndicatorProps={{
-									style: { display: 'none' },
-								}}
+								TabIndicatorProps={{ style: { display: 'none' } }}
 								onChange={tabChangeHandler}
 								value={articleCategory}
+								className="tabs-container"
 							>
 								<Tab
-									value={'REVIEWS'}
-									label={'Reviews'}
+									value="REVIEWS"
+									label="Reviews"
 									className={`tab-button ${articleCategory === 'REVIEWS' ? 'active' : ''}`}
 								/>
 								<Tab
-									value={'INTERVIEWS'}
-									label={'Interview'}
+									value="INTERVIEWS"
+									label="Interview"
 									className={`tab-button ${articleCategory === 'INTERVIEWS' ? 'active' : ''}`}
 								/>
 								<Tab
-									value={'NEWS'}
-									label={'News'}
+									value="NEWS"
+									label="News"
 									className={`tab-button ${articleCategory === 'NEWS' ? 'active' : ''}`}
 								/>
 								<Tab
-									value={'EVENTS'}
-									label={'Event'}
+									value="EVENTS"
+									label="Event"
 									className={`tab-button ${articleCategory === 'EVENTS' ? 'active' : ''}`}
 								/>
 							</Tabs>

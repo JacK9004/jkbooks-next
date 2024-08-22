@@ -8,6 +8,7 @@ import { REACT_APP_API_URL } from '../../config';
 import { useQuery } from '@apollo/client';
 import { GET_MEMBER } from '../../../apollo/user/query';
 import { T } from '../../types/common';
+import { MemberType } from '../../enums/member.enum';
 
 interface MemberMenuProps {
 	subscribeHandler: any;
@@ -57,7 +58,10 @@ const MemberMenu = (props: MemberMenuProps) => {
 							<img src={'/img/icons/call.svg'} alt={'icon'} />
 							<Typography className={'p-number'}>{member?.memberPhone}</Typography>
 						</Box>
-						<Typography className={'view-list'}>{member?.memberType}</Typography>
+						<Typography className={'view-list'}>
+						{member?.memberType === MemberType.AGENT ? 'PUBLISHER' : member?.memberType}
+						</Typography>
+
 					</Stack>
 				</Stack>
 				<Stack className="follow-button-box">
@@ -88,24 +92,24 @@ const MemberMenu = (props: MemberMenuProps) => {
 							Details
 						</Typography>
 						<List className={'sub-section'}>
-							{member?.memberType === 'PUBLISHER' && (
-								<ListItem className={category === 'properties' ? 'focus' : ''}>
+							{member?.memberType === MemberType.AGENT && (
+								<ListItem className={category === 'books' ? 'focus' : ''}>
 									<Link
 										href={{
 											pathname: '/member',
-											query: { ...router.query, category: 'properties' },
+											query: { ...router.query, category: 'books' },
 										}}
 										scroll={false}
 										style={{ width: '100%' }}
 									>
 										<div className={'flex-box'}>
-											{category === 'properties' ? (
+											{category === 'books' ? (
 												<img className={'com-icon'} src={'/img/icons/homeWhite.svg'} alt={'com-icon'} />
 											) : (
 												<img className={'com-icon'} src={'/img/icons/home.svg'} alt={'com-icon'} />
 											)}
 											<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
-												Properties
+												Books
 											</Typography>
 											<Typography className="count-title" variant="subtitle1">
 												{member?.memberBooks}

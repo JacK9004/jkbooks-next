@@ -31,7 +31,7 @@ const StaticHeaderSwiper: React.FC = () => {
     >
       {staticImages.map((image, index) => (
         <SwiperSlide key={`static-${index}`} className="static-header-slide">
-          <img src={image} alt={`Static Image ${index + 1}`} style={{ width: '100%', height: 'auto' }} />
+          <img src={image} alt={`Static Image ${index + 1}`} style={{ width: '100%', height: 'auto' , marginTop:"113px"}} />
         </SwiperSlide>
       ))}
     </Swiper>

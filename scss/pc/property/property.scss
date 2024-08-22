@@ -230,7 +230,7 @@
 				  .list-config {
 					display: flex;
 					flex-wrap: wrap;
-					justify-content: space-between; 
+					justify-content: flex-start;
 					flex-direction: row;
 					width: 100%;
 					gap: $gap;
@@ -243,7 +243,7 @@
 					  background: #fff;
 					  overflow: hidden; 
 					  box-shadow: 0px 4px 8px 0px rgba(24, 26, 32, 0.1); 
-					  transition: opacity 0.4s, transform 0.3s ease, box-shadow 0.3s ease; // Added transition for smooth hover effect
+					  transition: opacity 0.4s, transform 0.3s ease, box-shadow 0.3s ease; 
 				
 					  &:hover {
 						opacity: 1;
@@ -268,7 +268,7 @@
 						  bottom: 0;
 						  width: 100%;
 						  padding: 16px;
-						  background: rgba(0, 0, 0, 0.5); // Add a dark overlay for better text visibility
+						  background: rgba(0, 0, 0, 0.5);
 						  color: #fff;
 						  border-radius: 0 0 12px 12px;
 				
@@ -308,7 +308,7 @@
 						  .type-buttons {
 							display: flex;
 							align-items: center;
-							justify-content: space-between; // Aligns items with equal space between them
+							justify-content: space-between; 
 
 							.price-box {
 								font-size: 18px;

@@ -69,21 +69,22 @@
 				.title-main {
 				  color: #2c3e50;
 				  font-family: 'Georgia', serif;
-				  font-size: 28px;
+				  font-size: 26px;
 				  font-weight: bold;
 				  line-height: 1.2;
 				  text-transform: none;
-				  word-wrap: break-word;       // Handle long words
-				  overflow-wrap: break-word;   // Handle long words
-				  white-space: normal;         // Allow line breaks
-				  max-width: 100%;             // Constrain width to container
+				  word-wrap: break-word;      
+				  overflow-wrap: break-word;  
+				  white-space: normal;         
+				  max-width: 100%;             
 				}
 			  
 				.top-box {
+				  margin-top: -10px;
 				  display: flex;
 				  flex-direction: column;
 				  gap: 1px;
-				  flex-wrap: wrap;             // Allow wrapping within the box
+				  flex-wrap: wrap;          
 			  
 				  .city,
 				  .date {
@@ -99,7 +100,7 @@
 				  }
 			  
 				  .divider {
-					flex-grow: 1;              // Allow dividers to expand
+					flex-grow: 1;       
 				  }
 				}
 			  
@@ -129,7 +130,7 @@
 				margin-top: 10px;
 				color: #2c3e50;
 				font-family: 'Arial', sans-serif;
-				font-size: 22px;
+				font-size: 20px;
 				font-weight: bold;
 				line-height: 1.2;
 				text-transform: none;
@@ -675,5 +676,85 @@
 				}
 	     	 
 			}
-	}
+			.similar-properties-config {
+				width: 1180px;
+				padding: 20px;
+				background-color: #f9f9f9;
+				border-radius: 10px;
+				border: 1px solid #c4c4c4;
+				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			  
+				.title-pagination-box {
+				  display: flex;
+				  justify-content: space-between;
+				  align-items: flex-start; 
+				  margin-bottom: 20px;
+				  position: relative;
+			  
+				  .title-box {
+					.main-title {
+					  font-size: 24px;
+					  font-weight: 600;
+					  color: #333;
+					}
+			  
+					.sub-title {
+					  font-size: 16px;
+					  color: #757575;
+					  margin-top: 5px;
+					}
+				  }
+			  
+				  .pagination-box1 {
+					display: flex;
+					align-items: center;
+					gap: 10px;
+					position: absolute; 
+					top: 0; 
+					right: 0;  
+		  
+					.swiper-similar-prev,
+					.swiper-similar-next {
+					  font-size: 24px;
+					  color: #018675;
+					  cursor: pointer;
+					  transition: color 0.3s ease;
+			  
+					  &:hover {
+						color: #015b54;
+					  }
+					}
+				  }
+				}
+			  
+				.cards-box {
+				  width: 100%;
+			  
+				  .similar-homes-swiper {
+					width: 100%;
+					padding-bottom: 30px;
+			  
+					.swiper-slide {
+					  width: auto !important;
+					  min-width: 250px;
+					  height: auto;
+					  display: flex;
+					  justify-content: center;
+			  
+					  @media (max-width: 1200px) {
+						width: calc(33.333% - 20px); // 3 slides at once
+					  }
+			  
+					  @media (max-width: 768px) {
+						width: calc(50% - 20px); // 2 slides at once
+					  }
+			  
+					  @media (max-width: 480px) {
+						width: calc(100% - 20px); // 1 slide at once
+					  }
+					}
+				  }
+				}
+			  }
+				  }
 }

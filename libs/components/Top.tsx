@@ -165,13 +165,33 @@ const Top = () => {
 			<Stack className={'navbar'}>
 				<Stack className={`navbar-main ${colorChange ? 'transparent' : ''} ${bgColor ? 'transparent' : ''}`}>
 					<Stack className={'container'}>
-						<Box component={'div'} className={'logo-box'}>
+					<Box component={'div'} className={'logo-box'} style={{ overflow: 'visible' }}>
+					<Link href={'/'}>
+						<img
+						src="/img/logo/logo.png"
+						alt="Logo"
+						style={{
+							marginTop: '10px',
+							width: '70px',
+							height: '70px',
+							borderRadius: '50%',
+							objectFit: 'cover',
+							boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+						}}
+						/>
+						<span className="span1" style={{
+						marginLeft: '10px',
+						fontFamily: 'Papyrus',
+						fontSize: '32px',
+						fontWeight: 800,
+						color: 'gold',
+						}}>
+						JK&Books
+						</span>
+					</Link>
+					<HeaderFilter />
+					</Box>
 
-							<Link href={'/'}>
-								<img src="/img/logo/logoWhite.svg" alt="" />
-							</Link>
-							<HeaderFilter />
-						</Box>
 						<Box component={'div'} className={'user-box'}>
 							{user?._id ? (
 								<>
@@ -220,9 +240,9 @@ const Top = () => {
 								>
 									<Box component={'div'} className={'flag'}>
 										{lang !== null ? (
-											<img src={`/img/flag/lang${lang}.png`} alt={`/img/flag/english.png`} />
+											<img src={`/img/flag/lang${lang}.png`} alt={`/img/flag/langen.png`} />
 										) : (
-											<img src={`/img/flag/english.png`} alt={`/img/flag/english.png`} />
+											<img src={`/img/flag/langen.png`} alt={`/img/flag/langen.png`} />
 										)}
 									</Box>
 								</Button>
@@ -231,10 +251,10 @@ const Top = () => {
 									<MenuItem disableRipple onClick={langChoice} id="en">
 										<img
 											className="img-flag"
-											src={'/img/flag/english.png'}
+											src={'/img/flag/langen.png'}
 											onClick={langChoice}
 											id="en"
-											alt={`/img/flag/english.png`}
+											alt={`/img/flag/langen.png`}
 										/>
 										{t('English')}
 									</MenuItem>

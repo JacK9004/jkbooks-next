@@ -1,8 +1,9 @@
 .pcWrap {
+	width: 1300px;
 	margin-top: 50px;
 	display: flex;
-	flex-direction: row;
-	max-width: 1300px;
+	justify-content: center; 
+	max-width: 100%; 
 	background: #e8f6f3;
 	border-radius: 12px;
 	border: 1px solid rgba(196, 196, 196, 0.79);
@@ -11,10 +12,12 @@
   
 	.container {
 	  position: relative;
-	  width: 100%;
+	  width: 100%; // Fixed width
 	  display: flex;
 	  flex-direction: row;
+	  justify-content: center; // Center content horizontally
 	  padding-top: 96px;
+	  margin: 0 auto; // Center the container itself
   
 	  .backFrame {
 		width: 100%;
@@ -23,63 +26,75 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		margin: 0 auto;
 		border-radius: 12px;
 		border: 1px solid #c4c4c4;
 		background: #fff;
 		box-shadow: 0 1px 4px rgba(24, 26, 32, 0.07);
+		margin: 0 auto; // Center the backFrame within the container
   
 		.leftConfig {
 		  display: flex;
 		  flex-direction: column;
-		  max-width: 1300px;
+		  width: 250px; // Fixed width for the left menu
+		  margin-right: 16px; // Add some spacing to the right
 		  border-radius: 12px;
 		  background: #e8f6f3;
 		  border: 1px solid rgba(196, 196, 196, 0.79);
 		  box-shadow: 0 1px 4px rgba(24, 26, 32, 0.07);
 		  padding: 16px;
+		}
   
-		  .profile {
+		.main-config {
+		  flex: 1; // Take up remaining space
+		  margin-bottom: 76px;
+  
+		  .list-config {
 			display: flex;
 			flex-direction: column;
-			align-items: center;
-			margin-top: 5px;
-  
-			.profileImg {
-			  img {
-				width: 79px;
-				height: 79px;
-				border-radius: 50%;
-				object-fit: cover;
-			  }
-			}
-  
-			.userInfo {
-			  display: flex;
-			  flex-direction: column;
-			  align-items: center;
-			  margin-top: 8px;
-  
-			  .userName {
-				color: #181a20;
-				font-size: 15px;
-				font-weight: 600;
-				line-height: normal;
-			  }
-  
-			  .userPhone {
-				display: flex;
-				align-items: center;
-				margin-top: 8px;
-  
-				img {
-				  margin-right: 4px;
-				  width: 16px;
-				  height: 16px;
-				}
-			  }
-			}
+			gap: 20px;
 		  }
+		
+				.profile {
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					margin-top: 5px;
+		
+					.profileImg {
+					img {
+						width: 79px;
+						height: 79px;
+						border-radius: 50%;
+						object-fit: cover;
+					}
+					}
+		
+					.userInfo {
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					margin-top: 8px;
+		
+					.userName {
+						color: #181a20;
+						font-size: 15px;
+						font-weight: 600;
+						line-height: normal;
+					}
+		
+					.userPhone {
+						display: flex;
+						align-items: center;
+						margin-top: 8px;
+		
+						img {
+						margin-right: 4px;
+						width: 16px;
+						height: 16px;
+						}
+					}
+					}
+				}
   
 		  .sections {
 			display: flex;

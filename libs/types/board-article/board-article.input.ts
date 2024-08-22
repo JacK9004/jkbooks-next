@@ -4,7 +4,7 @@ import { Direction } from '../../enums/common.enum';
 export interface BoardArticleInput {
 	articleCategory: BoardArticleCategory;
 	articleTitle: string;
-	articleContent: string;
+	articleContent?: string;
 	articleImage: string;
 	memberId?: string;
 }

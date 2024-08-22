@@ -8,7 +8,7 @@ export interface BoardArticle {
 	articleCategory: BoardArticleCategory;
 	articleStatus: BoardArticleStatus;
 	articleTitle: string;
-	articleContent: string;
+	articleContent?: string;
 	articleImage: string;
 	articleViews: number;
 	articleLikes: number;

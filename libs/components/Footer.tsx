@@ -15,7 +15,7 @@ const Footer = () => {
 				<Stack className={'main'}>
 					<Stack className={'left'}>
 						<Box component={'div'} className={'footer-box'}>
-							<img src="/img/logo/logoWhite.svg" alt="" className={'logo'} />
+							<img src="/img/logo/logo.png" alt="" className={'logo'} />
 						</Box>
 						<Box component={'div'} className={'footer-box'}>
 							<span>total free customer care</span>
@@ -74,9 +74,19 @@ const Footer = () => {
 			<Stack className={'footer-container'}>
 				<Stack className={'main'}>
 					<Stack className={'left'}>
-						<Box component={'div'} className={'footer-box'}>
-							<img src="/img/logo/logo.png" alt="" className={'logo'} />
-						</Box>
+					<Box component={'div'} className={'footer-box'}>
+						<img
+						src="/img/logo/logo.png"
+						alt="Logo"
+						style={{
+							width: '70px', 
+							height: '70px', 
+							borderRadius: '50%', 
+							objectFit: 'cover', 
+							boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', 
+						}}
+						/>
+					</Box>
 						<Box component={'div'} className={'footer-box'}>
 							<span>total free customer care</span>
 							<p>+82 10 5794 2909</p>

@@ -605,37 +605,6 @@ const Filter = (props: FilterType) => {
     		 </Stack>			
     </Stack>
 				
-				{/* <Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Options</Typography>
-					<Stack className={'input-box'}>
-						<Checkbox
-							id={'Barter'}
-							className="property-checkbox"
-							color="default"
-							size="small"
-							value={'bookAuthor'}
-							checked={(searchFilter?.search?.options || []).includes('bookAuthor')}
-							onChange={bookOptionSelectHandler}
-						/>
-						<label htmlFor={'Barter'} style={{ cursor: 'pointer' }}>
-							<Typography className="propert-type">Author</Typography>
-						</label>
-					</Stack>
-					<Stack className={'input-box'}>
-						<Checkbox
-							id={'Rent'}
-							className="property-checkbox"
-							color="default"
-							size="small"
-							value={'bookRent'}
-							checked={(searchFilter?.search?.options || []).includes('bookRent')}
-							onChange={bookOptionSelectHandler}
-						/>
-						<label htmlFor={'Rent'} style={{ cursor: 'pointer' }}>
-							<Typography className="propert-type">Rent</Typography>
-						</label>
-					</Stack>
-				</Stack> */}
 				<Stack className={'find-your-home'}>
 					<Typography className={'title'}>Price Range</Typography>
 					<Stack className="square-year-input">

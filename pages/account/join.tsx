@@ -73,8 +73,8 @@ const Join: NextPage = () => {
 						<Stack className={'left'}>
 							{/* @ts-ignore */}
 							<Box className={'logo'}>
-								<img src="/img/logo/logoText.svg" alt="" />
-								<span>Nestar</span>
+								<img src="/img/logo/logo.png" alt="" />
+								<span>JK&Books</span>
 							</Box>
 							<Box className={'info'}>
 								<span>{loginView ? 'login' : 'signup'}</span>
@@ -150,7 +150,7 @@ const Join: NextPage = () => {
 															checked={input?.type == 'AGENT'}
 														/>
 													}
-													label="Agent"
+													label="Publisher"
 												/>
 											</FormGroup>
 										</div>

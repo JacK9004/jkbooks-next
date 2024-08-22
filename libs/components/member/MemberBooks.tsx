@@ -58,7 +58,7 @@ const MyBooks: NextPage = ({ initialInput, ...props }: any) => {
 			<div id="member-properties-page">
 				<Stack className="main-title-box">
 					<Stack className="right-box">
-						<Typography className="main-title">Properties</Typography>
+						<Typography className="main-title">Books</Typography>
 					</Stack>
 				</Stack>
 				<Stack className="properties-list-box">

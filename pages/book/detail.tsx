@@ -231,8 +231,7 @@ const BookDetail: NextPage = ({ initialComment, ...props }: any) => {
 									<Typography className={'title-main'}>{book?.bookTitle}</Typography>
 									<Stack className={'top-box'}>
 										<Typography className={'city'}>By: {book?.bookAuthor}</Typography>
-										<Stack className={'divider'}></Stack>
-									
+										<Stack className={'divider'}></Stack>									
 										<Stack className={'divider'}></Stack>
 										<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
 											<g clipPath="url(#clip0_6505_6282)">
@@ -255,16 +254,19 @@ const BookDetail: NextPage = ({ initialComment, ...props }: any) => {
 									</Stack>									
 									<Stack className={'bottom-box'}>
 									<Stack className="option">
-											<img src="/img/icons/expand.svg" alt="" /> <Typography>Status: {book?.bookStatus}</Typography>
+										 <Typography>Status: {book?.bookStatus}</Typography>
 										</Stack>
 										<Stack className="option">
-											<img src="/img/icons/bed.svg" alt="" /> <Typography>Format: {book?.bookType}</Typography>
+										 <Typography>Format: {book?.bookType}</Typography>
 										</Stack>
 										<Stack className="option">
-											<img src="/img/icons/room.svg" alt="" /> <Typography>Published: {book?.bookDate}</Typography>
+											 <Typography>Category: {book?.bookCollection}</Typography>
 										</Stack>
 										<Stack className="option">
-											<img src="/img/icons/expand.svg" alt="" /> <Typography>Age:{book?.ageCategory}</Typography>
+										<Typography>Published: {book?.bookDate}</Typography>
+										</Stack>
+										<Stack className="option">
+											 <Typography>Age:{book?.ageCategory}</Typography>
 										</Stack>
 									</Stack>
 									<Typography className='price'>Price: ${formatterStr(book?.bookPrice)}</Typography>
@@ -371,6 +373,10 @@ const BookDetail: NextPage = ({ initialComment, ...props }: any) => {
 								<Stack className={'column'}>
 								<Typography className={'title'}>Product Details</Typography>
 									<Stack className={'info-box'}>
+									<Box component={'div'} className={'info'}>
+										<Typography className={'title'}>Category:</Typography>
+										<Typography className={'data'}>{book?.bookCollection	}</Typography>
+									</Box>
 									<Box component={'div'} className={'info'}>
 										<Typography className={'title'}>Format:</Typography>
 										<Typography className={'data'}>{book?.bookType}</Typography>
@@ -484,47 +490,49 @@ const BookDetail: NextPage = ({ initialComment, ...props }: any) => {
 
 						</Stack>
 						{destinationBooks.length !== 0 && (
-							<Stack className={'similar-properties-config'}>
-							<Stack className={'title-pagination-box'}>
-							  <Stack className={'title-box'}>
-								<Typography className={'main-title'}>Category-Related Books</Typography>
-								<Typography className={'sub-title'}>Discover Books Similar to Your Interests</Typography>
-							  </Stack>
-							  <Stack className={'pagination-box'}>
-								<WestIcon className={'swiper-similar-prev'} />
-								<div className={'swiper-similar-pagination'}></div>
-								<EastIcon className={'swiper-similar-next'} />
-							  </Stack>
+					<Stack className={'similar-properties-config'}>
+						<Stack className={'title-pagination-box'}>
+						<Stack className={'title-box'}>
+							<Typography className={'main-title'}>Category-Related Books</Typography>
+							<Typography className={'sub-title'}>Discover Books Similar to Your Interests</Typography>
+						</Stack>
+						<Stack className={'pagination-box1'}>
+							<div className={'swiper-similar-pagination'}></div> {/* Pagination in the center */}
+							<Stack className={'swiper-nav-box'}>
+							<WestIcon className={'swiper-similar-prev'} />
+							<EastIcon className={'swiper-similar-next'} />
 							</Stack>
-							<Stack className={'cards-box'}>
-							  <Swiper
-								className={'similar-homes-swiper'}
-								slidesPerView={'auto'}
-								spaceBetween={20}
-								modules={[Autoplay, Navigation, Pagination]}
-								navigation={{
-								  nextEl: '.swiper-similar-next',
-								  prevEl: '.swiper-similar-prev',
-								}}
-								pagination={{
-								  el: '.swiper-similar-pagination',
-								}}
-							  >
-								{destinationBooks.map((book: Book) => (
-								  <SwiperSlide className={'similar-homes-slide'} key={book.bookTitle}>
-									<BookBigCard
-									  book={book}
-									  likeBookHandler={likeBookHandler}
-									  key={book?._id}
-									/>
-								  </SwiperSlide>
-								))}
-							  </Swiper>
-							</Stack>
-						  </Stack>
-								
-				  
-						)}
+						</Stack>
+						</Stack>
+						<Stack className={'cards-box'}>
+						<Swiper
+							className={'similar-homes-swiper'}
+							slidesPerView={'auto'}
+							spaceBetween={20}
+							modules={[Autoplay, Navigation, Pagination]}
+							navigation={{
+							nextEl: '.swiper-similar-next',
+							prevEl: '.swiper-similar-prev',
+							}}
+							pagination={{
+							el: '.swiper-similar-pagination',
+							clickable: true,
+							}}
+						>
+							{destinationBooks.map((book: Book) => (
+							<SwiperSlide className={'similar-homes-slide'} key={book.bookTitle}>
+								<BookBigCard
+								book={book}
+								likeBookHandler={likeBookHandler}
+								key={book?._id}
+								/>
+							</SwiperSlide>
+							))}
+						</Swiper>
+						</Stack>
+					</Stack>
+					)}
+
 					</Stack>
 				</div>
 			</div>

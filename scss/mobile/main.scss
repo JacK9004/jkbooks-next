@@ -769,9 +769,7 @@
           .footer-box {
             display: flex;
             flex-direction: column;
-            .logo {
-              width: 128px;
-              height: 52px;
+            .logo {        
               cursor: pointer;
             }
             span {
