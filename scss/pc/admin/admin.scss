@@ -8,7 +8,7 @@
     position: fixed;
     left: auto;
     box-shadow: none;
-    background: #fff;
+    background: #018675;
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
     .settings-icon-admin {
       margin-right: 15px;
@@ -37,7 +37,7 @@
     }
   }
   .user {
-    background: #f5f5f5;
+    background: #E8F6F3;
   }
   .menu-list {
     padding: 8px 24px 8px 32px;
@@ -48,8 +48,8 @@
     }
     li.on {
       font-weight: 600;
-      background: #FDF4F4;
-      color: #F54D56;
+      background: #E8F6F3;
+      color: #018675;
       span {
         color: #212121;
       }
@@ -76,7 +76,7 @@
       border-radius: 4px;
     }
     .success {
-      color: #229a16;
+      color: #018675;
       background: rgba(84, 214, 44, 0.16);
     }
     .warning {
@@ -324,8 +324,8 @@
         }
         li.on {
           font-weight: 500;
-          color: #e92c28;
-          border-bottom: 2px solid #e92c28;
+          color: #018675;
+          border-bottom: 2px solid #018675;
         }
       }
       &.check-table-wrap {

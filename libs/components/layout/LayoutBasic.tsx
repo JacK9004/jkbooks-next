@@ -45,7 +45,7 @@ const withLayoutBasic = (Component: any) => {
 					break;
 				case '/mypage':
 					title = 'my page';
-					desc = 'Home / For Rent';
+					// desc = 'Home / For Rent';
 					bgImage = '/img/banner/product.jpg';
 					break;
 				case '/community':
@@ -55,7 +55,7 @@ const withLayoutBasic = (Component: any) => {
 					break;
 				case '/community/detail':
 					title = 'Community Detail';
-					desc = 'Home / For Rent';
+					// desc = 'Home / For Rent';
 					bgImage = '/img/banner/agent.jpeg';
 					break;
 				case '/cs':
@@ -71,7 +71,7 @@ const withLayoutBasic = (Component: any) => {
 					break;
 				case '/member':
 					title = 'Member Page';
-					desc = 'Home / For Rent';
+					// desc = 'Home / For Rent';
 					bgImage = '/img/banner/publisher.jpg';
 					break;
 				default:
