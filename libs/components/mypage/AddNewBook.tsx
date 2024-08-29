@@ -335,7 +335,7 @@ const AddBook = ({ initialValues, ...props }: any) => {
 							<Stack className="price-year-after-price">
 									<Typography className="title">Pages</Typography>
 									<input
-										type="text"
+										type="number"
 										className="description-input"
 										placeholder={'Pages'}
 										value={insertBookData.bookPages}

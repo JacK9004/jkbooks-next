@@ -12,9 +12,10 @@
 			align-self: flex-start;
 			.right-box {
 				width: 315px;
+				margin-top: 50px;
 				.main-title {
-					color: #181a20;
-					font-family: $font;
+					color: #018675;
+					font-family: Monaco;
 					font-size: 30px;
 					font-style: normal;
 					font-weight: 600;
@@ -30,7 +31,7 @@
 			flex-direction: row;
 			flex-wrap: wrap;
 			gap: 35px;
-			margin-top: 85px;
+			margin-top: 40px;
 			.no-data {
 				width: 100%;
 			}
@@ -40,7 +41,7 @@
 			height: auto;
 			justify-content: center;
 			align-items: center;
-			margin-top: 30px;
+			margin-top: 50px;
 			.total-result {
 				p {
 					color: #181a20;

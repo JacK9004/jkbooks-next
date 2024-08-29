@@ -3,10 +3,11 @@
 		position: relative;
 		width: auto;
 		.container {
-			padding-top: 50px;
+			padding-top: 100px;
 			display: flex;
 			flex-direction: column;
 			gap: 40px;
+			margin-bottom: 400px;
 
 
 			.main-box {
@@ -136,6 +137,7 @@
 			}
 
 			.pagination-config {
+				margin-top: 50px;
 				display: flex;
 				align-items: center;
 				justify-content: center;

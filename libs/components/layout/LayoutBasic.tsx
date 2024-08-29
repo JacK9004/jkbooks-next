@@ -30,12 +30,9 @@ const withLayoutBasic = (Component: any) => {
 			switch (router.pathname) {
 				case '/book':
 					title = 'Product Search';
-					// desc = 'We are glad to see you again!';
 					bgImage = '/img/banner/product1.webp';
 					break;
 				case '/agent':
-					// title = 'Publishers';
-					// desc = 'Home / For Rent';
 					bgImage = '/img/banner/product0.png';
 					break;
 				case '/agent/detail':
@@ -45,34 +42,27 @@ const withLayoutBasic = (Component: any) => {
 					break;
 				case '/mypage':
 					title = 'my page';
-					// desc = 'Home / For Rent';
 					bgImage = '/img/banner/product.jpg';
 					break;
 				case '/community':
-					// title = 'Community';
-					// desc = 'Home / For Rent';
 					bgImage = '/img/banner/agent.jpeg';
 					break;
 				case '/community/detail':
 					title = 'Community Detail';
-					// desc = 'Home / For Rent';
 					bgImage = '/img/banner/agent.jpeg';
 					break;
 				case '/cs':
-					// title = 'CS';
-					// desc = 'We are glad to see you again!';
 					bgImage = '/img/banner/cs.png';
 					break;
 				case '/account/join':
 					title = 'Login/Signup';
 					desc = 'Authentication Process';
-					bgImage = '/img/banner/publisher.jpg';
+					bgImage = '/img/banner/login1.jpg';
 					setAuthHeader(true);
 					break;
 				case '/member':
 					title = 'Member Page';
-					// desc = 'Home / For Rent';
-					bgImage = '/img/banner/publisher.jpg';
+					bgImage = '/img/banner/member.jpg';
 					break;
 				default:
 					break;
