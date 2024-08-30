@@ -9,19 +9,21 @@ import {
 	Table,
 	TableContainer,
 	Button,
-	Menu,
-	Fade,
-	MenuItem,
 	Box,
 	Checkbox,
 	Toolbar,
+	Menu,
+	MenuItem,
+	Fade,
 } from '@mui/material';
-import Avatar from '@mui/material/Avatar';
 import { IconButton, Tooltip } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { Stack } from '@mui/material';
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
-import { NotePencil } from 'phosphor-react';
+import { Notice } from '../../../types/notice/notice';
+import { NoticeStatus } from '../../../enums/notice.enum';
+import DeleteIcon from '@mui/icons-material/Delete';
+import OpenInBrowserRoundedIcon from '@mui/icons-material/OpenInBrowserRounded';
+import { formatDate } from '../../../utils';
 
 type Order = 'asc' | 'desc';
 
@@ -54,30 +56,30 @@ const headCells: readonly HeadCell[] = [
 		disablePadding: false,
 		label: 'TITLE',
 	},
-	{
-		id: 'id',
-		numeric: true,
-		disablePadding: false,
-		label: 'ID',
-	},
-	{
-		id: 'writer',
-		numeric: true,
-		disablePadding: false,
-		label: 'WRITER',
-	},
+	// {
+	// 	id: 'id',
+	// 	numeric: true,
+	// 	disablePadding: false,
+	// 	label: 'ID',
+	// },
+	// {
+	// 	id: 'writer',
+	// 	numeric: true,
+	// 	disablePadding: false,
+	// 	label: 'WRITER',
+	// },
 	{
 		id: 'date',
 		numeric: true,
 		disablePadding: false,
 		label: 'DATE',
 	},
-	{
-		id: 'view',
-		numeric: true,
-		disablePadding: false,
-		label: 'VIEW',
-	},
+	// {
+	// 	id: 'view',
+	// 	numeric: true,
+	// 	disablePadding: false,
+	// 	label: 'VIEW',
+	// },
 	{
 		id: 'action',
 		numeric: false,
@@ -88,7 +90,7 @@ const headCells: readonly HeadCell[] = [
 
 interface EnhancedTableProps {
 	numSelected: number;
-	onRequestSort: (event: React.MouseEvent<unknown>, book: keyof Data) => void;
+	onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
 	onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	order: Order;
 	orderBy: string;
@@ -97,16 +99,63 @@ interface EnhancedTableProps {
 
 interface EnhancedTableToolbarProps {
 	numSelected: number;
-	onRequestSort: (event: React.MouseEvent<unknown>, book: keyof Data) => void;
+	onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
 	onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	order: Order;
 	orderBy: string;
 	rowCount: number;
 }
 
+function EnhancedTableHead(props: EnhancedTableProps) {
+	const { onSelectAllClick } = props;
+
+	return (
+		<TableHead>
+			<TableRow>
+				{headCells.map((headCell) => (
+					<TableCell
+						key={headCell.id}
+						align={headCell.numeric ? 'left' : 'center'}
+						padding={headCell.disablePadding ? 'none' : 'normal'}
+					>
+						{headCell.label}
+					</TableCell>
+				))}
+			</TableRow>
+		</TableHead>
+	);
+}
+
+interface EnhancedTableToolbarProps {
+	dense?: boolean;
+	notices: Notice[];
+	membersData?: any;
+	searchMembers?: any;
+	removeNoticeHandler: any;
+	updateNoticeHandler: any;
+	anchorEl?: any;
+	menuIconClickHandler: any;
+	handleMenuIconClick?: any;
+	menuIconCloseHandler?: any;
+	generateMentorTypeHandle?: any;
+}
+
 const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
 	const [select, setSelect] = useState('');
-	const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+	const {
+		onSelectAllClick,
+		order,
+		orderBy,
+		notices,
+		numSelected,
+		rowCount,
+		onRequestSort,
+		removeNoticeHandler,
+		menuIconClickHandler,
+		updateNoticeHandler,
+		menuIconCloseHandler,
+		anchorEl,
+	} = props;
 
 	return (
 		<>
@@ -169,10 +218,15 @@ interface NoticeListType {
 	dense?: boolean;
 	membersData?: any;
 	searchMembers?: any;
+	updateNoticeHandler: any;
 	anchorEl?: any;
+	removeNoticeHandler: any;
 	handleMenuIconClick?: any;
 	handleMenuIconClose?: any;
+	menuIconClickHandler: any;
 	generateMentorTypeHandle?: any;
+	menuIconCloseHandler?: any;
+	notices: Notice[];
 }
 
 export const NoticeList = (props: NoticeListType) => {
@@ -181,7 +235,12 @@ export const NoticeList = (props: NoticeListType) => {
 		membersData,
 		searchMembers,
 		anchorEl,
+		notices,
+		removeNoticeHandler,
 		handleMenuIconClick,
+		menuIconClickHandler,
+		menuIconCloseHandler,
+		updateNoticeHandler,
 		handleMenuIconClose,
 		generateMentorTypeHandle,
 	} = props;
@@ -198,42 +257,108 @@ export const NoticeList = (props: NoticeListType) => {
 					{/*@ts-ignore*/}
 					<EnhancedTableToolbar />
 					<TableBody>
-						{[1, 2, 3, 4, 5].map((ele: any, index: number) => {
+						{notices.map((notice: Notice, index: number) => {
 							const member_image = '/img/profile/defaultUser.svg';
 
 							return (
-								<TableRow hover key={'member._id'} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-									<TableCell padding="checkbox">
-										<Checkbox color="primary" />
+								<TableRow hover key={notice._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+									<TableCell align="left">{notice.noticeCategory}</TableCell>
+									<TableCell align="left">
+										<Box component={'div'}>
+											{notice.noticeTitle}
+											{notice.noticeStatus === NoticeStatus.ACTIVE && (
+												<Link
+													href={`/community/detail?articleCategory=${notice.noticeCategory}&id=${notice._id}`}
+													className={'img_box'}
+												>
+													<IconButton className="btn_window">
+														<Tooltip title={'Open window'}>
+															<OpenInBrowserRoundedIcon />
+														</Tooltip>
+													</IconButton>
+												</Link>
+											)}
+										</Box>
 									</TableCell>
-									<TableCell align="left">mb id</TableCell>
-									<TableCell align="left">member.mb_full_name</TableCell>
-									<TableCell align="left">member.mb_phone</TableCell>
+									<TableCell align="left">{notice.noticeContent}</TableCell>
 									<TableCell align="left" className={'name'}>
-										<Stack direction={'row'}>
-											<Link href={`/_admin/users/detail?mb_id=$'{member._id'}`}>
-												<div>
-													<Avatar alt="Remy Sharp" src={member_image} sx={{ ml: '2px', mr: '10px' }} />
-												</div>
-											</Link>
-											<Link href={`/_admin/users/detail?mb_id=${'member._id'}`}>
-												<div>member.mb_nick</div>
-											</Link>
-										</Stack>
+										{notice.noticeStatus === NoticeStatus.ACTIVE ? (
+											<Stack direction={'row'}>
+												<Link href={`/faq/detail?id=${notice?._id}`}>
+													{/* <div>
+															<Avatar alt="Remy Sharp" src={faqImage} sx={{ ml: '2px', mr: '10px' }} />
+														</div> */}
+												</Link>
+												<Link href={`/faq/detail?id=${notice?._id}`}>
+													{/* <div>{faq.createdAt}</div> */}
+													<div>{formatDate(notice.createdAt)}</div>
+												</Link>
+												<Link href={`/faq/detail?id=${notice?._id}`}>
+													{/* <div>{faq.createdAt}</div> */}
+													<div>{formatDate(notice.updatedAt)}</div>
+												</Link>
+											</Stack>
+										) : (
+											<Stack direction={'row'}>
+												{/* <div>
+														<Avatar alt="Remy Sharp" src={propertyImage} sx={{ ml: '2px', mr: '10px' }} />
+													</div> */}
+												<div style={{ marginTop: '10px' }}>{notice.noticeTitle}</div>
+											</Stack>
+										)}
 									</TableCell>
-									<TableCell align="left">member.mb_phone</TableCell>
-									<TableCell align="left">member.mb_phone</TableCell>
-									<TableCell align="right">
-										<Tooltip title={'delete'}>
-											<IconButton>
-												<DeleteRoundedIcon />
-											</IconButton>
-										</Tooltip>
-										<Tooltip title="edit">
-											<IconButton onClick={() => router.push(`/_admin/cs/notice_create?id=notice._id`)}>
-												<NotePencil size={24} weight="fill" />
-											</IconButton>
-										</Tooltip>
+
+									<TableCell align="center">
+										{/* <TableCell align="center">{faq.faqTitle}</TableCell> */}
+										{/* <TableCell align="center">{faq.faqContent}</TableCell> */}
+										<TableCell align="center">
+											{notice.noticeStatus === NoticeStatus.DELETE && (
+												<Button
+													variant="outlined"
+													sx={{ p: '3px', border: 'none', ':hover': { border: '1px solid #000000' } }}
+													onClick={() => removeNoticeHandler(notice._id)}
+												>
+													<DeleteIcon fontSize="small" />
+												</Button>
+											)}
+
+											{notice.noticeStatus === NoticeStatus.HOLD && (
+												<Button className={'badge warning'}>{notice.noticeStatus}</Button>
+											)}
+
+											{notice.noticeStatus === NoticeStatus.ACTIVE && (
+												<>
+													<Button onClick={(e: any) => menuIconClickHandler(e, index)} className={'badge success'}>
+														{notice.noticeStatus}
+													</Button>
+
+													<Menu
+														className={'menu-modal'}
+														MenuListProps={{
+															'aria-labelledby': 'fade-button',
+														}}
+														anchorEl={anchorEl[index]}
+														open={Boolean(anchorEl[index])}
+														onClose={menuIconCloseHandler}
+														TransitionComponent={Fade}
+														sx={{ p: 1 }}
+													>
+														{Object.values(NoticeStatus)
+															.filter((ele) => ele !== notice.noticeStatus)
+															.map((status: string) => (
+																<MenuItem
+																	onClick={() => updateNoticeHandler({ _id: notice._id, noticeStatus: status })}
+																	key={status}
+																>
+																	<Typography variant={'subtitle1'} component={'span'}>
+																		{status}
+																	</Typography>
+																</MenuItem>
+															))}
+													</Menu>
+												</>
+											)}
+										</TableCell>
 									</TableCell>
 								</TableRow>
 							);

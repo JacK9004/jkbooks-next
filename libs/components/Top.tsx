@@ -13,13 +13,21 @@ import { CaretDown } from 'phosphor-react';
 import useDeviceDetect from '../hooks/useDeviceDetect';
 import Link from 'next/link';
 import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
-import { useReactiveVar } from '@apollo/client';
+import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { userVar } from '../../apollo/store';
 import { Logout } from '@mui/icons-material';
 import { REACT_APP_API_URL } from '../config';
 import HeaderFilter from './homepage/HeaderFilter';
+import { NotificationDto } from '../types/notification/notification';
+import { GET_NOTIFICATIONS } from '../../apollo/user/query';
+import { T } from '../types/common';
+import { NotificationUpdate } from '../types/notification/notification.update';
+import { NotificationStatus } from '../enums/notification.enum';
+import { NextPage } from 'next';
+import { UPDATE_NOTIFICATION } from '../../apollo/user/mutation';
 
-const Top = () => {
+
+const Top : NextPage = ({ initialValues, ...props }: any) => {
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
 	const { t, i18n } = useTranslation('common');
@@ -28,13 +36,60 @@ const Top = () => {
 	const [lang, setLang] = useState<string | null>('en');
 	const drop = Boolean(anchorEl2);
 	const [colorChange, setColorChange] = useState(false);
-	const [anchorEl, setAnchorEl] = React.useState<any | HTMLElement>(null);
-	let open = Boolean(anchorEl);
+	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+	const open = Boolean(anchorEl);
 	const [bgColor, setBgColor] = useState<boolean>(false);
-	const [logoutAnchor, setLogoutAnchor] = React.useState<null | HTMLElement>(null);
+	const [logoutAnchor, setLogoutAnchor] = useState<null | HTMLElement>(null);
 	const logoutOpen = Boolean(logoutAnchor);
 
-	/** LIFECYCLES **/
+	// Notification state
+	const [notificationAnchorEl, setNotificationAnchorEl] = useState<HTMLElement | null>(null);
+	const [notifications, setNotifications] = useState<NotificationDto[]>([]);
+	const notificationOpen = Boolean(notificationAnchorEl);
+	const [updateData, setUpdateData] = useState<NotificationUpdate>(initialValues);
+
+	const [hasNewNotifications, setHasNewNotifications] = useState(false);
+	
+	// Apollo useQuery hook for notifications
+
+	const [updateNotification] = useMutation(UPDATE_NOTIFICATION);
+	const {
+		loading: notificationsLoading,
+		data: notificationsData,
+		error: notificationsError,
+		refetch: refetchNotifications,
+	} = useQuery(GET_NOTIFICATIONS, {
+		fetchPolicy: 'cache-and-network',
+		variables: { input: { page: 1, limit: 100, search: { receiverId: '' } } },
+		skip: !notificationOpen,
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data) => {
+			if (data?.getNotifications?.list) {
+				console.log('Notifications data:', data.getNotifications.list);
+				setNotifications(data?.getNotifications?.list);
+			}
+		},
+	});
+	useEffect(() => {
+		if (notificationsData) {
+		  console.log('Fetched notifications:', notificationsData.getNotifications.list);
+		}
+	  }, [notificationsData]);
+
+	  useEffect(() => {
+		if (notificationsData?.getNotifications?.list) {
+		  setNotifications(notificationsData.getNotifications.list);
+		  notificationsData.getNotifications.list.forEach((notification: { _id: any; }) => {
+			console.log('Notification _id:', notification._id); // Check if _id is present
+		  });
+		}
+	  }, [notificationsData]);
+	useEffect(() => {
+		if (!notificationOpen) {
+			refetchNotifications();
+		}
+	}, [notificationOpen, refetchNotifications]);
+
 	useEffect(() => {
 		if (localStorage.getItem('locale') === null) {
 			localStorage.setItem('locale', 'en');
@@ -59,8 +114,7 @@ const Top = () => {
 		if (jwt) updateUserInfo(jwt);
 	}, []);
 
-	/** HANDLERS **/
-	const langClick = (e: any) => {
+	const langClick = (e: React.MouseEvent<HTMLElement>) => {
 		setAnchorEl2(e.currentTarget);
 	};
 
@@ -69,11 +123,11 @@ const Top = () => {
 	};
 
 	const langChoice = useCallback(
-		async (e: any) => {
-			setLang(e.target.id);
-			localStorage.setItem('locale', e.target.id);
+		async (e: React.MouseEvent<HTMLElement>) => {
+			setLang(e.currentTarget.id);
+			localStorage.setItem('locale', e.currentTarget.id);
 			setAnchorEl2(null);
-			await router.push(router.asPath, router.asPath, { locale: e.target.id });
+			await router.push(router.asPath, router.asPath, { locale: e.currentTarget.id });
 		},
 		[router],
 	);
@@ -90,7 +144,7 @@ const Top = () => {
 		setAnchorEl(null);
 	};
 
-	const handleHover = (event: any) => {
+	const handleHover = (event: React.MouseEvent<HTMLElement>) => {
 		if (anchorEl !== event.currentTarget) {
 			setAnchorEl(event.currentTarget);
 		} else {
@@ -98,7 +152,51 @@ const Top = () => {
 		}
 	};
 
-	const StyledMenu = styled((props: MenuProps) => (
+	const handleNotificationClick = (event: React.MouseEvent<SVGSVGElement>) => {
+		setNotificationAnchorEl(event.currentTarget as unknown as HTMLElement);
+	};
+
+
+	const handleMenuItemClick = (notification: NotificationDto) => {
+		console.log('Notification:', notification); // Check if _id is present
+		if (notification.articleId) {
+			router.push(`/community/detail?id=${notification.articleId}`);
+		} else if (notification.bookId) {
+			router.push(`/book/detail?id=${notification.bookId}`);
+		}
+	
+		if (!notification._id) {
+			console.error('Notification _id is missing');
+			return;
+		}
+	
+		const updatedNotification: NotificationUpdate = {
+			_id: notification._id, 
+			notificationStatus: NotificationStatus.READ,
+		};
+	
+		updateNotificationHandler(updatedNotification);
+	};
+	const handleNotificationClose = () => {
+		setNotificationAnchorEl(null);
+	};
+
+	const updateNotificationHandler = async (updateData: NotificationUpdate) => {
+		try {
+			console.log('+updateData: ', updateData);
+			await updateNotification({
+				variables: {
+					input: updateData,
+				},
+			});
+
+
+			await refetchNotifications;
+		} catch (err: any) {
+			console.error('Update failed, skipping refetch.');
+		}
+	};
+    const StyledMenu = styled((props: MenuProps) => (
 		<Menu
 			elevation={0}
 			anchorOrigin={{
@@ -195,7 +293,10 @@ const Top = () => {
 						<Box component={'div'} className={'user-box'}>
 							{user?._id ? (
 								<>
-									<div className={'login-user'} onClick={(event: any) => setLogoutAnchor(event.currentTarget)}>
+									<div
+										className={'login-user'}
+										onClick={(event: React.MouseEvent<HTMLElement>) => setLogoutAnchor(event.currentTarget)}
+									>
 										<img
 											src={
 												user?.memberImage ? `${REACT_APP_API_URL}/${user?.memberImage}` : '/img/profile/defaultUser.svg'
@@ -230,8 +331,102 @@ const Top = () => {
 								</Link>
 							)}
 
+
 							<div className={'lan-box'}>
-								{user?._id && <NotificationsOutlinedIcon className={'notification-icon'} />}
+								{user?._id && (
+								<div style={{ position: 'relative', display: 'inline-block' }}>
+								<NotificationsOutlinedIcon onClick={handleNotificationClick} />
+								{hasNewNotifications && (
+									<div
+										style={{
+											position: 'absolute',
+											top: 0,
+											right: 0,
+											width: '10px',
+											height: '10px',
+											borderRadius: '50%',
+											backgroundColor: '#42a5f5', 
+										}}
+									/>
+								)}
+										<Menu
+											anchorEl={notificationAnchorEl}
+											open={Boolean(notificationAnchorEl)}
+											onClose={handleNotificationClose}
+											PaperProps={{
+												style: {
+													padding:"20px",
+													marginTop: '60px',
+													minHeight: '400px',
+													minWidth: '400px',
+													maxHeight: '400px',
+													width: '400px',
+													whiteSpace: 'normal',
+													wordWrap: 'break-word',
+													borderRadius: '22px',
+													background: '#E8F6F3',
+												},
+											}}
+										>
+											{' '}
+											{/* <strong>Notification</strong> */}
+											{!notificationsLoading && (!notifications || notifications.length === 0) && (
+												<MenuItem style={{ margin: 100 }}>No notifications available</MenuItem>
+											)}
+											{notificationsLoading && <MenuItem>Loading...</MenuItem>}
+											{notifications &&
+												notifications.map((notification) => {
+													const isRead = notification.notificationStatus === NotificationStatus.READ;
+													const isNew = notification.notificationStatus === NotificationStatus.WAIT;
+													const parseDescription = (desc:any) => {
+														const parts = desc.split(/(\*\*[^*]+\*\*)/); 
+														return parts.map((part:any, index:number) => {
+															if (part.startsWith('**') && part.endsWith('**')) {
+																return <strong key={index}>{part.slice(2, -2)}</strong>; 
+															} else {
+																return <span key={index}>{part}</span>;
+															}
+														});
+													};
+													return (
+														<MenuItem
+															key={notification._id}
+															onClick={() => handleMenuItemClick(notification)}
+															style={{
+																whiteSpace: 'normal',
+																wordWrap: 'break-word',
+																backgroundColor: isRead ? 'lightgray' : 'white',
+																borderRadius:20,
+																padding:"20px",
+																margin:15,
+																
+															
+															}}
+														>
+														   <div >
+                                            {isNew && (
+                                                <div
+                                                    style={{
+                                                        width: '10px',
+                                                        height: '10px',
+                                                        borderRadius: '50%',
+                                                        backgroundColor: '#42a5f5', 
+                                                        marginRight: '20px',
+
+                                                    }}
+                                                />
+                                            )}
+                                            <div>
+                                                <strong>{notification.notificationTitle}</strong>
+												<p>{parseDescription(notification.notificationDesc)}</p>
+                                            </div>
+                                        </div>
+                                    </MenuItem>
+													);
+												})}
+										</Menu>
+									</div>
+								)}
 								<Button
 									disableRipple
 									className="btn-lang"
@@ -240,9 +435,9 @@ const Top = () => {
 								>
 									<Box component={'div'} className={'flag'}>
 										{lang !== null ? (
-											<img src={`/img/flag/lang${lang}.png`} alt={`/img/flag/langen.png`} />
+											<img src={`/img/flag/lang${lang}.png`} alt={'usaFlag'} />
 										) : (
-											<img src={`/img/flag/langen.png`} alt={`/img/flag/langen.png`} />
+											<img src={`/img/flag/langen.png`} alt={'usaFlag'} />
 										)}
 									</Box>
 								</Button>
@@ -254,7 +449,7 @@ const Top = () => {
 											src={'/img/flag/langen.png'}
 											onClick={langChoice}
 											id="en"
-											alt={`/img/flag/langen.png`}
+											alt={'usaFlag'}
 										/>
 										{t('English')}
 									</MenuItem>
@@ -263,7 +458,7 @@ const Top = () => {
 											className="img-flag"
 											src={'/img/flag/langkr.png'}
 											onClick={langChoice}
-											id="uz"
+											id="kr"
 											alt={'koreanFlag'}
 										/>
 										{t('Korean')}

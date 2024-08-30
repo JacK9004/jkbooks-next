@@ -27,7 +27,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import { Book } from '../../libs/types/book/book';
 import BookBigCard from '../../libs/components/common/BookBigCard';
-import { CREATE_COMMENT, LIKE_TARGET_BOOK } from '../../apollo/user/mutation';
+import { CREATE_COMMENT, CREATE_MESSAGE, LIKE_TARGET_BOOK } from '../../apollo/user/mutation';
 import { GET_BOOK, GET_BOOKS, GET_COMMENTS } from '../../apollo/user/query';
 import { T } from '../../libs/types/common';
 import { Direction, Message } from '../../libs/enums/common.enum';
@@ -53,6 +53,10 @@ const BookDetail: NextPage = ({ initialComment, ...props }: any) => {
 	const [commentInquiry, setCommentInquiry] = useState<CommentsInquiry>(initialComment);
 	const [bookComments, setBookComments] = useState<Comment[]>([]);
 	const [commentTotal, setCommentTotal] = useState<number>(0);
+	const [name, setName] = useState('');
+	const [phone, setPhone] = useState('');
+	const [email, setEmail] = useState('');
+	const [message, setMessage] = useState('');
 	const [insertCommentData, setInsertCommentData] = useState<CommentInput>({
 		commentGroup: CommentGroup.BOOK,
 		commentContent: '',
@@ -62,6 +66,7 @@ const BookDetail: NextPage = ({ initialComment, ...props }: any) => {
 	/** APOLLO REQUESTS **/
 	const [likeTargetBook] = useMutation(LIKE_TARGET_BOOK);
 	const [createComment] = useMutation(CREATE_COMMENT);
+	const [sendMessage, { data, loading, error }] = useMutation(CREATE_MESSAGE);
 
 	const {
 		loading: getBookLoading,
@@ -168,6 +173,36 @@ const BookDetail: NextPage = ({ initialComment, ...props }: any) => {
 		} catch (err: any) {
 			console.log('Error, likeBookHandler:', err.message);
 			sweetMixinErrorAlert(err.message).then();
+		}
+	};
+
+	const handleSubmit = async (e: any) => {
+		e.preventDefault();
+
+		try {
+			if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
+
+			await sendMessage({
+				variables: {
+					input: {
+						name,
+						phone,
+						email,
+						message,
+						bookId,
+					},
+				},
+			});
+			setName('');
+			setPhone('');
+			setEmail('');
+			setMessage('');
+			await sweetTopSmallSuccessAlert('success', 800);
+
+		} catch (err:any) {
+			console.error('Error , send message', err.message);;
+			sweetMixinErrorAlert(err.message).then();
+
 		}
 	};
 
@@ -331,24 +366,29 @@ const BookDetail: NextPage = ({ initialComment, ...props }: any) => {
 										</Stack>
 									</Stack>
 								</Stack>
+								<form onSubmit={handleSubmit}>
 								<Stack className={'info-box'}>
 									<Typography className={'sub-title'}>Name</Typography>
-									<input type={'text'} placeholder={'Enter your name'} />
+									<input type={'text'} placeholder={'Enter your name'} value={name} onChange={(e) => setName(e.target.value)} />
 								</Stack>
 								<Stack className={'info-box'}>
 									<Typography className={'sub-title'}>Phone</Typography>
-									<input type={'text'} placeholder={'Enter your phone'} />
+									<input type={'text'} placeholder={'Enter your phone'} value={phone} onChange={(e) => setPhone(e.target.value)} />
 								</Stack>
 								<Stack className={'info-box'}>
 									<Typography className={'sub-title'}>Email</Typography>
-									<input type={'text'} placeholder={'creativelayers088'} />
+									<input type={'text'} placeholder={'Enter your email'} value={email} onChange={(e) => setEmail(e.target.value)} />
 								</Stack>
 								<Stack className={'info-box'}>
-									<Typography className={'sub-title'}>Message</Typography>
-									<textarea placeholder={'Hello, I want to buy it'}></textarea>
+								<Typography className={'sub-title'}>Message</Typography>
+									<textarea
+									placeholder={'Hello, I am interisting it. I want to buy this book'}
+									value={message}
+									onChange={(e) => setMessage(e.target.value)}
+									></textarea>
 								</Stack>
 								<Stack className={'info-box'}>
-									<Button className={'send-message'}>
+								<Button className={'send-message'} type="submit" disabled={loading}>
 										<Typography className={'title'}>Order</Typography>
 										<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
 											<g clipPath="url(#clip0_6975_593)">
@@ -365,6 +405,7 @@ const BookDetail: NextPage = ({ initialComment, ...props }: any) => {
 										</svg>
 									</Button>
 								</Stack>
+								</form>
 							</Stack>		
 						</Stack>
 						<Stack className={'property-desc-config'}>

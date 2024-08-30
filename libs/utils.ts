@@ -1,5 +1,6 @@
 import numeral from 'numeral';
 import { sweetMixinErrorAlert } from './sweetAlert';
+import dayjs from 'dayjs';
 
 export const formatterStr = (value: number | undefined): string => {
 	return numeral(value).format('0,0') != '0' ? numeral(value).format('0,0') : '';
@@ -42,4 +43,8 @@ export const likeTargetMemberHandler = async (likeTargetMember: any, id: string)
 		console.log('ERROR, likeTargetMemberHandler:', err.message);
 		sweetMixinErrorAlert(err.message).then();
 	}
+};
+
+export const formatDate = (date: string) => {
+	return dayjs(date).format('YYYY-MM-DD HH:mm:ss');
 };

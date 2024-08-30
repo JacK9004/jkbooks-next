@@ -666,3 +666,159 @@ export const GET_MEMBER_FOLLOWINGS = gql`
 		}
 	}
 `;
+/**************************
+ *         SUPPORT        *
+ *************************/
+
+export const GET_FAQ = gql`
+	query GetFaq($input: String!) {
+		getFaq(faqId: $input) {
+			_id
+			faqCategory
+			faqStatus
+			faqTitle
+			faqContent
+			faqViews
+			memberId
+			createdAt
+			updatedAt
+		}
+	}
+`;
+
+export const GET_FAQS = gql`
+	query GetFaqs($input: FaqInquiry!) {
+		getFaqs(input: $input) {
+			list {
+				_id
+				faqCategory
+				faqStatus
+				faqTitle
+				faqContent
+				faqViews
+				memberId
+				createdAt
+				updatedAt
+			}
+			metaCounter {
+				total
+			}
+		}
+	}
+`;
+export const GET_NOTICES = gql`
+	query GetNotices($input: NoticeInquiry!) {
+		getNotices(input: $input) {
+			list {
+				_id
+				noticeCategory
+				noticeStatus
+				noticeTitle
+				noticeContent
+				memberId
+				createdAt
+				updatedAt
+					memberData {
+					_id
+					memberType
+					memberStatus
+					memberAuthType
+					memberPhone
+					memberNick
+					memberFullName
+					memberImage
+					memberAddress
+					memberDesc
+					memberBooks
+					memberArticles
+					memberFollowers
+					memberFollowings
+					memberPoints
+					memberLikes
+					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					memberBlocks
+					deletedAt
+					createdAt
+					updatedAt
+				}
+			}
+			metaCounter {
+				total
+			}
+		}
+	}
+`;
+
+/**************************
+ *       NOTIFICATION     *
+ *************************/
+
+export const GET_NOTIFICATION = gql`
+	query GetNotification($input: String!) {
+		getNotification(notificationId: $input) {
+			notificationType
+			notificationStatus
+			notificationGroup
+			notificationTitle
+			notificationDesc
+			authorId
+			receiverId
+			bookId
+			articleId
+		}
+	}
+`;
+
+export const GET_NOTIFICATIONS = gql`
+	query GetNotifications($input: NotificationsInquiry!) {
+		getNotifications(input: $input) {
+			list {
+            	_id
+				notificationType
+				notificationStatus
+				notificationGroup
+				notificationTitle
+				notificationDesc
+				authorId
+				receiverId
+				bookId
+				articleId
+				memberData {
+					_id
+					memberType
+					memberStatus
+					memberAuthType
+					memberPhone
+					memberNick
+					memberFullName
+					memberImage
+					memberAddress
+					memberDesc
+					memberBooks
+					memberArticles
+					memberFollowers
+					memberFollowings
+					memberPoints
+					memberLikes
+					memberViews
+					memberComments
+					memberRank
+					memberWarnings
+					memberBlocks
+					deletedAt
+					createdAt
+					updatedAt
+				}
+			}
+			metaCounter {
+				total
+			}
+		}
+	}
+`;
+
+
+

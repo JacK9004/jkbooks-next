@@ -12,15 +12,24 @@ import {
 	Menu,
 	Fade,
 	MenuItem,
+	Box,
+	IconButton,
+	Tooltip,
 } from '@mui/material';
-import Avatar from '@mui/material/Avatar';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Typography from '@mui/material/Typography';
 import { Stack } from '@mui/material';
+import { Faq } from '../../../types/faq/faq';
+import OpenInBrowserRoundedIcon from '@mui/icons-material/OpenInBrowserRounded';
+import { FaqStatus } from '../../../enums/faq.enum';
+import { formatDate } from '../../../utils';
+
 
 interface Data {
 	category: string;
 	title: string;
 	writer: string;
+	content: string;
 	date: string;
 	status: string;
 	id?: string;
@@ -60,10 +69,10 @@ const headCells: readonly HeadCell[] = [
 	},
 
 	{
-		id: 'writer',
+		id: 'content',
 		numeric: true,
 		disablePadding: false,
-		label: 'WRITER',
+		label: 'CONTENT',
 	},
 	{
 		id: 'date',
@@ -81,7 +90,7 @@ const headCells: readonly HeadCell[] = [
 
 interface EnhancedTableProps {
 	numSelected: number;
-	onRequestSort: (event: React.MouseEvent<unknown>, book: keyof Data) => void;
+	onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
 	onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	order: Order;
 	orderBy: string;
@@ -108,31 +117,36 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 	);
 }
 
-interface FaqArticlesPanelListType {
+interface FaqArticleListProps {
+	faqs: Faq[];
+	anchorEl: any;
+	menuIconClickHandler: any;
+	menuIconCloseHandler: any;
+	updateArticleHandler: any;
+	removeArticleHandler: any;
+	membersData: any;
+}
+
+interface FaqArticlesPanelList {
 	dense?: boolean;
+	faqs: Faq[];
 	membersData?: any;
 	searchMembers?: any;
+	removeFaqHandler: any;
+	updateFaqHandler: any;
 	anchorEl?: any;
+	menuIconClickHandler: any;
 	handleMenuIconClick?: any;
-	handleMenuIconClose?: any;
+	menuIconCloseHandler?: any;
 	generateMentorTypeHandle?: any;
 }
 
-export const FaqArticlesPanelList = (props: FaqArticlesPanelListType) => {
-	const {
-		dense,
-		membersData,
-		searchMembers,
-		anchorEl,
-		handleMenuIconClick,
-		handleMenuIconClose,
-		generateMentorTypeHandle,
-	} = props;
+export const FaqArticlesPanelList = (props: FaqArticlesPanelList) => {
+	const { dense, faqs, removeFaqHandler, menuIconClickHandler, updateFaqHandler, menuIconCloseHandler, anchorEl } =
+		props;
 	const router = useRouter();
 
-	/** APOLLO REQUESTS **/
-	/** LIFECYCLES **/
-	/** HANDLERS **/
+
 
 	return (
 		<Stack>
@@ -141,59 +155,107 @@ export const FaqArticlesPanelList = (props: FaqArticlesPanelListType) => {
 					{/*@ts-ignore*/}
 					<EnhancedTableHead />
 					<TableBody>
-						{[1, 2, 3, 4, 5].map((ele: any, index: number) => {
-							const member_image = '/img/profile/defaultUser.svg';
-
-							let status_class_name = '';
-
-							return (
-								<TableRow hover key={'member._id'} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-									<TableCell align="left">mb id</TableCell>
-									<TableCell align="left">member.mb_full_name</TableCell>
-									<TableCell align="left" className={'name'}>
-										<Stack direction={'row'}>
-											<Link href={`/_admin/users/detail?mb_id=$'{member._id'}`}>
-												<div>
-													<Avatar alt="Remy Sharp" src={member_image} sx={{ ml: '2px', mr: '10px' }} />
-												</div>
-											</Link>
-											<Link href={`/_admin/users/detail?mb_id=${'member._id'}`}>
-												<div>member.mb_nick</div>
-											</Link>
-										</Stack>
+						{faqs.length === 0 && (
+							<TableRow>
+								<TableCell align="center" colSpan={8}>
+									<span className={'no-data'}>data not found!</span>
+								</TableCell>
+							</TableRow>
+						)}
+						{faqs.length !== 0 &&
+							faqs.map((faq: Faq, index: number) => (
+								<TableRow hover key={faq._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+									<TableCell align="left">{faq.faqCategory}</TableCell>
+									<TableCell align="left">
+										<Box component={'div'}>
+											{faq.faqTitle}
+											{faq.faqStatus === FaqStatus.ACTIVE && (
+												<Link
+													href={`/cs/${faq.faqCategory}&id=${faq._id}`}
+													className={'img_box'}
+												>
+													<IconButton className="btn_window">
+														<Tooltip title={'Open window'}>
+															<OpenInBrowserRoundedIcon />
+														</Tooltip>
+													</IconButton>
+												</Link>
+											)}
+										</Box>
 									</TableCell>
-									<TableCell align="left">member.mb_phone</TableCell>
-									<TableCell align="center">
-										<Button onClick={(e: any) => handleMenuIconClick(e, index)} className={'badge success'}>
-											member.mb_type
-										</Button>
+									<TableCell align="left">{faq.faqContent}</TableCell>
+									<TableCell align="left" className={'name'}>
+										{faq.faqStatus === FaqStatus.ACTIVE ? (
+											<Stack direction={'row'}>
+												<Link href={`/faq/detail?id=${faq?._id}`}>
+													{/* <div>
+															<Avatar alt="Remy Sharp" src={faqImage} sx={{ ml: '2px', mr: '10px' }} />
+														</div> */}
+												</Link>
+												<Link href={`/faq/detail?id=${faq?._id}`}>
+													{/* <div>{faq.createdAt}</div> */}
+													<div>{formatDate(faq.createdAt)}</div>
+												</Link>
+											</Stack>
+										) : (
+											<Stack direction={'row'}>
+												
+												<div style={{ marginTop: '10px' }}>{faq.faqTitle}</div>
+											</Stack>
+										)}
+									</TableCell>
 
-										<Menu
-											className={'menu-modal'}
-											MenuListProps={{
-												'aria-labelledby': 'fade-button',
-											}}
-											anchorEl={anchorEl[index]}
-											open={Boolean(anchorEl[index])}
-											onClose={handleMenuIconClose}
-											TransitionComponent={Fade}
-											sx={{ p: 1 }}
-										>
-											<MenuItem onClick={(e) => generateMentorTypeHandle('member._id', 'mentor', 'originate')}>
-												<Typography variant={'subtitle1'} component={'span'}>
-													MENTOR
-												</Typography>
-											</MenuItem>
-											<MenuItem onClick={(e) => generateMentorTypeHandle('member._id', 'user', 'remove')}>
-												<Typography variant={'subtitle1'} component={'span'}>
-													USER
-												</Typography>
-											</MenuItem>
-										</Menu>
+									<TableCell align="center">
+									
+										<TableCell align="center">
+											{faq.faqStatus === FaqStatus.DELETE && (
+												<Button
+													variant="outlined"
+													sx={{ p: '3px', border: 'none', ':hover': { border: '1px solid #000000' } }}
+													onClick={() => removeFaqHandler(faq._id)}
+												>
+													<DeleteIcon fontSize="small" />
+												</Button>
+											)}
+
+											{faq.faqStatus === FaqStatus.HOLD && <Button  onClick={(e: any) => menuIconClickHandler(e, index)}  className={'badge warning'}>{faq.faqStatus}</Button>}
+
+											{faq.faqStatus === FaqStatus.ACTIVE && (
+												<>
+													<Button onClick={(e: any) => menuIconClickHandler(e, index)} className={'badge success'}>
+														{faq.faqStatus}
+													</Button>
+
+													<Menu
+														className={'menu-modal'}
+														MenuListProps={{
+															'aria-labelledby': 'fade-button',
+														}}
+														anchorEl={anchorEl[index]}
+														open={Boolean(anchorEl[index])}
+														onClose={menuIconCloseHandler}
+														TransitionComponent={Fade}
+														sx={{ p: 1 }}
+													>
+														{Object.values(FaqStatus)
+															.filter((ele) => ele !== faq.faqStatus)
+															.map((status: string) => (
+																<MenuItem
+																	onClick={() => updateFaqHandler({ _id: faq._id, faqStatus: status })}
+																	key={status}
+																>
+																	<Typography variant={'subtitle1'} component={'span'}>
+																		{status}
+																	</Typography>
+																</MenuItem>
+															))}
+													</Menu>
+												</>
+											)}
+										</TableCell>
 									</TableCell>
 								</TableRow>
-							);
-						})}
+							))}
 					</TableBody>
 				</Table>
 			</TableContainer>

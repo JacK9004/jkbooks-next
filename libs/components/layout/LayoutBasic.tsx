@@ -132,7 +132,7 @@ const withLayoutBasic = (Component: any) => {
 						</Stack>
 						
 						<Chat />
-						{/* {user?._id && <Chat />} */}
+						{user?._id && <Chat />}
 
 						<Stack id={'footer'}>
 							<Footer />

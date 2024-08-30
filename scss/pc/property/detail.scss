@@ -277,9 +277,9 @@
 			  .sub-title {
 				color: #2c3e50;
 				font-family: 'Georgia', serif;
-				font-size: 16px; /* Reduced font size */
+				font-size: 14px; /* Reduced font size */
 				font-weight: bold;
-				// margin-bottom: 8px; /* Reduced margin bottom */
+				margin-bottom: 3px; /* Reduced margin bottom */
 			  }
 			  
 			  input, textarea {
@@ -290,7 +290,7 @@
 				background: #fafafa;
 				outline: none;
 				font-family: 'Arial', sans-serif;
-				font-size: 14px; /* Reduced font size */
+				font-size: 13px; /* Reduced font size */
 				transition: border 0.3s ease;
 				
 				&::placeholder {

@@ -142,6 +142,15 @@
                   font-family: $font;
                   font-size: 16px;
                   font-style: normal;
+                  font-weight: 800;
+                  line-height: normal;
+                }
+                .notice-content {
+                  width: 1060px;
+                  color: #000;
+                  font-family: $font;
+                  font-size: 16px;
+                  font-style: normal;
                   font-weight: 400;
                   line-height: normal;
                 }
@@ -163,37 +172,42 @@
           margin-top: 25px;
           display: flex;
           flex-direction: column;
+        
           .categories {
             display: flex;
             flex-direction: row;
             justify-content: center;
+        
             div {
               width: 14%;
               height: 40px;
               display: flex;
               justify-content: center;
               align-items: center;
-              color: #BDBDBD;
               text-align: center;
-              font-family: $font;
+              font-family: $font; // Replace $font with your actual font variable
               font-size: 15px;
               font-style: normal;
               font-weight: 400;
               line-height: normal;
               letter-spacing: -0.225px;
               cursor: pointer;
+        
               &.active {
-                border-bottom: 1px solid #EB6753;
-                color: #EB6753;
+                border-bottom: 2px solid #b30d9d; // Increased border thickness
+                color: #b30d9d;
               }
             }
           }
+        
           .wrap {
             margin-top: 50px;
+        
             .MuiAccordionDetails-root {
               padding: 30px 20px;
               background: #FAFAFA;
             }
+        
             .badge {
               margin: 0 24px;
               display: inline-block;
@@ -202,25 +216,29 @@
               border-radius: 7px;
               color: #725CE8;
             }
+        
             .question {
               .badge {
                 background: #e92C28;
                 color: #fff;
               }
             }
+        
             .answer {
               margin-left: 80px;
               display: flex;
               white-space: nowrap;
               align-items: center;
               flex-direction: row;
+        
               .badge {
-                color: #EB6753;
-                border: 1px solid #EB6753;
+                color: #b30d9d;
+                border: 1px solid #b30d9d;
               }
             }
           }
         }
+        
       }
     }
   }
