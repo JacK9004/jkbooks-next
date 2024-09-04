@@ -9,8 +9,8 @@
       align-items: center;
 
       .main {
-        width: 1300px;
-        height: 900px;
+        width: 1000px;
+        height: 700px;
         display: flex;
         flex-direction: row;
         border-radius: 12px 0 0 12px;
@@ -42,7 +42,7 @@
             span {
               margin-left: 10px;
               font-family:  Monaco, Copperplate, Papyrus;
-              font-size: 30px; 
+              font-size: 28px; 
               font-weight: 600;
               color: #181A20;
             }
@@ -54,7 +54,7 @@
             
             span {
               font-family: $font;
-              font-size: 22px; 
+              font-size: 20px; 
               font-weight: 600;
               color: #181A20;
               text-transform: uppercase;
@@ -62,7 +62,7 @@
             p {
               margin-top: 10px;
               font-family: $font;
-              font-size: 16px; 
+              font-size: 14px; 
               font-weight: 400;
               color: #181A20;
             }
@@ -83,7 +83,7 @@
               span {
                 margin-bottom: 10px; 
                 font-family: $font;
-                font-size: 15px; 
+                font-size: 14px; 
                 font-weight: 600;
                 color: #181A20;
               }
@@ -95,7 +95,7 @@
                 border: 1px solid #DDD;
                 background: #FFF;
                 font-family: $font;
-                font-size: 15px; 
+                font-size: 14px; 
                 font-weight: 400;
                 color: #717171;
                 box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
@@ -118,7 +118,7 @@
 
               span.text {
                 font-family: $font;
-                font-size: 15px; 
+                font-size: 14px; 
                 font-weight: 600;
                 color: #181A20;
               }
@@ -174,7 +174,7 @@
             p {
               margin-top: 40px;
               font-family: $font;
-              font-size: 20px;
+              font-size: 18px;
               font-weight: 400;
               color: #181A20;
 
@@ -194,6 +194,7 @@
         }
 
         .right {
+          margin-left: 30px;
           width: 90%;
           height: 100%;
           background-image: url("/img/banner/login.jpg");

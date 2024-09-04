@@ -99,14 +99,14 @@ const Faq: React.FC = () => {
                             padding: '10px 20px',
                             borderRadius: '4px',
                             border: '1px solid',
-                            borderColor: selectedCategory === category ? '#b30d9d' : '#BDBDBD',
-                            backgroundColor: selectedCategory === category ? '#f5e5f7' : '#ffffff',
-                            color: selectedCategory === category ? '#b30d9d' : '#BDBDBD',
+                            borderColor: selectedCategory === category ? '#018675' : '#018675',
+                            backgroundColor: selectedCategory === category ? '#E8F6F3' : '#ffffff',
+                            color: selectedCategory === category ? '#018675' : '#BDBDBD',
                             cursor: 'pointer',
                             '&:hover': {
-                                borderColor: '#b30d9d',
-                                backgroundColor: '#f5e5f7',
-                                color: '#b30d9d',
+                                borderColor: '#018675',
+                                backgroundColor: '#E8F6F3',
+                                color: '#018675',
                             },
                         }}
                     >

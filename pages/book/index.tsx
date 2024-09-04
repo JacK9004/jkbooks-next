@@ -215,7 +215,7 @@ const BookList: NextPage = ({ initialInput, ...props }: any) => {
 BookList.defaultProps = {
 	initialInput: {
 		page: 1,
-		limit: 9,
+		limit: 12,
 		sort: 'createdAt',
 		direction: 'DESC',
 		search: {
