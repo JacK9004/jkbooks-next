@@ -239,7 +239,7 @@ const AdminBooks: NextPage = ({ initialInquiry, ...props }: any) => {
 AdminBooks.defaultProps = {
 	initialInquiry: {
 		page: 1,
-		limit: 9,
+		limit: 12,
 		sort: 'createdAt',
 		direction: 'DESC',
 		search: {},
