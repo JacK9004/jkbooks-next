@@ -77,7 +77,7 @@ const MyMenu = () => {
                 <Typography variant="h6" align="center" sx={{ marginBottom: '8px' }} className="userName">
                     {user?.memberNick}
                 </Typography>
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 1 }} className="userPhone">
+                <Box component={"div"} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 1 }} className="userPhone">
                     <img src="/img/icons/call.svg" alt="phone" style={{ marginRight: '4px' }} />
                     <Typography variant="body2">{user?.memberPhone}</Typography>
                 </Box>

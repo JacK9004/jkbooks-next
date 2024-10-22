@@ -1,6 +1,7 @@
 import { Member } from '../member/member';
 import { FaqCategory, FaqStatus } from '../../enums/faq.enum';
-import { TotalCounter } from '../property/property';
+import { TotalCounter } from '../book/book';
+
 
 export interface Faq {
 	_id: string;
